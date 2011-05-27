@@ -1,3 +1,8 @@
+2011-05-27  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/weight.R (weightSMART): Implement Cosine and pivoted unique
+	normalization.
+
 2011-02-17  Ingo Feinerer  <feinerer@logic.at>
 
 	* R/transform.R (stemDocument.PlainTextDocument): Use language

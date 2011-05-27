@@ -43,7 +43,7 @@ as.DocumentTermMatrix(x, \dots)
 \examples{
 data("crude")
 tdm <- TermDocumentMatrix(crude,
-                          control = list(weighting = weightTfIdf,
+                          control = list(removePunctuation = TRUE,
                                          stopwords = TRUE))
 dtm <- DocumentTermMatrix(crude,
                           control = list(weighting =

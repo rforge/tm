@@ -44,7 +44,7 @@ weightSMART <-
 
         term_frequency <- match.arg(substr(spec, 1, 1), c("n", "l", "a", "b", "L"))
         document_frequency <- match.arg(substr(spec, 2, 2), c("n", "t", "p"))
-        normalization <- match.arg(substr(spec, 3, 3), c("n", "b"))
+        normalization <- match.arg(substr(spec, 3, 3), c("n", "c", "u", "b"))
 
         isDTM <- inherits(m, "DocumentTermMatrix")
         if (isDTM) m <- t(m)
@@ -60,7 +60,6 @@ weightSMART <-
                       # boolean
                       b = rep(1, length(m$v)),
                       # log ave
-                      # TODO: What does avg_{t \in d} in Manning et al. mean?
                       L = (1 + log2(m$v)) / (1 + log2(tapply(m$v, m$j, mean))))
 
         # Document frequency
@@ -80,9 +79,13 @@ weightSMART <-
                        # none
                        n = rep(1, nDocs(m)),
                        # cosine
-                       # Not implemented yet.
+                       c = sqrt(col_sums(m ^ 2)),
                        # pivoted unique
-                       # Not implemented yet.
+                       u = {
+                           if (is.null(control$slope))
+                               stop("invalid control argument slope")
+                           (1 - control$slope) * length(Terms) + control$slope * length(unique(Terms(m)))
+                       },
                        # byte size
                        b = {
                            if (is.null(control$charlength))
