@@ -29,6 +29,7 @@ data("acq")
 tm_tag_score(acq[[1]], c("company", "change"))
 \dontrun{
 ## Test for positive and negative sentiments
+## install.packages("tm.plugin.tags", repos = "http://datacube.wu.ac.at")
 require("tm.plugin.tags")
 sapply(acq[1:10], tm_tag_score, tm_get_tags("Positiv"))
 sapply(acq[1:10], tm_tag_score, tm_get_tags("Negativ"))
