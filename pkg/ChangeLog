@@ -1,3 +1,8 @@
+2011-08-24  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/stopwords.R (stopwords): Raise an error if no stopwords are
+	available for requested language. Suggested by Derek M Jones.
+
 2011-05-27  Ingo Feinerer  <feinerer@logic.at>
 
 	* R/weight.R (weightSMART): Implement Cosine and pivoted unique
