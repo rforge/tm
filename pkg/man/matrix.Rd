@@ -52,6 +52,7 @@ dtm <- DocumentTermMatrix(crude,
                                                      FALSE),
                                          stopwords = TRUE))
 inspect(tdm[155:160,1:5])
+inspect(tdm[c("price", "texas"),c("127","144","191","194")])
 inspect(dtm[1:5,155:160])
 }
 \author{Ingo Feinerer}
