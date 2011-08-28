@@ -71,7 +71,7 @@ weightSMART <-
                       ## augmented
                       a = {
                           s <- tapply(m$v, m$j, max)
-                          0.5 + (0.5 * m$v) / s[match(m$j, names(s))]
+                          0.5 + (0.5 * m$v) / s[as.character(m$j)]
                       },
                       ## boolean
                       b = as.numeric(m$v > 0),
@@ -79,7 +79,7 @@ weightSMART <-
                       L = {
                           s <- tapply(m$v, m$j, mean)
                           ((1 + log2(m$v)) /
-                           (1 + log2(s[match(m$j, names(s))])))
+                           (1 + log2(s[as.character(m$j)])))
                       })
 
         ## Document frequency
@@ -102,19 +102,25 @@ weightSMART <-
                        c = sqrt(col_sums(m ^ 2)),
                        ## pivoted unique
                        u = {
-                           if (is.null(control$slope))
+                           if(is.null(pivot <- control$pivot))
+                               stop("invalid control argument pivot")
+                           if(is.null(slope <- control$slope))
                                stop("invalid control argument slope")
-                           (1 - control$slope) * length(Terms) + control$slope * length(unique(Terms(m)))
+                           (slope * sqrt(col_sums(m ^ 2)) +
+                            (1 - slope) * pivot)
                        },
                        ## byte size
                        b = {
-                           if (is.null(control$alpha))
+                           if(is.null(alpha <- control$alpha))
                                stop("invalid control argument alpha")
-                           charlengths ^ (control$alpha)
+                           norm <- double(nDocs(m))
+                           norm[match(names(charlengths),
+                                      seq_along(norm))] <-
+                                          charlengths ^ alpha
+                           norm
                        })
 
         m <- m * df
-        names(norm) <- seq_len(nDocs(m))
         m$v <- m$v / norm[m$j]
         attr(m, "Weighting") <- c(paste("SMART", spec), "SMART")
 
