@@ -75,4 +75,8 @@ weightSMART(m, spec = "nnn", control = list())
   \emph{Introduction to Information Retrieval}.
   Cambridge University Press, ISBN 0521865719.
 }
+\examples{
+data("crude")
+TermDocumentMatrix(crude, control = list(removePunctuation = TRUE, stopwords = TRUE, weighting = function(x) weightSMART(x, spec = "ntc")))
+}
 \author{Ingo Feinerer}
