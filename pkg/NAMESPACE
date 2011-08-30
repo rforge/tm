@@ -133,7 +133,7 @@ S3method("t", "DocumentTermMatrix")
 
 S3method("findAssocs", "matrix")
 
-S3method("tm_tag_score", "numeric")
+S3method("tm_tag_score", "term_frequency")
 
 S3method("print", "MetaDataNode")
 

@@ -94,6 +94,19 @@ function(x, ...)
 as.TermDocumentMatrix.DocumentTermMatrix <-
 function(x, ...)
     t(x)
+as.TermDocumentMatrix.term_frequency <-
+function(x, ...) {
+    m <- simple_triplet_matrix(i = seq_along(x),
+                               j = rep(1, length(x)),
+                               v = as.numeric(x),
+                               nrow = length(x),
+                               ncol = 1,
+                               dimnames =
+                               list(Terms = names(x),
+                                    Docs = NA))
+
+    .TermDocumentMatrix(m, weightTf)
+}
 as.TermDocumentMatrix.default <-
 function(x, weighting, ...)
     .TermDocumentMatrix(x, weighting)
@@ -195,7 +208,7 @@ function(doc, control = list())
     tab <- tab[nchar(names(tab), type = "chars") >= minWordLength]
 
     ## Return named integer
-    structure(as.integer(tab), names = names(tab))
+    structure(as.integer(tab), names = names(tab), class = c("term_frequency", "integer"))
 }
 
 print.TermDocumentMatrix <-
@@ -275,6 +288,18 @@ function(x)
 Terms <-
 function(x)
     if (inherits(x, "DocumentTermMatrix")) x$dimnames[[2L]] else x$dimnames[[1L]]
+
+c.term_frequency <-
+function(x, ..., recursive = FALSE)
+{
+    args <- list(...)
+    x <- as.TermDocumentMatrix(x)
+
+    if(!length(args))
+        return(x)
+
+    do.call("c", base::c(list(x), lapply(args, as.TermDocumentMatrix)))
+}
 
 c.TermDocumentMatrix <-
 function(x, ..., recursive = FALSE)

@@ -39,8 +39,8 @@ termFreq(doc, control = list())
   }
 }
 \value{
-  A named integer vector with term frequencies as values and tokens as
-  names.
+  A named integer vector of class \code{term_frequency} with term
+  frequencies as values and tokens as names.
 }
 \examples{
 data("crude")
