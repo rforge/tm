@@ -1,6 +1,7 @@
 \name{weightSMART}
 \alias{weightSMART}
 \title{SMART Weightings}
+\encoding{UTF-8}
 \description{
   Weight a term-document matrix according to a combination of weights
   specified in SMART notation.
