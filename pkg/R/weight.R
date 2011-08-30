@@ -36,7 +36,6 @@ weightTfIdf <-
         if (isDTM) t(m) else m
     }, "term frequency - inverse document frequency", "tf-idf")
 
-## Not yet finished
 weightSMART <-
     WeightFunction(function(m, spec = "nnn", control = list()) {
         if (nchar(spec) != 3L)
