@@ -1,3 +1,8 @@
+2011-10-11  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/meta.R (`meta<-.Corpus`): Assume that the replacement value
+	can be accessed via '[' and not '[['.
+
 2011-08-24  Ingo Feinerer  <feinerer@logic.at>
 
 	* R/stopwords.R (stopwords): Raise an error if no stopwords are
