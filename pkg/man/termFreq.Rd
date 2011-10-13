@@ -15,7 +15,8 @@ termFreq(doc, control = list())
 	case. Defaults to \code{\link{tolower}}.}
       \item{\code{removePunctuation}}{A logical value indicating whether
 	punctuation characters should be removed from
-	\code{doc}. Defaults to \code{FALSE}.}
+	\code{doc}, or a function which performs punctuation
+	removal. Defaults to \code{FALSE}.}
       \item{\code{tokenize}}{A function tokenizing documents into single
 	tokens. Defaults to \code{scan(\dots, what = "character")}.}
       \item{\code{removeNumbers}}{A logical value indicating whether
