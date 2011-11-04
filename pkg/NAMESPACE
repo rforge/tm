@@ -180,6 +180,8 @@ S3method("print", "TermDocumentMatrix")
 S3method("t", "TermDocumentMatrix")
 S3method("tm_tag_score", "TermDocumentMatrix")
 
+S3method("c", "term_frequency")
+
 S3method("c", "TextDocument")
 S3method("meta", "TextDocument")
 S3method("meta<-", "TextDocument")
@@ -219,6 +221,7 @@ S3method("as.DocumentTermMatrix", "default")
 S3method("as.TermDocumentMatrix", "TermDocumentMatrix")
 S3method("as.TermDocumentMatrix", "DocumentTermMatrix")
 S3method("as.TermDocumentMatrix", "default")
+S3method("as.TermDocumentMatrix", "term_frequency")
 
 export("read_dtm_Blei_et_al")
 

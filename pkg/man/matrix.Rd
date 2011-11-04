@@ -16,7 +16,8 @@ as.DocumentTermMatrix(x, \dots)
 \arguments{
   \item{x}{a corpus for the constructors and either a term-document
     matrix or a document-term matrix or a \link[slam:matrix]{simple
-    triplet matrix} (package \pkg{slam}) for the coercing functions.}
+    triplet matrix} (package \pkg{slam}) or a \link[=termFreq]{term
+    frequency vector} for the coercing functions.}
   \item{control}{a named list of control options. The component
     \code{weighting} must be a weighting function capable of handling a
     \code{TermDocumentMatrix}. It defaults to \code{weightTf} for term
@@ -37,8 +38,8 @@ as.DocumentTermMatrix(x, \dots)
   possible options.
 
   Available weighting functions shipped with the \pkg{tm}
-  package are \code{\link{weightTf}}, \code{\link{weightTfIdf}}, and
-  \code{\link{weightBin}}.
+  package are \code{\link{weightTf}}, \code{\link{weightTfIdf}},
+  \code{\link{weightBin}}, and \code{\link{weightSMART}}.
 }
 \examples{
 data("crude")
