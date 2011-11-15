@@ -161,7 +161,7 @@ function(doc, control = list())
 
     ## Tokenize the corpus
     tokenize <- control$tokenize
-    if(is.null(tokenize))
+    if(is.null(tokenize) || identical(tokenize, "scan"))
         tokenize <- scan_tokenizer
     else if(identical(tokenize, "MC"))
         tokenize <- MC_tokenizer

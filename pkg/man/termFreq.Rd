@@ -9,7 +9,8 @@ termFreq(doc, control = list())
 }
 \arguments{
   \item{doc}{An object inheriting from \code{TextDocument}.}
-  \item{control}{A list of control options. Possible settings are
+  \item{control}{A list of control options which override default
+    settings. Possible options are
     \describe{
       \item{\code{tolower}}{A function converting characters to lower
 	case. Defaults to \code{\link{tolower}}.}
@@ -18,7 +19,13 @@ termFreq(doc, control = list())
 	\code{doc}, or a function which performs punctuation
 	removal. Defaults to \code{FALSE}.}
       \item{\code{tokenize}}{A function tokenizing documents into single
-	tokens. Defaults to \code{scan(\dots, what = "character")}.}
+	tokens or a string matching one of the predefined tokenization
+	functions:
+	\describe{
+	  \item{\code{scan}}{for \code{\link{scan_tokenizer}}, or}
+	  \item{\code{MC}}{for \code{\link{MC_tokenizer}}.}
+	}
+	Defaults to \code{\link{scan_tokenizer}}.}
       \item{\code{removeNumbers}}{A logical value indicating whether
 	numbers should be removed from \code{doc}. Defaults to \code{FALSE}.}
       \item{\code{stemming}}{Either a Boolean value indicating whether tokens
@@ -43,11 +50,15 @@ termFreq(doc, control = list())
   A named integer vector of class \code{term_frequency} with term
   frequencies as values and tokens as names.
 }
+\seealso{
+  \code{\link{getTokenizers}}
+}
 \examples{
 data("crude")
 termFreq(crude[[1]])
-termFreq(crude[[1]],
-         control = list(removePunctuation = TRUE, stemming = TRUE,
-                        minWordLength = 4))
+strsplit_space_tokenizer <- function(x) unlist(strsplit(x, "[[:space:]]+"))
+ctrl <- list(removePunctuation = TRUE, tokenize = strsplit_space_tokenizer,
+             stemming = TRUE, minWordLength = 4)
+termFreq(crude[[1]], control = ctrl)
 }
 \keyword{math}

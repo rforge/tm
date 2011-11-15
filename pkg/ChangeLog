@@ -1,8 +1,14 @@
+2011-11-15  Ingo Feinerer  <feinerer@logic.at>
+
+	* man/getTokenizers.Rd: Document getTokenizers().
+
+	* man/tokenizer.Rd: Document MC_tokenizer() and scan_tokenizer().
+
 2011-11-04  Ingo Feinerer  <feinerer@logic.at>
 
 	* man/matrix.Rd: Document as.TermDocumentMatrix.term_frequency.
 
-	* man/combine.Rd: Document c.term_frequency.
+	* man/combine.Rd: Document c.term_frequency().
 
 2011-10-11  Ingo Feinerer  <feinerer@logic.at>
 
