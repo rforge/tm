@@ -1,5 +1,8 @@
 2011-11-17  Ingo Feinerer  <feinerer@logic.at>
 
+	* R/reader.R (readPDF): Use tools:::pdf_info() instead of external
+	pdfinfo tool.
+
 	* inst/stopwords/SMART.dat: Add SMART information retrieval system
 	stopwords (which are also used by the MC toolkit).
 
