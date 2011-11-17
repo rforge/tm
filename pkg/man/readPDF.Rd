@@ -19,7 +19,7 @@ readPDF(PdftotextOptions = "", \dots)
   \command{pdftotext}) via lexical scoping.
 
   Note that this PDF reader needs the tool \command{pdftotext} installed
-  and accessible on your system, available as command line utilities in
+  and accessible on your system, available as command line utility in
   the Poppler PDF rendering library (see
   \url{http://poppler.freedesktop.org/}).
 }
