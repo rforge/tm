@@ -16,6 +16,8 @@ NEW FEATURES
     o   Local and global options for term-document matrix
         construction.
 
+    o   SMART stopword list was added.
+
                 CHANGES IN tm VERSION 0.5-5
 
 NEW FEATURES

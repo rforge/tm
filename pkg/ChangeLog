@@ -1,5 +1,8 @@
 2011-11-17  Ingo Feinerer  <feinerer@logic.at>
 
+	* inst/stopwords/SMART.dat: Add SMART information retrieval system
+	stopwords (which are also used by the MC toolkit).
+
 	* R/matrix (termFreq): Allow local option \code{bounds$local} to
 	restrict how often a term may appear in each document (generalizes
 	\code{minDocFreq}). Similarly the local option \code{wordLenghts}
