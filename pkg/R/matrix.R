@@ -49,10 +49,6 @@ TermDocumentMatrix.PCorpus <-
 TermDocumentMatrix.VCorpus <-
 function(x, control = list())
 {
-    weighting <- control$weighting
-    if (is.null(weighting))
-        weighting <- weightTf
-
     lazyTmMap <- meta(x, tag = "lazyTmMap", type = "corpus")
     if (!is.null(lazyTmMap))
         .Call("copyCorpus", x, materialize(x))
@@ -77,6 +73,16 @@ function(x, control = list())
                                dimnames =
                                list(Terms = allTerms,
                                     Docs = unlist(lapply(x, ID))))
+
+    bg <- control$bounds$global
+    if (length(bg) == 2L && is.numeric(bg)) {
+        rs <- row_sums(m > 0)
+        m <- m[(rs >= bg[1]) & (rs <= bg[2]), ]
+    }
+
+    weighting <- control$weighting
+    if (is.null(weighting))
+        weighting <- weightTf
 
     .TermDocumentMatrix(m, weighting)
 }
@@ -196,16 +202,14 @@ function(doc, control = list())
     else
         table(factor(txt, levels = dictionary))
 
-    ## Ensure minimum document frequency threshold
-    minDocFreq <- control$minDocFreq
-    if (!is.null(minDocFreq))
-        tab <- tab[tab >= minDocFreq]
+    ## Ensure local bounds
+    bl <- control$bounds$local
+    if (length(bl) == 2L && is.numeric(bl))
+        tab <- tab[(tab >= bl[1]) & (tab <= bl[2])]
 
-    ## Filter out too short terms
-    minWordLength <- control$minWordLength
-    if (is.null(minWordLength))
-        minWordLength <- 3
-    tab <- tab[nchar(names(tab), type = "chars") >= minWordLength]
+    ## Filter out too short or too long terms
+    nc <- nchar(names(tab), type = "chars")
+    tab <- tab[(nc >= max(3, control$wordLengths[1])) & (nc <= min(Inf, control$wordLengths[2]))]
 
     ## Return named integer
     structure(as.integer(tab), names = names(tab), class = c("term_frequency", "integer"))

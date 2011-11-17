@@ -38,11 +38,17 @@ termFreq(doc, control = list())
 	against. No other terms will be listed in the result. Defaults
 	to \code{NULL} which means that all terms in \code{doc} are
 	listed.}
-      \item{\code{minDocFreq}}{An integer value. Words that appear less
-	often in \code{doc} than this number are discarded. Defaults to
-	\code{1} (i.e., every token will be used).}
-      \item{\code{minWordLength}}{An integer value. Words smaller than
-	this number are discarded. Defaults to length \code{3}.}
+      \item{\code{bounds}}{A list with a tag \code{local} whose value
+	must be an integer vector of length 2. Terms that appear less
+	often in \code{doc} than the lower bound \code{bounds$local[1]}
+	or more often than the upper bound \code{bounds$local[2]} are
+	discarded. Defaults to \code{list(local = c(1,Inf)} (i.e., every
+	token will be used).}
+      \item{\code{wordLengths}}{An integer vector of length 2. Words
+	smaller than the minimum word length \code{wordLengths[1]} or
+	longer than the maximum word length \code{wordLengths[2]} are
+	discarded. Defaults to \code{c(3, Inf)}, i.e., a minimum word
+	length of 3 characters.}
     }
   }
 }

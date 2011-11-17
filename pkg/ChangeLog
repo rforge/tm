@@ -1,3 +1,19 @@
+2011-11-17  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/matrix (termFreq): Allow local option \code{bounds$local} to
+	restrict how often a term may appear in each document (generalizes
+	\code{minDocFreq}). Similarly the local option \code{wordLenghts}
+	for word length bounds (generalizes \code{minWordLength}).
+
+	* R/matrix.R (TermDocumentMatrix.VCorpus): New global option
+	\code{bounds$global} for restricting how often a term is allowed
+	to appear in different documents.
+
+	* R/matrix.R (TermDocumentMatrix.VCorpus): Distinguish between
+	local options delegated internally to termFreq() and global
+	options which are processed by the term-document matrix
+	constructor itself.
+
 2011-11-15  Ingo Feinerer  <feinerer@logic.at>
 
 	* man/getTokenizers.Rd: Document getTokenizers().
