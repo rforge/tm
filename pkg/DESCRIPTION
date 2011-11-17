@@ -6,7 +6,7 @@ Authors@R: person("Ingo", "Feinerer", role = c("aut", "cre"),
 	          email = "feinerer@logic.at")
 Author: Ingo Feinerer
 Maintainer: Ingo Feinerer <feinerer@logic.at>
-Depends: R (>= 2.11.0), methods
+Depends: R (>= 2.14.0), methods
 Imports: slam (>= 0.1-22)
 Suggests: filehash, proxy, Rgraphviz, Rmpi, RWeka, snow, Snowball, XML
 SystemRequirements: Antiword (http://www.winfield.demon.nl/) for reading MS Word files,
