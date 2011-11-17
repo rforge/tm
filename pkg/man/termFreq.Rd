@@ -42,7 +42,7 @@ termFreq(doc, control = list())
 	must be an integer vector of length 2. Terms that appear less
 	often in \code{doc} than the lower bound \code{bounds$local[1]}
 	or more often than the upper bound \code{bounds$local[2]} are
-	discarded. Defaults to \code{list(local = c(1,Inf)} (i.e., every
+	discarded. Defaults to \code{list(local = c(1,Inf))} (i.e., every
 	token will be used).}
       \item{\code{wordLengths}}{An integer vector of length 2. Words
 	smaller than the minimum word length \code{wordLengths[1]} or

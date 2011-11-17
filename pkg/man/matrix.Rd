@@ -29,7 +29,7 @@ as.DocumentTermMatrix(x, \dots)
 	must be an integer vector of length 2. Terms that appear in less
 	documents than the lower bound \code{bounds$global[1]} or in
 	more documents than the upper bound \code{bounds$global[2]} are
-	discarded. Defaults to \code{list(global = c(1,Inf)} (i.e., every
+	discarded. Defaults to \code{list(global = c(1,Inf))} (i.e., every
 	term will be used).}
       \item{\code{weighting}}{A weighting function capable of handling a
 	\code{TermDocumentMatrix}. It defaults to \code{weightTf} for term
