@@ -119,6 +119,8 @@ S3method("eoi", "DataframeSource")
 S3method("getElem", "DataframeSource")
 S3method("pGetElem", "DataframeSource")
 
+S3method("Content<-", "default")
+
 S3method("eoi", "DirSource")
 S3method("getElem", "DirSource")
 S3method("pGetElem", "DirSource")
