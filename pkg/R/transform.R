@@ -101,10 +101,10 @@ as.PlainTextDocument.Reuters21578Document <- function(x) {
 }
 
 removeNumbers <- function(x) UseMethod("removeNumbers", x)
-removeNumbers.PlainTextDocument <- function(x) gsub("[[:digit:]]+", "", x)
+removeNumbers.PlainTextDocument <- removeNumbers.character <- function(x) gsub("[[:digit:]]+", "", x)
 
 removePunctuation <- function(x) UseMethod("removePunctuation", x)
-removePunctuation.PlainTextDocument <- function(x) gsub("[[:punct:]]+", "", x)
+removePunctuation.PlainTextDocument <- removePunctuation.character <- function(x) gsub("[[:punct:]]+", "", x)
 
 ## <NOTYET>
 ## removePunctuation <-
@@ -123,7 +123,7 @@ removePunctuation.PlainTextDocument <- function(x) gsub("[[:punct:]]+", "", x)
 
 removeWords <- function(x, words) UseMethod("removeWords", x)
 # Improvements by Kurt Hornik
-removeWords.PlainTextDocument <- function(x, words)
+removeWords.PlainTextDocument <- removeWords.character <- function(x, words)
     gsub(sprintf("\\b(%s)\\b", paste(words, collapse = "|")), "", x)
 
 stemDocument <- function(x, language = "english") UseMethod("stemDocument", x)

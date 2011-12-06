@@ -9,6 +9,9 @@ SIGNIFICANT USER-VISIBLE CHANGES
         lengths. This replaces the arguments minDocFreq and
         minWordLength.
 
+    o   The function termFreq() is now sensitive to the order of
+        control options.
+
 NEW FEATURES
 
     o   Weighting schemata for term-document matrices in SMART notation.

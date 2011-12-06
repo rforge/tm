@@ -153,43 +153,55 @@ function(doc, control = list())
 
     ## Conversion to lower characters
     tolower <- control$tolower
-    if (is.null(tolower) || tolower)
-        txt <- tolower(txt)
+    if (is.null(tolower) || isTRUE(tolower))
+        tolower <- base::tolower
 
     ## Punctuation removal
     removePunctuation <- control$removePunctuation
     if (isTRUE(removePunctuation))
-        txt <- gsub("[[:punct:]]+", "", txt)
-    else if (is.function(removePunctuation))
-        txt <- removePunctuation(txt)
+        removePunctuation <- tm::removePunctuation
     else if (is.list(removePunctuation))
-        txt <- do.call("removePunctuation", c(list(txt), removePunctuation))
+        removePunctuation <- function(x) do.call("removePunctuation", c(list(x), removePunctuation))
+
+    ## Number removal
+    removeNumbers <- control$removeNumbers
+    if (isTRUE(removeNumbers))
+        removeNumbers <- tm::removeNumbers
 
     ## Tokenize the corpus
     tokenize <- control$tokenize
-    if(is.null(tokenize) || identical(tokenize, "scan"))
+    if (is.null(tokenize) || identical(tokenize, "scan"))
         tokenize <- scan_tokenizer
-    else if(identical(tokenize, "MC"))
+    else if (identical(tokenize, "MC"))
         tokenize <- MC_tokenizer
-    txt <- tokenize(txt)
-
-    ## Number removal
-    if (isTRUE(control$removeNumbers))
-        txt <- gsub("[[:digit:]]+", "", txt)
 
     ## Stopword filtering
     stopwords <- control$stopwords
+    # Remove stopwords
+    rs <- function(x, words) x[is.na(match(x, words))]
     if (isTRUE(stopwords))
-        txt <- txt[is.na(match(txt, stopwords(Language(doc))))]
+        stopwords <- function(x) rs(x, tm::stopwords(Language(doc)))
     else if (is.character(stopwords))
-        txt <- txt[is.na(match(txt, stopwords))]
+        stopwords <- function(x) rs(x, stopwords)
 
     ## Stemming
     stemming <- control$stemming
     if (isTRUE(stemming))
-        txt <- stemDocument(txt, language = tm:::map_IETF_Snowball(Language(doc)))
-    else if (is.function(stemming))
-        txt <- stemming(txt)
+        stemming <- function(x) stemDocument(x, language = tm:::map_IETF_Snowball(Language(doc)))
+
+    ## Default order for options which support reordering
+    or <- c("tolower", "removePunctuation", "removeNumbers",
+            "tokenize", "stopwords", "stemming")
+
+    ## Process control options in specified order
+    nc <- names(control)
+    n <- nc[nc %in% or]
+    for (name in c(n, setdiff(or, n))) {
+        writeLines(name)
+        g <- get(name)
+        if (is.function(g))
+            txt <- g(txt)
+    }
 
     ## Check if the document content is NULL
     if (is.null(txt))

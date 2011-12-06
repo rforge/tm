@@ -10,14 +10,27 @@ termFreq(doc, control = list())
 \arguments{
   \item{doc}{An object inheriting from \code{TextDocument}.}
   \item{control}{A list of control options which override default
-    settings. Possible options are
+    settings.
+
+    The following options are sensitive to the order of occurrence in
+    the \code{control} list. Options are processed in the same order as
+    specified. User-specified options have precedence over the default
+    ordering so that first all user-specified options and then all
+    remaining options (with the default settings and in the order as
+    listed below) are processed.
     \describe{
-      \item{\code{tolower}}{A function converting characters to lower
-	case. Defaults to \code{\link{tolower}}.}
+      \item{\code{tolower}}{Either a logical value indicating whether
+	characters should be translated to lower case or a custom function
+	converting characters to lower case. Defaults to
+	\code{\link{tolower}}.}
       \item{\code{removePunctuation}}{A logical value indicating whether
 	punctuation characters should be removed from
-	\code{doc}, or a function which performs punctuation
-	removal. Defaults to \code{FALSE}.}
+	\code{doc}, a custom function which performs punctuation
+	removal, or a list of parameters for
+	\code{\link{removePunctuation}}. Defaults to \code{FALSE}.}
+      \item{\code{removeNumbers}}{A logical value indicating whether
+	numbers should be removed from \code{doc} or a custom function
+	for number removal. Defaults to \code{FALSE}.}
       \item{\code{tokenize}}{A function tokenizing documents into single
 	tokens or a string matching one of the predefined tokenization
 	functions:
@@ -26,14 +39,17 @@ termFreq(doc, control = list())
 	  \item{\code{MC}}{for \code{\link{MC_tokenizer}}.}
 	}
 	Defaults to \code{\link{scan_tokenizer}}.}
-      \item{\code{removeNumbers}}{A logical value indicating whether
-	numbers should be removed from \code{doc}. Defaults to \code{FALSE}.}
-      \item{\code{stemming}}{Either a Boolean value indicating whether tokens
-	should be stemmed or a stemming function. Defaults to \code{FALSE}.}
       \item{\code{stopwords}}{Either a Boolean value indicating stopword
 	removal using default language specific stopword lists shipped
-	with this package or a character vector holding custom
-	stopwords. Defaults to \code{FALSE}.}
+	with this package, a character vector holding custom
+	stopwords, or a custom function for stopword removal. Defaults
+	to \code{FALSE}.}
+      \item{\code{stemming}}{Either a Boolean value indicating whether tokens
+	should be stemmed or a custom stemming function. Defaults to
+	\code{FALSE}.}
+    }
+    The remaining options are processed afterwards in the given order.
+    \describe{
       \item{\code{dictionary}}{A character vector to be tabulated
 	against. No other terms will be listed in the result. Defaults
 	to \code{NULL} which means that all terms in \code{doc} are
