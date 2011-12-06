@@ -197,7 +197,6 @@ function(doc, control = list())
     nc <- names(control)
     n <- nc[nc %in% or]
     for (name in c(n, setdiff(or, n))) {
-        writeLines(name)
         g <- get(name)
         if (is.function(g))
             txt <- g(txt)
