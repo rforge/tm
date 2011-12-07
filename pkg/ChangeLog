@@ -1,3 +1,8 @@
+2011-12-07  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/transform.R (removePunctuation): Add option to preserve
+	intra-word dashes.
+
 2011-12-06  Ingo Feinerer  <feinerer@logic.at>
 
 	* R/matrix.R (termFreq): Allow reordering of control option
