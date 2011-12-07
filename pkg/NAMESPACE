@@ -102,6 +102,9 @@ export("as.PlainTextDocument",
        "Zipf_plot")
 
 S3method("Dictionary", "character")
+S3method("removeNumbers", "character")
+S3method("removePunctuation", "character")
+S3method("removeWords", "character")
 S3method("stemCompletion", "character")
 S3method("stemDocument", "character")
 

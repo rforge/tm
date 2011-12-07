@@ -26,7 +26,7 @@ termFreq(doc, control = list())
       \item{\code{removePunctuation}}{A logical value indicating whether
 	punctuation characters should be removed from
 	\code{doc}, a custom function which performs punctuation
-	removal, or a list of parameters for
+	removal, or a list of arguments for
 	\code{\link{removePunctuation}}. Defaults to \code{FALSE}.}
       \item{\code{removeNumbers}}{A logical value indicating whether
 	numbers should be removed from \code{doc} or a custom function
@@ -77,10 +77,11 @@ termFreq(doc, control = list())
 }
 \examples{
 data("crude")
-termFreq(crude[[1]])
+termFreq(crude[[14]])
 strsplit_space_tokenizer <- function(x) unlist(strsplit(x, "[[:space:]]+"))
-ctrl <- list(removePunctuation = TRUE, tokenize = strsplit_space_tokenizer,
+ctrl <- list(removePunctuation = list(preserve_intra_word_dashes = TRUE),
+             tokenize = strsplit_space_tokenizer,
              stemming = TRUE, minWordLength = 4)
-termFreq(crude[[1]], control = ctrl)
+termFreq(crude[[14]], control = ctrl)
 }
 \keyword{math}

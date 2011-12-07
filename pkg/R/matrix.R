@@ -161,7 +161,7 @@ function(doc, control = list())
     if (isTRUE(removePunctuation))
         removePunctuation <- tm::removePunctuation
     else if (is.list(removePunctuation))
-        removePunctuation <- function(x) do.call("removePunctuation", c(list(x), removePunctuation))
+        removePunctuation <- function(x) do.call(tm::removePunctuation, c(list(x), control$removePunctuation))
 
     ## Number removal
     removeNumbers <- control$removeNumbers
