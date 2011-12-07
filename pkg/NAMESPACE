@@ -107,6 +107,7 @@ S3method("removePunctuation", "character")
 S3method("removeWords", "character")
 S3method("stemCompletion", "character")
 S3method("stemDocument", "character")
+S3method("stripWhitespace", "character")
 
 S3method("c", "Corpus")
 S3method("CMetaData", "Corpus")

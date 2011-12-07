@@ -132,4 +132,4 @@ stemDocument.PlainTextDocument <- function(x, language = map_IETF_Snowball(Langu
 }
 
 stripWhitespace <- function(x) UseMethod("stripWhitespace", x)
-stripWhitespace.PlainTextDocument <- function(x) gsub("[[:space:]]+", " ", x)
+stripWhitespace.PlainTextDocument <- stripWhitespace.character <- function(x) gsub("[[:space:]]+", " ", x)
