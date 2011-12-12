@@ -1,3 +1,7 @@
+2011-12-12  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/utils.R (map_IETF_Snowball): Map empty input to "porter".
+
 2011-12-07  Ingo Feinerer  <feinerer@logic.at>
 
 	* R/transform.R (removePunctuation): Add option to preserve
