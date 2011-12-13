@@ -61,7 +61,7 @@ termFreq(doc, control = list())
 	discarded. Defaults to \code{list(local = c(1,Inf))} (i.e., every
 	token will be used).}
       \item{\code{wordLengths}}{An integer vector of length 2. Words
-	smaller than the minimum word length \code{wordLengths[1]} or
+	shorter than the minimum word length \code{wordLengths[1]} or
 	longer than the maximum word length \code{wordLengths[2]} are
 	discarded. Defaults to \code{c(3, Inf)}, i.e., a minimum word
 	length of 3 characters.}
@@ -81,7 +81,7 @@ termFreq(crude[[14]])
 strsplit_space_tokenizer <- function(x) unlist(strsplit(x, "[[:space:]]+"))
 ctrl <- list(removePunctuation = list(preserve_intra_word_dashes = TRUE),
              tokenize = strsplit_space_tokenizer,
-             stemming = TRUE, minWordLength = 4)
+             stemming = TRUE, wordLengths = c(4, Inf))
 termFreq(crude[[14]], control = ctrl)
 }
 \keyword{math}
