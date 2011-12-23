@@ -1,3 +1,8 @@
+2011-12-23  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/matrix.R (termFreq): Fix invalid handling of
+	control$wordLengths[1]. Reported by Steven C. Bagley.
+
 2011-12-17  Ingo Feinerer  <feinerer@logic.at>
 
 	* DESCRIPTION (Version): Prepare for CRAN Christmas release.

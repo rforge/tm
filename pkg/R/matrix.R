@@ -220,7 +220,10 @@ function(doc, control = list())
 
     ## Filter out too short or too long terms
     nc <- nchar(names(tab), type = "chars")
-    tab <- tab[(nc >= max(3, control$wordLengths[1])) & (nc <= min(Inf, control$wordLengths[2]))]
+    wl <- control$wordLengths
+    lb <- if (is.numeric(wl[1])) wl[1] else 3
+    ub <- if (is.numeric(wl[2])) wl[2] else Inf
+    tab <- tab[(nc >= lb) & (nc <= ub)]
 
     ## Return named integer
     structure(as.integer(tab), names = names(tab), class = c("term_frequency", "integer"))
