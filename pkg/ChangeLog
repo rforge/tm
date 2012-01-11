@@ -1,3 +1,8 @@
+2012-01-11  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/matrix.R (termFreq): Fix processing of user provided
+	stopwords. Reported by Bettina Grün.
+
 2011-12-23  Ingo Feinerer  <feinerer@logic.at>
 
 	* R/matrix.R (termFreq): Fix invalid handling of

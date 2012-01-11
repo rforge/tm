@@ -181,8 +181,10 @@ function(doc, control = list())
     rs <- function(x, words) x[is.na(match(x, words))]
     if (isTRUE(stopwords))
         stopwords <- function(x) rs(x, tm::stopwords(Language(doc)))
-    else if (is.character(stopwords))
-        stopwords <- function(x) rs(x, stopwords)
+    else if (is.character(stopwords)) {
+        words <- stopwords
+        stopwords <- function(x) rs(x, words)
+    }
 
     ## Stemming
     stemming <- control$stemming

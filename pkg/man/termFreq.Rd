@@ -81,6 +81,7 @@ termFreq(crude[[14]])
 strsplit_space_tokenizer <- function(x) unlist(strsplit(x, "[[:space:]]+"))
 ctrl <- list(removePunctuation = list(preserve_intra_word_dashes = TRUE),
              tokenize = strsplit_space_tokenizer,
+             stopwords = c("Reuter", "that"),
              stemming = TRUE, wordLengths = c(4, Inf))
 termFreq(crude[[14]], control = ctrl)
 }
