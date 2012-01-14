@@ -1,3 +1,8 @@
+2012-01-14  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/source.R (XMLSource, getElem.XMLSource): Simplifications as
+	proposed by Milan Bouchet-Valat.
+
 2012-01-11  Ingo Feinerer  <feinerer@logic.at>
 
 	* R/matrix.R (termFreq): Fix processing of user provided
