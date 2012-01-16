@@ -1,5 +1,22 @@
 \name{NEWS}
 \title{News for Package 'tm'}
+\section{Changes in tm version 0.5-8}{
+  \subsection{SIGNIFICANT USER-VISIBLE CHANGES}{
+    \itemize{
+      \item The function \code{termFreq()} now processes the
+      \code{tolower} and \code{tokenize} options first. 
+    }
+  }
+  \subsection{BUG FIXES}{
+    \itemize{
+      \item The function \code{termFreq()} now correctly accepts
+      user-provided stopwords. Reported by Bettina Grün.
+      \item The function \code{termFreq()} now correctly handles the
+      lower bound of the option \code{wordLength}. Reported by Steven
+      C. Bagley.
+    }
+  }
+}
 \section{Changes in tm version 0.5-7}{
   \subsection{SIGNIFICANT USER-VISIBLE CHANGES}{
     \itemize{

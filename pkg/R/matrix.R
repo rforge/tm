@@ -155,6 +155,17 @@ function(doc, control = list())
     tolower <- control$tolower
     if (is.null(tolower) || isTRUE(tolower))
         tolower <- base::tolower
+    if (is.function(tolower))
+        txt <- tolower(txt)
+
+    ## Tokenize the corpus
+    tokenize <- control$tokenize
+    if (is.null(tokenize) || identical(tokenize, "scan"))
+        tokenize <- scan_tokenizer
+    else if (identical(tokenize, "MC"))
+        tokenize <- MC_tokenizer
+    if (is.function(tokenize))
+        txt <- tokenize(txt)
 
     ## Punctuation removal
     removePunctuation <- control$removePunctuation
@@ -167,13 +178,6 @@ function(doc, control = list())
     removeNumbers <- control$removeNumbers
     if (isTRUE(removeNumbers))
         removeNumbers <- tm::removeNumbers
-
-    ## Tokenize the corpus
-    tokenize <- control$tokenize
-    if (is.null(tokenize) || identical(tokenize, "scan"))
-        tokenize <- scan_tokenizer
-    else if (identical(tokenize, "MC"))
-        tokenize <- MC_tokenizer
 
     ## Stopword filtering
     stopwords <- control$stopwords
@@ -192,8 +196,7 @@ function(doc, control = list())
         stemming <- function(x) stemDocument(x, language = tm:::map_IETF_Snowball(Language(doc)))
 
     ## Default order for options which support reordering
-    or <- c("tolower", "removePunctuation", "removeNumbers",
-            "tokenize", "stopwords", "stemming")
+    or <- c("removePunctuation", "removeNumbers", "stopwords", "stemming")
 
     ## Process control options in specified order
     nc <- names(control)
