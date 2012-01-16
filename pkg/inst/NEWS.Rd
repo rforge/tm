@@ -127,7 +127,7 @@
       \item Following functions have been removed:
       \itemize{
         \item \code{tmTolower()} (use \code{tolower()} instead), and
-        \item \code{replacePatterns()} (use \code{gsub()}    instead).
+        \item \code{replacePatterns()} (use \code{gsub()} instead).
       }
     }
   }
