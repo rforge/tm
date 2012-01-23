@@ -7,6 +7,11 @@
       \code{tolower} and \code{tokenize} options first. 
     }
   }
+  \subsection{NEW FEATURES}{
+    \itemize{
+      \item Catalan stopwords. Requested by Xavier Fernández i Marín.
+    }
+  }
   \subsection{BUG FIXES}{
     \itemize{
       \item The function \code{termFreq()} now correctly accepts
