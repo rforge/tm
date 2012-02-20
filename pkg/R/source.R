@@ -61,8 +61,9 @@ ReutersSource <- function(x, encoding = "UTF-8")
 
 # XML
 XMLSource <- function(x, parser, reader, encoding = "UTF-8") {
-    tree <- XML::xmlTreeParse(x, encoding = encoding)
+    tree <- XML::xmlParse(x, encoding = encoding)
     content <- parser(tree)
+    XML::free(tree)
 
     s <- .Source(reader, encoding, length(content), FALSE, NULL, 0, FALSE, class = "XMLSource")
     s$Content <- content

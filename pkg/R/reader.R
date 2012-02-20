@@ -22,7 +22,7 @@ readXML <- FunctionGenerator(function(spec, doc, ...) {
     spec <- spec
     doc <- doc
     function(elem, language, id) {
-        tree <- XML::xmlInternalTreeParse(elem$content, asText = TRUE)
+        tree <- XML::xmlParse(elem$content, asText = TRUE)
         Content(doc) <- if ("Content" %in% names(spec))
             .xml_content(tree, spec[["Content"]])
         else
