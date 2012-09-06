@@ -19,14 +19,14 @@ getSources <- function()
 # A vector where each component is interpreted as document
 VectorSource <- function(x, encoding = "unknown") {
     s <- .Source(readPlain, encoding, length(x), FALSE, names(x), 0, TRUE, class = "VectorSource")
-    s$Content <- x
+    s$Content <- if (is.factor(x)) as.character(x) else x 
     s
 }
 
 # A data frame where each row is interpreted as document
 DataframeSource <- function(x, encoding = "unknown") {
     s <- .Source(readPlain, encoding, nrow(x), FALSE, row.names(x), 0, TRUE, class = "DataframeSource")
-    s$Content <- x
+    s$Content <- if (is.factor(x)) as.character(x) else x
     s
 }
 
