@@ -1,4 +1,5 @@
 2012-10-03 Ingo Feinerer  <feinerer@logic.at>
+
 	* R/weight.R (weightTfIdf, weightSMART): Gracefully handle empty
 	columns and rows (avoids blow-up due to NaN values). Suggested by Jaap
 	Frölich.
