@@ -1,3 +1,8 @@
+2012-11-02  Ingo Feinerer <feinerer@logic.at>
+
+	* R/doc.R (.TextDocument): Use casts to ensure data types and to avoid
+	removal of attributes.
+
 2012-10-03 Ingo Feinerer  <feinerer@logic.at>
 
 	* R/weight.R (weightTfIdf, weightSMART): Gracefully handle empty
