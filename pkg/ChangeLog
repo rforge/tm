@@ -1,3 +1,8 @@
+2012-12-14  Ingo Feinerer <feinerer@logic.at>
+
+	* R/matrix.R (TermDocumentMatrix): Ensure dimnames of type character
+	when generating a simple_triplet_matrix. Reported by Arho Suominen. 
+
 2012-12-10  Ingo Feinerer <feinerer@logic.at>
 
 	* man/tm_reduce.Rd: Document right to left folding order. Adapt
