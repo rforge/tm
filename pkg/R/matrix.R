@@ -101,7 +101,9 @@ as.TermDocumentMatrix.DocumentTermMatrix <-
 function(x, ...)
     t(x)
 as.TermDocumentMatrix.term_frequency <-
-function(x, ...) {
+as.TermDocumentMatrix.textcnt <-    
+function(x, ...)
+{
     m <- simple_triplet_matrix(i = seq_along(x),
                                j = rep(1, length(x)),
                                v = as.numeric(x),
@@ -109,7 +111,7 @@ function(x, ...) {
                                ncol = 1,
                                dimnames =
                                list(Terms = names(x),
-                                    Docs = NA))
+                                    Docs = NA_character_))
 
     .TermDocumentMatrix(m, weightTf)
 }

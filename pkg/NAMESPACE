@@ -232,6 +232,7 @@ S3method("as.TermDocumentMatrix", "TermDocumentMatrix")
 S3method("as.TermDocumentMatrix", "DocumentTermMatrix")
 S3method("as.TermDocumentMatrix", "default")
 S3method("as.TermDocumentMatrix", "term_frequency")
+S3method("as.TermDocumentMatrix", "textcnt")
 
 export("read_dtm_Blei_et_al")
 
