@@ -313,28 +313,21 @@ function(x)
     if (inherits(x, "DocumentTermMatrix")) x$dimnames[[2L]] else x$dimnames[[1L]]
 
 c.term_frequency <-
-function(x, ..., recursive = FALSE)
+function(..., recursive = FALSE)
 {
-    args <- list(...)
-    x <- as.TermDocumentMatrix(x)
-
-    if(!length(args))
-        return(x)
-
-    do.call("c", base::c(list(x), lapply(args, as.TermDocumentMatrix)))
+    do.call("c", lapply(list(...), as.TermDocumentMatrix))
 }
 
 c.TermDocumentMatrix <-
-function(x, ..., recursive = FALSE)
+function(..., recursive = FALSE)
 {
-    args <- list(...)
+    m <- lapply(list(...), as.TermDocumentMatrix)
 
-    if(!length(args))
-        return(x)
+    if(length(m) == 1L)
+        return(m[[1L]])
 
-    args <- lapply(args, as.TermDocumentMatrix)
+    weighting <- attr(m[[1L]], "Weighting")
 
-    m <- base::c(list(x), args)
     allTermsNonUnique <- unlist(lapply(m, function(x) Terms(x)[x$i]))
     allTerms <- unique(allTermsNonUnique)
     allDocs <- unlist(lapply(m, Docs))
@@ -357,20 +350,13 @@ function(x, ..., recursive = FALSE)
     ##   to take additional steps (e.g., normalization for tf-idf or check for
     ##   (0,1)-range for binary tf)
     ## </NOTE>
-    .TermDocumentMatrix(m, attr(x, "Weighting"))
+    .TermDocumentMatrix(m, weighting)
 }
 
 c.DocumentTermMatrix <-
-function(x, ..., recursive = FALSE)
+function(..., recursive = FALSE)
 {
-    args <- list(...)
-
-    if(!length(args))
-        return(x)
-
-    t(do.call("c",
-              lapply(base::c(list(x), args),
-                     as.TermDocumentMatrix)))
+    t(do.call("c", lapply(list(...), as.TermDocumentMatrix)))
 }
 
 findFreqTerms <-
