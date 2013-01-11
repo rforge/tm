@@ -139,6 +139,7 @@ S3method("inspect", "DocumentTermMatrix")
 S3method("plot", "DocumentTermMatrix")
 S3method("print", "DocumentTermMatrix")
 S3method("t", "DocumentTermMatrix")
+S3method("tm_tag_score", "DocumentTermMatrix")
 
 S3method("findAssocs", "matrix")
 
