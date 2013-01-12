@@ -128,6 +128,10 @@ function(x, ...)
 as.DocumentTermMatrix.TermDocumentMatrix <-
 function(x, ...)
     t(x)
+as.DocumentTermMatrix.term_frequency <-
+as.DocumentTermMatrix.textcnt <-    
+function(x, ...)
+    t(as.TermDocumentMatrix(x))
 as.DocumentTermMatrix.default <-
 function(x, weighting, ...)
 {

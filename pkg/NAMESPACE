@@ -228,6 +228,8 @@ export("as.DocumentTermMatrix",
 S3method("as.DocumentTermMatrix", "DocumentTermMatrix")
 S3method("as.DocumentTermMatrix", "TermDocumentMatrix")
 S3method("as.DocumentTermMatrix", "default")
+S3method("as.DocumentTermMatrix", "term_frequency")
+S3method("as.DocumentTermMatrix", "textcnt")
 S3method("as.TermDocumentMatrix", "TermDocumentMatrix")
 S3method("as.TermDocumentMatrix", "DocumentTermMatrix")
 S3method("as.TermDocumentMatrix", "default")
