@@ -20,8 +20,5 @@ function(x)
 scan_tokenizer <-
 function(x)
 {
-    con <- textConnection(x)
-    tokens <- scan(con, what = "character", quote = "", quiet = TRUE)
-    close(con)
-    tokens
+    scan(text = x, what = "character", quote = "", quiet = TRUE)
 }
