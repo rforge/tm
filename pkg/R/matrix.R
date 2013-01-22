@@ -306,18 +306,50 @@ function(x, value)
 
 nDocs <-
 function(x)
-    if (inherits(x, "DocumentTermMatrix")) x$nrow else x$ncol
+    UseMethod("nDocs")
+
 nTerms <-
 function(x)
-    if (inherits(x, "DocumentTermMatrix")) x$ncol else x$nrow
+    UseMethod("nTerms")
+
+nDocs.DocumentTermMatrix <-
+nTerms.TermDocumentMatrix <-    
+function(x)
+    x$nrow
+
+nDocs.TermDocumentMatrix <-
+nTerms.DocumentTermMatrix <-    
+function(x)
+    x$ncol
 
 Docs <-
 function(x)
-    if (inherits(x, "DocumentTermMatrix")) x$dimnames[[1L]] else x$dimnames[[2L]]
+    UseMethod("Docs")
+
 Terms <-
 function(x)
-    if (inherits(x, "DocumentTermMatrix")) x$dimnames[[2L]] else x$dimnames[[1L]]
+    UseMethod("Terms")
 
+Docs.DocumentTermMatrix <-
+Terms.TermDocumentMatrix <-
+function(x)
+{
+    s <- x$dimnames[[1L]]
+    if(is.null(s))
+        s <- rep.int(NA_character_, x$nrow)
+    s
+}
+
+Docs.TermDocumentMatrix <-
+Terms.DocumentTermMatrix <-
+function(x)    
+{
+    s <- x$dimnames[[2L]]
+    if(is.null(s))
+        s <- rep.int(NA_character_, x$ncol)
+    s
+}
+    
 c.term_frequency <-
 function(..., recursive = FALSE)
 {

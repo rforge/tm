@@ -238,4 +238,13 @@ S3method("as.TermDocumentMatrix", "textcnt")
 
 export("read_dtm_Blei_et_al")
 
+S3method("Docs", "DocumentTermMatrix")
+S3method("Docs", "TermDocumentMatrix")
+S3method("Terms", "DocumentTermMatrix")
+S3method("Terms", "TermDocumentMatrix")
+S3method("nDocs", "DocumentTermMatrix")
+S3method("nDocs", "TermDocumentMatrix")
+S3method("nTerms", "DocumentTermMatrix")
+S3method("nTerms", "TermDocumentMatrix")
+
 useDynLib("tm")
