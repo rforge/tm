@@ -199,7 +199,7 @@ function(doc, control = list())
     ## Stemming
     stemming <- control$stemming
     if (isTRUE(stemming))
-        stemming <- function(x) stemDocument(x, language = tm:::map_IETF_Snowball(Language(doc)))
+        stemming <- function(x) stemDocument(x, language = Language(doc))
 
     ## Default order for options which support reordering
     or <- c("removePunctuation", "removeNumbers", "stopwords", "stemming")

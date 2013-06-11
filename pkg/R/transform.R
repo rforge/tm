@@ -124,8 +124,8 @@ removeWords.PlainTextDocument <- removeWords.character <- function(x, words)
 
 stemDocument <- function(x, language = "english") UseMethod("stemDocument", x)
 stemDocument.character <- function(x, language = "english")
-    Snowball::SnowballStemmer(x, RWeka::Weka_control(S = language))
-stemDocument.PlainTextDocument <- function(x, language = map_IETF_Snowball(Language(x))) {
+    SnowballC::wordStem(x, language)
+stemDocument.PlainTextDocument <- function(x, language = Language(x)) {
     s <- unlist(lapply(x, function(x) paste(stemDocument.character(unlist(strsplit(x, "[[:blank:]]")), language), collapse = " ")))
     Content(x) <- if (is.character(s)) s else ""
     x
