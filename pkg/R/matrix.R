@@ -66,13 +66,18 @@ function(x, control = list())
     allTerms <- sort(unique(if (is.null(control$dictionary)) i else control$dictionary))
     i <- match(i, allTerms)
     j <- rep(seq_along(x), sapply(tflist, length))
+    docs <- as.character(unlist(lapply(x, ID)))
+    if (length(docs) != length(x)) {
+        warning("invalid document identifiers")
+        docs <- NULL
+    }
 
     m <- simple_triplet_matrix(i = i, j = j, v = as.numeric(v),
                                nrow = length(allTerms),
                                ncol = length(x),
                                dimnames =
                                  list(Terms = allTerms,
-                                      Docs = as.character(unlist(lapply(x, ID)))))
+                                      Docs = docs))
 
     bg <- control$bounds$global
     if (length(bg) == 2L && is.numeric(bg)) {
