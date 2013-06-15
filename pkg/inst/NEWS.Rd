@@ -1,5 +1,13 @@
 \name{NEWS}
 \title{News for Package 'tm'}
+\section{Changes in tm version 0.5-9}{
+  \subsection{SIGNIFICANT USER-VISIBLE CHANGES}{
+    \itemize{
+      \item All stopword lists (besides Catalan and SMART) available via
+      \code{stopwords()} now come from the Snowball stemmer project.
+    }
+  }
+}
 \section{Changes in tm version 0.5-8}{
   \subsection{SIGNIFICANT USER-VISIBLE CHANGES}{
     \itemize{
