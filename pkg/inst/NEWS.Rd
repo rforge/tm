@@ -3,6 +3,8 @@
 \section{Changes in tm version 0.5-9}{
   \subsection{SIGNIFICANT USER-VISIBLE CHANGES}{
     \itemize{
+      \item Stemming functionality is now provided by the package
+      \pkg{SnowballC} replacing packages \pkg{Snowball} and \pkg{RWeka}.
       \item All stopword lists (besides Catalan and SMART) available via
       \code{stopwords()} now come from the Snowball stemmer project.
     }
