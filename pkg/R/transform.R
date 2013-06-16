@@ -26,17 +26,10 @@ tm_map.VCorpus <- function(x, FUN, ..., useMeta = FALSE, lazy = FALSE) {
         }
     }
     else {
-        Content(result) <- if (clusterAvailable()) {
-            if (useMeta)
-                snow::parLapply(snow::getMPIcluster(), x, FUN, ..., DMetaData = DMetaData(x))
+        Content(result) <- if (useMeta)
+                parallel::mclapply(x, FUN, ..., DMetaData = DMetaData(x))
             else
-                snow::parLapply(snow::getMPIcluster(), x, FUN, ...)
-        } else {
-            if (useMeta)
-                lapply(x, FUN, ..., DMetaData = DMetaData(x))
-            else
-                lapply(x, FUN, ...)
-        }
+                parallel::mclapply(x, FUN, ...)
     }
     result
 }

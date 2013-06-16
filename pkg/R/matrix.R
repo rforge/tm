@@ -55,10 +55,7 @@ function(x, control = list())
 
     names(x) <- NULL
 
-    tflist <- if (clusterAvailable())
-        snow::parLapply(snow::getMPIcluster(), x, termFreq, control)
-    else
-        lapply(x, termFreq, control)
+    tflist <- parallel::mclapply(x, termFreq, control)
     tflist <- lapply(tflist, function(y) y[y > 0])
 
     v <- unlist(tflist)

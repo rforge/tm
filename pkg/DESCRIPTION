@@ -1,13 +1,13 @@
 Package: tm
 Title: Text Mining Package
 Version: 0.5-9
-Date: 2013-06-15
+Date: 2013-06-16
 Authors@R: c(person("Ingo", "Feinerer", role = c("aut", "cre"),
                     email = "feinerer@logic.at"),
              person("Kurt", "Hornik", role = "aut"))
 Depends: R (>= 2.14.0), methods
 Imports: slam (>= 0.1-22)
-Suggests: filehash, proxy, Rgraphviz, Rmpi, snow, SnowballC, XML
+Suggests: filehash, parallel, proxy, Rgraphviz, SnowballC, XML
 SystemRequirements: Antiword (http://www.winfield.demon.nl/) for reading MS Word files,
   pdftotext from Poppler (http://poppler.freedesktop.org/) for reading PDF
 Description: A framework for text mining applications within R.

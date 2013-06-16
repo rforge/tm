@@ -7,6 +7,17 @@
       \pkg{SnowballC} replacing packages \pkg{Snowball} and \pkg{RWeka}.
       \item All stopword lists (besides Catalan and SMART) available via
       \code{stopwords()} now come from the Snowball stemmer project.
+      \item Transformations, filters, and term-document matrix construction
+      now use \code{\link[parallel]{mclapply}} (package \pkg{parallel}).
+      Packages \pkg{snow} and \pkg{Rmpi} are no longer used.
+    }
+  }
+  \subsection{DEPRECATED & DEFUNCT}{
+    \itemize{
+      \item Following functions have been removed:
+      \itemize{
+	\item \code{tm_startCluster()} and \code{tm_stopCluster()}.
+      }
     }
   }
 }
