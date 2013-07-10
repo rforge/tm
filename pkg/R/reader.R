@@ -120,7 +120,9 @@ readRCV1asPlain <- readXML(spec = list(Author = list("unevaluated", ""),
 readDOC <- FunctionGenerator(function(AntiwordOptions = "", ...) {
     AntiwordOptions <- AntiwordOptions
     function(elem, language, id) {
-        content <- system(paste("antiword", AntiwordOptions, shQuote(elem$uri)), intern = TRUE)
+        content <- system2("antiword",
+                           c(AntiwordOptions, shQuote(elem$uri)),
+                           stdout = TRUE)
         PlainTextDocument(content, id = id, language = language)
     }
 })
