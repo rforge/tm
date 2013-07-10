@@ -125,13 +125,16 @@ readDOC <- FunctionGenerator(function(AntiwordOptions = "", ...) {
     }
 })
 
-# readPDF needs pdftotext installed to be able to extract the text
+# readPDF needs pdfinfo and pdftotext installed to extract meta data and text
 readPDF <- FunctionGenerator(function(PdftotextOptions = "", ...) {
     PdftotextOptions <- PdftotextOptions
     function(elem, language, id) {
-        meta <- tools:::pdf_info(elem$uri)
-        content <- system(paste("pdftotext", PdftotextOptions, shQuote(elem$uri), "-"), intern = TRUE)
-        PlainTextDocument(content, meta$Author, meta$CreationDate, meta$Subject, meta$Title, id, meta$Creator, language)
+        meta <- tm:::pdfinfo(elem$uri)
+        content <- system2("pdftotext",
+                           c(PdftotextOptions, shQuote(elem$uri), "-"),
+                           stdout = TRUE)
+        PlainTextDocument(content, meta$Author, meta$CreationDate, meta$Subject,
+                          meta$Title, id, meta$Creator, language)
      }
 })
 

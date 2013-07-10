@@ -18,9 +18,9 @@ readPDF(PdftotextOptions = "", \dots)
   signature, but can access passed over arguments (e.g., options to
   \command{pdftotext}) via lexical scoping.
 
-  Note that this PDF reader needs the tool \command{pdftotext} installed
-  and accessible on your system, available as command line utility in
-  the Poppler PDF rendering library (see
+  Note that this PDF reader needs both the tools \command{pdfinfo} and
+  \command{pdftotext} installed and accessible on your system, available as
+  command line utilities in the Poppler PDF rendering library (see
   \url{http://poppler.freedesktop.org/}).
 }
 \value{
@@ -37,7 +37,7 @@ readPDF(PdftotextOptions = "", \dots)
   \code{\link{getReaders}} to list available reader functions.
 }
 \examples{
-if(file.exists(Sys.which("pdftotext"))) {
+if(all(file.exists(Sys.which(c("pdfinfo", "pdftotext"))))) {
     uri <- system.file(file.path("doc", "tm.pdf"), package = "tm")
     pdf <- readPDF(PdftotextOptions = "-layout")(elem = list(uri = uri),
                                                  language = "en",
