@@ -162,7 +162,7 @@
         \item \code{tmMap()} to \code{tm_map()}.
        }
        \item Mail handling functionality is factored out to the
-            tm.plugin.mail package.
+            \pkg{tm.plugin.mail} package.
     }
   }
   \subsection{DEPRECATED & DEFUNCT}{
@@ -187,7 +187,7 @@
       \item PCorpus, an implementation of the abstract corpus interface (by
             subclassing), provides a corpus with permanent storage
             semantics. The actual data is stored in an external database
-            (file) object (as supported by the filehash package), with
+            (file) object (as supported by the \pkg{filehash} package), with
             automatic (un-)loading into memory. It is designed for systems
             with small memory.
       \item Language codes are now in ISO 639-2 (instead of ISO 639-1).
@@ -215,7 +215,7 @@
             failed in misconfigured environments). Use \code{activateCluster()}
             and \code{deactivateCluster()} instead.
       \item DocumentTermMatrix (the improved reimplementation of defunct
-            TermDocMatrix) does not use the Matrix package anymore.
+            TermDocMatrix) does not use the \pkg{Matrix} package anymore.
     }
   }
   \subsection{NEW FEATURES}{
@@ -285,7 +285,7 @@
             useful when generating tables with indications which weighting
             scheme was actually used for your experiments.
       \item The functions \code{tmFilter()}, \code{tmIndex()}, \code{tmMap()} and \code{TermDocMatrix()}
-            now can use a MPI cluster (via the snow and Rmpi packages) if
+            now can use a MPI cluster (via the \pkg{snow} and \pkg{Rmpi} packages) if
             available. Use \code{(de)activateCluster()} to manually override
             cluster usage settings. Special thanks to Stefan Theussl for
             his constructive comments.
