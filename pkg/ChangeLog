@@ -1,3 +1,9 @@
+2013-07-25  Ingo Feinerer <feinerer@logic.at>
+
+	* R/complete.R (stemCompletion): Report NA instead of error when no
+	completion can be found by the prevalent heuristic. Suggested by Hugh
+	Devlin.
+
 2013-07-10  Ingo Feinerer <feinerer@logic.at>
 
 	* R/reader.R (readPDF): Use tm:::pdfinfo() (which needs the pdfinfo
