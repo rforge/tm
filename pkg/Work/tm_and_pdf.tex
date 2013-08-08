@@ -83,7 +83,10 @@ extract information using Ghostscript (e.g.,
 This needs file \file{pdf\_info.ps} available in the \file{toolbin}
 directory of the Ghostscript sources.  This extracts information
 somewhat differently from \verb|pdfinfo|, but in a form which should be
-conveniently usable for a PDF reader in package \pkg{tm}.
+conveniently usable for a PDF reader in package \pkg{tm}.  However, PDF
+strings in UTF-16BE are not encoded correctly, and PDF dates are left in
+PDF date format: the latter could be handled via
+\verb|tools:::PDF_Date_to_POSIXt()| (as long as this is available).
 
 The PoDoFo library (\url{http://podofo.sourceforge.net}) is a ``free,
 portable C++ library'' which includes classes to parse PDF files and
@@ -116,7 +119,9 @@ Debian package depends on \verb|libcrypt-rc4-perl| and
 modules.  The output from CAM::PDF pdfinfo is very similar to that of
 poppler-utils pdfinfo (the dates still seem to come in PDF format,
 though).  I have not checked (yet) how CAM::PDF text extraction compares
-to Poppler text extraction.
+to Poppler text extraction.  However, it seems that CAM::PDF has
+problems handling PDF strings in UTF-16BE (e.g., run its pdfinfo on file
+\file{AlleleRetain\_User\_Guide.pdf} in package \pkg{AlleleRetain}).
 
 My conclusions would be as follows.
 \begin{enumerate}
@@ -135,7 +140,7 @@ My conclusions would be as follows.
   extracting the text to be used for the document content.  For the
   former, we need to be able to extract the Author, CreationDate,
   Subject, Title and Creator, ideally via \verb|$| subscripting with the
-  above name literals.
+  above name literals.  The dates would need to be POSIXt objects.
 
  \item We now have Rpoppler and Ghostscript (`gs') engines, so it makes
   perfect sense to start working on the engine mechanism.  For both
@@ -147,14 +152,6 @@ My conclusions would be as follows.
   and there are a few PDF files Ghostscript cannot read.  So it should
   be the fallback engine, to be used when no others were configured or
   found to be available.
-\end{enumerate}
-
-Issues/questions:
-\begin{enumerate}
- \item What procisely should CreationDate in the info object be, a
-  POSIXt object or a character string?
- \item In which form should the content be provided, if possible as a
-  character vector of texts in individual pages?
 \end{enumerate}
 
 \end{document}
