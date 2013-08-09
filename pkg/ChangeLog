@@ -1,3 +1,7 @@
+2013-08-09  Ingo Feinerer <feinerer@logic.at>
+
+	* DESCRIPTION (License): Changed to GPL-3.
+
 2013-07-25  Ingo Feinerer <feinerer@logic.at>
 
 	* R/complete.R (stemCompletion): Report NA instead of error when no

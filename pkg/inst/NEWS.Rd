@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for Package 'tm'}
+\section{Changes in tm version 0.5-10}{
+  \subsection{SIGNIFICANT USER-VISIBLE CHANGES}{
+    \itemize{
+      \item License changed to GPL-3 (from GPL-2 | GPL-3).
+    }
+  }
+}
 \section{Changes in tm version 0.5-9}{
   \subsection{SIGNIFICANT USER-VISIBLE CHANGES}{
     \itemize{
