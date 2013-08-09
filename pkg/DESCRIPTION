@@ -1,7 +1,7 @@
 Package: tm
 Title: Text Mining Package
-Version: 0.5-9.2
-Date: 2013-07-25
+Version: 0.5-9.3
+Date: 2013-08-09
 Authors@R: c(person("Ingo", "Feinerer", role = c("aut", "cre"),
                     email = "feinerer@logic.at"),
              person("Kurt", "Hornik", role = "aut"))
@@ -11,5 +11,5 @@ Suggests: filehash, proxy, Rgraphviz, SnowballC, XML
 SystemRequirements: Antiword (http://www.winfield.demon.nl/) for reading MS Word files,
   pdfinfo and pdftotext from Poppler (http://poppler.freedesktop.org/) for reading PDF
 Description: A framework for text mining applications within R.
-License: GPL (>= 2)
+License: GPL-3
 URL: http://tm.r-forge.r-project.org/
