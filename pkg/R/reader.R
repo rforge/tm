@@ -131,7 +131,7 @@ readDOC <- FunctionGenerator(function(AntiwordOptions = "", ...) {
 readPDF <- FunctionGenerator(function(PdftotextOptions = "", ...) {
     PdftotextOptions <- PdftotextOptions
     function(elem, language, id) {
-        meta <- tm:::pdf_info(elem$uri)
+        meta <- pdf_info(elem$uri)
         content <- system2("pdftotext",
                            c(PdftotextOptions, shQuote(elem$uri), "-"),
                            stdout = TRUE)
