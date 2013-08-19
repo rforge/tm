@@ -128,7 +128,7 @@ readDOC <- FunctionGenerator(function(AntiwordOptions = "", ...) {
 })
 
 readPDF <-
-FunctionGenerator(function(engine = c("xpdf", "Rpoppler", "ghostscript", "custom"),
+FunctionGenerator(function(engine = c("xpdf", "Rpoppler", "ghostscript", "Rcampdf", "custom"),
                            xpdf = list(pdftotext_options = ""),
                            custom = list(info = NULL, text = NULL), ...)
 {
@@ -140,6 +140,7 @@ FunctionGenerator(function(engine = c("xpdf", "Rpoppler", "ghostscript", "custom
                xpdf = pdf_info_via_xpdf,
                Rpoppler = Rpoppler::PDF_info,
                ghostscript = pdf_info_via_gs,
+               Rcampdf = Rcampdf::pdf_info,
                custom = custom$info)
 
     pdf_text <-
@@ -149,6 +150,7 @@ FunctionGenerator(function(engine = c("xpdf", "Rpoppler", "ghostscript", "custom
                                           stdout = TRUE),
                Rpoppler = Rpoppler::PDF_text,
                ghostscript = pdf_text_via_gs,
+               Rcampdf = Rcampdf::pdf_text,
                custom = custom$text)
 
     if (!is.function(pdf_info) || !is.function(pdf_text))
