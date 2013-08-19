@@ -1,4 +1,4 @@
-pdf_info <-
+pdf_info_via_xpdf <-
 function(file)
 {
     outfile <- tempfile("pdfinfo")

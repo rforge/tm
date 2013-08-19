@@ -127,14 +127,36 @@ readDOC <- FunctionGenerator(function(AntiwordOptions = "", ...) {
     }
 })
 
-# readPDF needs pdfinfo and pdftotext installed to extract meta data and text
-readPDF <- FunctionGenerator(function(PdftotextOptions = "", ...) {
-    PdftotextOptions <- PdftotextOptions
+readPDF <-
+FunctionGenerator(function(engine = c("xpdf", "Rpoppler", "ghostscript", "custom"),
+                           xpdf = list(pdftotext_options = ""),
+                           custom = list(info = NULL, text = NULL), ...)
+{
+    engine <- match.arg(engine)
+    pdftotext_options <- xpdf$pdftotext_options
+
+    pdf_info <-
+        switch(engine,
+               xpdf = pdf_info_via_xpdf,
+               Rpoppler = Rpoppler::PDF_info,
+               ghostscript = pdf_info_via_gs,
+               custom = custom$info)
+
+    pdf_text <-
+        switch(engine,
+               xpdf = function(x) system2("pdftotext",
+                                          c(pdftotext_options, shQuote(x), "-"),
+                                          stdout = TRUE),
+               Rpoppler = Rpoppler::PDF_text,
+               ghostscript = pdf_text_via_gs,
+               custom = custom$text)
+
+    if (!is.function(pdf_info) || !is.function(pdf_text))
+        stop("invalid function for PDF extraction")
+
     function(elem, language, id) {
         meta <- pdf_info(elem$uri)
-        content <- system2("pdftotext",
-                           c(PdftotextOptions, shQuote(elem$uri), "-"),
-                           stdout = TRUE)
+        content <- pdf_text(elem$uri)
         PlainTextDocument(content, meta$Author, meta$CreationDate, meta$Subject,
                           meta$Title, id, meta$Creator, language)
      }
