@@ -6,6 +6,14 @@
       \item License changed to GPL-3 (from GPL-2 | GPL-3).
     }
   }
+  \subsection{DEPRECATED & DEFUNCT}{
+    \itemize{
+      \item Following S3 classes are no longer registered as S4 classes:
+      \itemize{
+	\item \code{VCorpus} and \code{PlainTextDocument}.
+      }
+    }
+  }
 }
 \section{Changes in tm version 0.5-9}{
   \subsection{SIGNIFICANT USER-VISIBLE CHANGES}{

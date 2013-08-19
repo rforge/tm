@@ -1,3 +1,11 @@
+2013-08-19  Ingo Feinerer <feinerer@logic.at>
+
+	* R/corpus.R (setOldClass): Do not register VCorpus as S4 class
+	anymore.
+
+	* R/doc.R (setOldClass): Do not register PlainTextDocument as S4 class
+	anymore.
+
 2013-08-09  Ingo Feinerer <feinerer@logic.at>
 
 	* DESCRIPTION (License): Changed to GPL-3.
