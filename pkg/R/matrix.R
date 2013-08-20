@@ -145,7 +145,7 @@ t.TermDocumentMatrix <-
 t.DocumentTermMatrix <-
 function(x)
 {
-    m <- slam:::t.simple_triplet_matrix(x)
+    m <- NextMethod("t")
     attr(m, "Weighting") <- attr(x, "Weighting")
     class(m) <- if(inherits(x, "DocumentTermMatrix"))
         TermDocumentMatrix_classes
@@ -275,7 +275,7 @@ function(x)
 `[.DocumentTermMatrix` <-
 function(x, i, j, ..., drop)
 {
-    m <- slam:::`[.simple_triplet_matrix`(x, i, j, ...)
+    m <- NextMethod("[")
     attr(m, "Weighting") <- attr(x, "Weighting")
     class(m) <- if (inherits(x, "DocumentTermMatrix"))
         DocumentTermMatrix_classes
