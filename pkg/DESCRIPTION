@@ -9,7 +9,7 @@ Authors@R: c(person("Ingo", "Feinerer", role = c("aut", "cre"),
                     comment = "pdf_info.ps taken from GPL Ghostscript"))
 Depends: R (>= 2.14.0)
 Imports: parallel, slam (>= 0.1-22)
-Suggests: filehash, proxy, Rgraphviz, Rpoppler, SnowballC, XML
+Suggests: filehash, proxy, Rcampdf, Rgraphviz, Rpoppler, SnowballC, XML
 SystemRequirements: Antiword (http://www.winfield.demon.nl/) for reading MS Word files,
   pdfinfo and pdftotext from Poppler (http://poppler.freedesktop.org/) for reading PDF
 Description: A framework for text mining applications within R.
