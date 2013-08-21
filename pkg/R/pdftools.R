@@ -1,9 +1,9 @@
 pdf_info_via_xpdf <-
-function(file)
+function(file, options = NULL)
 {
     outfile <- tempfile("pdfinfo")
     on.exit(unlink(outfile))
-    status <- system2("pdfinfo", shQuote(normalizePath(file)),
+    status <- system2("pdfinfo", c(options, shQuote(normalizePath(file))),
                       stdout = outfile)
     ## Could check the status ...
     ## This does not work ...

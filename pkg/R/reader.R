@@ -129,29 +129,29 @@ readDOC <- FunctionGenerator(function(AntiwordOptions = "", ...) {
 
 readPDF <-
 FunctionGenerator(function(engine = c("xpdf", "Rpoppler", "ghostscript", "Rcampdf", "custom"),
-                           xpdf = list(pdftotext_options = ""),
-                           custom = list(info = NULL, text = NULL), ...)
+                           control = list(info = NULL, text = NULL),
+                           ...)
 {
     engine <- match.arg(engine)
-    pdftotext_options <- xpdf$pdftotext_options
+    control <- control
 
     pdf_info <-
         switch(engine,
-               xpdf = pdf_info_via_xpdf,
+               xpdf = function(x) pdf_info_via_xpdf(x, control$info),
                Rpoppler = Rpoppler::PDF_info,
                ghostscript = pdf_info_via_gs,
                Rcampdf = Rcampdf::pdf_info,
-               custom = custom$info)
+               custom = control$info)
 
     pdf_text <-
         switch(engine,
                xpdf = function(x) system2("pdftotext",
-                                          c(pdftotext_options, shQuote(x), "-"),
+                                          c(control$text, shQuote(x), "-"),
                                           stdout = TRUE),
                Rpoppler = Rpoppler::PDF_text,
                ghostscript = pdf_text_via_gs,
                Rcampdf = Rcampdf::pdf_text,
-               custom = custom$text)
+               custom = control$text)
 
     if (!is.function(pdf_info) || !is.function(pdf_text))
         stop("invalid function for PDF extraction")
