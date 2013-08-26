@@ -37,9 +37,10 @@ DirSource <- function(directory = ".", encoding = "unknown", pattern = NULL, rec
     if (length(d) == 0)
         stop("empty directory")
 
-    isfile <- logical(length(d))
-    for (i in seq_along(d))
-      isfile[i] <- !file.info(d[i])["isdir"]
+    isfile <- !file.info(d)[["isdir"]]
+    if (any(is.na(isfile)))
+        stop("non-existent or non-readable file(s): ",
+             paste(d[is.na(isfile)], collapse = " "))
 
     s <- .Source(readPlain, encoding, sum(isfile), TRUE, basename(d[isfile]), 0, TRUE, class = "DirSource")
     s$FileList <- d[isfile]

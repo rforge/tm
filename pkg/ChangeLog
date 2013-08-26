@@ -1,3 +1,8 @@
+2013-08-26  Ingo Feinerer <feinerer@logic.at>
+
+	* R/source.R (DirSource): Report non-existent or non-readable files.
+	Suggested by Ajinkya Kale and Milan Bouchet-Valat.
+
 2013-08-19  Ingo Feinerer <feinerer@logic.at>
 
 	* R/corpus.R (setOldClass): Do not register VCorpus as S4 class
