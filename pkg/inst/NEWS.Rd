@@ -8,6 +8,11 @@
   }
   \subsection{DEPRECATED & DEFUNCT}{
     \itemize{
+      \item Following functions have been removed:
+      \itemize{
+	\item \code{searchFullText()} and \code{tm_intersect()}
+        (use \code{grep()} instead).
+      }
       \item Following S3 classes are no longer registered as S4 classes:
       \itemize{
 	\item \code{VCorpus} and \code{PlainTextDocument}.

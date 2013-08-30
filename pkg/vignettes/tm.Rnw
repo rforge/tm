@@ -205,12 +205,6 @@ their heading (both are meta data attributes of the text document).
 query <- "id == '237' & heading == 'INDONESIA SEEN AT CROSSROADS OVER ECONOMIC CHANGE'"
 tm_filter(reuters, FUN = sFilter, query)
 @
-There is also a full text search filter available (which is default
-when no explicit filter function \code{FUN} is specified) accepting
-regular expressions:
-<<>>=
-tm_filter(reuters, pattern = "company")
-@
 
 \section*{Meta Data Management}
 Meta data is used to annotate text documents or whole corpora with

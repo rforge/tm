@@ -29,7 +29,6 @@ export("as.PlainTextDocument",
        "Heaps_plot",
        "findAssocs",
        "findFreqTerms",
-       "getFilters",
        "getReaders",
        "getSources",
        "getTokenizers",
@@ -72,7 +71,6 @@ export("as.PlainTextDocument",
        "RCV1Document",
        "Reuters21578Document",
        "scan_tokenizer",
-       "searchFullText",
        "stemCompletion",
        "stemDocument",
        "stopwords",
@@ -83,7 +81,6 @@ export("as.PlainTextDocument",
        "TextRepository",
        "tm_filter",
        "tm_index",
-       "tm_intersect",
        "tm_map",
        "tm_reduce",
        "tm_tag_score",
@@ -163,11 +160,9 @@ S3method("print", "PlainTextDocument")
 S3method("removeNumbers", "PlainTextDocument")
 S3method("removePunctuation", "PlainTextDocument")
 S3method("removeWords", "PlainTextDocument")
-S3method("searchFullText", "PlainTextDocument")
 S3method("stemCompletion", "PlainTextDocument")
 S3method("stemDocument", "PlainTextDocument")
 S3method("stripWhitespace", "PlainTextDocument")
-S3method("tm_intersect", "PlainTextDocument")
 S3method("tm_tag_score", "PlainTextDocument")
 #S3method("words", "PlainTextDocument")
 
