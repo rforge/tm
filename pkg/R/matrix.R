@@ -160,48 +160,46 @@ function(doc, control = list())
     txt <- Content(doc)
 
     ## Conversion to lower characters
-    tolower <- control$tolower
-    if (is.null(tolower) || isTRUE(tolower))
-        tolower <- base::tolower
-    if (is.function(tolower))
-        txt <- tolower(txt)
+    .tolower <- control$tolower
+    if (is.null(.tolower) || isTRUE(.tolower))
+        .tolower <- tolower
+    if (is.function(.tolower))
+        txt <- .tolower(txt)
 
     ## Tokenize the corpus
-    tokenize <- control$tokenize
-    if (is.null(tokenize) || identical(tokenize, "scan"))
-        tokenize <- scan_tokenizer
-    else if (identical(tokenize, "MC"))
-        tokenize <- MC_tokenizer
-    if (is.function(tokenize))
-        txt <- tokenize(txt)
+    .tokenize <- control$tokenize
+    if (is.null(.tokenize) || identical(.tokenize, "scan"))
+        .tokenize <- scan_tokenizer
+    else if (identical(.tokenize, "MC"))
+        .tokenize <- MC_tokenizer
+    if (is.function(.tokenize))
+        txt <- .tokenize(txt)
 
     ## Punctuation removal
-    removePunctuation <- control$removePunctuation
-    if (isTRUE(removePunctuation))
-        removePunctuation <- tm::removePunctuation
-    else if (is.list(removePunctuation))
-        removePunctuation <- function(x) do.call(tm::removePunctuation, c(list(x), control$removePunctuation))
+    .removePunctuation <- control$removePunctuation
+    if (isTRUE(.removePunctuation))
+        .removePunctuation <- removePunctuation
+    else if (is.list(.removePunctuation))
+        .removePunctuation <-
+            function(x) do.call(removePunctuation,
+                                c(list(x), control$removePunctuation))
 
     ## Number removal
-    removeNumbers <- control$removeNumbers
-    if (isTRUE(removeNumbers))
-        removeNumbers <- tm::removeNumbers
+    .removeNumbers <- control$removeNumbers
+    if (isTRUE(.removeNumbers))
+        .removeNumbers <- removeNumbers
 
     ## Stopword filtering
-    stopwords <- control$stopwords
-    # Remove stopwords
-    rs <- function(x, words) x[is.na(match(x, words))]
-    if (isTRUE(stopwords))
-        stopwords <- function(x) rs(x, tm::stopwords(Language(doc)))
-    else if (is.character(stopwords)) {
-        words <- stopwords
-        stopwords <- function(x) rs(x, words)
-    }
+    .stopwords <- control$stopwords
+    if (isTRUE(.stopwords))
+        .stopwords <- function(x) x[is.na(match(x, stopwords(Language(doc))))] 
+    else if (is.character(.stopwords))
+        .stopwords <- function(x) x[is.na(match(x, control$stopwords))]
 
     ## Stemming
-    stemming <- control$stemming
-    if (isTRUE(stemming))
-        stemming <- function(x) stemDocument(x, language = Language(doc))
+    .stemming <- control$stemming
+    if (isTRUE(.stemming))
+        .stemming <- function(x) stemDocument(x, Language(doc))
 
     ## Default order for options which support reordering
     or <- c("removePunctuation", "removeNumbers", "stopwords", "stemming")
@@ -209,7 +207,7 @@ function(doc, control = list())
     ## Process control options in specified order
     nc <- names(control)
     n <- nc[nc %in% or]
-    for (name in c(n, setdiff(or, n))) {
+    for (name in sprintf(".%s", c(n, setdiff(or, n)))) {
         g <- get(name)
         if (is.function(g))
             txt <- g(txt)
