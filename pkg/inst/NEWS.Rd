@@ -4,6 +4,10 @@
   \subsection{SIGNIFICANT USER-VISIBLE CHANGES}{
     \itemize{
       \item License changed to GPL-3 (from GPL-2 | GPL-3).
+      \item Following functions have been renamed:
+      \itemize{
+	\item \code{tm_tag_score()} to \code{tm_term_score()}.
+       }
     }
   }
   \subsection{DEPRECATED & DEFUNCT}{

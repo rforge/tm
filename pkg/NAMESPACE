@@ -83,7 +83,7 @@ export("as.PlainTextDocument",
        "tm_index",
        "tm_map",
        "tm_reduce",
-       "tm_tag_score",
+       "tm_term_score",
        "URISource",
        "VCorpus",
        "VectorSource",
@@ -135,11 +135,11 @@ S3method("inspect", "DocumentTermMatrix")
 S3method("plot", "DocumentTermMatrix")
 S3method("print", "DocumentTermMatrix")
 S3method("t", "DocumentTermMatrix")
-S3method("tm_tag_score", "DocumentTermMatrix")
+S3method("tm_term_score", "DocumentTermMatrix")
 
 S3method("findAssocs", "matrix")
 
-S3method("tm_tag_score", "term_frequency")
+S3method("tm_term_score", "term_frequency")
 
 S3method("print", "MetaDataNode")
 
@@ -163,7 +163,7 @@ S3method("removeWords", "PlainTextDocument")
 S3method("stemCompletion", "PlainTextDocument")
 S3method("stemDocument", "PlainTextDocument")
 S3method("stripWhitespace", "PlainTextDocument")
-S3method("tm_tag_score", "PlainTextDocument")
+S3method("tm_term_score", "PlainTextDocument")
 #S3method("words", "PlainTextDocument")
 
 S3method("as.PlainTextDocument", "RCV1Document")
@@ -182,7 +182,7 @@ S3method("inspect", "TermDocumentMatrix")
 S3method("plot", "TermDocumentMatrix")
 S3method("print", "TermDocumentMatrix")
 S3method("t", "TermDocumentMatrix")
-S3method("tm_tag_score", "TermDocumentMatrix")
+S3method("tm_term_score", "TermDocumentMatrix")
 
 S3method("c", "term_frequency")
 
