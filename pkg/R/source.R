@@ -2,10 +2,10 @@
 ## Sources
 
 getSources <- function()
-   c("DataframeSource", "DirSource", "GmaneSource", "ReutersSource", "URISource", "VectorSource")
+   c("DataframeSource", "DirSource", "ReutersSource", "URISource", "VectorSource")
 
 Source <-
-function(defaultreader = readPlain,
+function(defaultReader = readPlain,
          encoding = "unknown",
          length = NA_integer_,
          names = NA_character_,
@@ -19,7 +19,7 @@ function(defaultreader = readPlain,
     if (!is.null(names) && !is.na(names) && (length != length(names)))
         stop("incorrect number of element names")
 
-    structure(list(DefaultReader = defaultreader, Encoding = encoding,
+    structure(list(DefaultReader = defaultReader, Encoding = encoding,
                    Length = length, Names = names,
                    Position = position, Vectorized = vectorized),
               class = unique(c(class, "Source")))
@@ -67,9 +67,6 @@ URISource <- function(x, encoding = "unknown") {
     s
 }
 
-GmaneSource <- function(x, encoding = "unknown")
-    XMLSource(x, function(tree) XML::xmlChildren(XML::xmlRoot(tree))[names(XML::xmlChildren(XML::xmlRoot(tree))) == "item"], readGmane, encoding)
-
 ReutersSource <- function(x, encoding = "unknown")
     XMLSource(x, function(tree) XML::xmlChildren(XML::xmlRoot(tree)), readReut21578XML, encoding)
 
@@ -79,7 +76,7 @@ XMLSource <- function(x, parser, reader, encoding = "unknown") {
     content <- parser(tree)
     XML::free(tree)
 
-    s <- Source(defaultreader = reader, encoding = encoding,
+    s <- Source(defaultReader = reader, encoding = encoding,
                 length = length(content), class = "XMLSource")
     s$Content <- content
     s$URI <- x

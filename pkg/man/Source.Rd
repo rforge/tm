@@ -25,7 +25,7 @@
   directory, a connection, or simply an \R vector.
 }
 \usage{
-Source(defaultreader = readPlain, encoding = "unknown", length = NA_integer_,
+Source(defaultReader = readPlain, encoding = "unknown", length = NA_integer_,
        names = NA_character_, position = 0, vectorized = FALSE, class)
 \method{eoi}{DataframeSource}(x)
 \method{eoi}{DirSource}(x)

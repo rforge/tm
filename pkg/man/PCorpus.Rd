@@ -66,9 +66,7 @@ DBControl(x)
 }
 \examples{
 txt <- system.file("texts", "txt", package = "tm")
-\dontrun{
-PCorpus(DirSource(txt),
-        dbControl = list(dbName = "myDB.db", dbType = "DB1"))
-}
+\dontrun{PCorpus(DirSource(txt),
+        dbControl = list(dbName = "myDB.db", dbType = "DB1"))}
 }
 \author{Ingo Feinerer}

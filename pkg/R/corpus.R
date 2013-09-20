@@ -90,14 +90,18 @@ function(x,
     if (x$Vectorized)
         tdl <- mapply(function(x, id) readerControl$reader(x, readerControl$language, id),
                       pGetElem(x),
-                      id = if (is.null(x$Names)) as.character(seq_len(x$Length)) else x$Names,
+                      id = if (is.null(x$Names) || is.na(x$Names)) as.character(seq_len(x$Length)) else x$Names,
                       SIMPLIFY = FALSE)
     else {
         counter <- 1
         while (!eoi(x)) {
             x <- stepNext(x)
             elem <- getElem(x)
-            doc <- readerControl$reader(elem, readerControl$language, if (is.null(x$Names)) as.character(counter) else x$Names[counter])
+            id <- if (is.null(x$Names) || is.na(x$Names))
+                as.character(counter)
+            else
+                x$Names[counter]
+            doc <- readerControl$reader(elem, readerControl$language, id)
             if (x$Length > 0)
                 tdl[[counter]] <- doc
             else

@@ -29,14 +29,12 @@
 \examples{
 data("acq")
 tm_term_score(acq[[1]], c("company", "change"))
-\dontrun{
-## Test for positive and negative sentiments
+\dontrun{## Test for positive and negative sentiments
 ## install.packages("tm.lexicon.GeneralInquirer", repos = "http://datacube.wu.ac.at", type = "source")
 require("tm.lexicon.GeneralInquirer")
 sapply(acq[1:10], tm_term_score, terms_in_General_Inquirer_categories("Positiv"))
 sapply(acq[1:10], tm_term_score, terms_in_General_Inquirer_categories("Negativ"))
 tm_term_score(TermDocumentMatrix(acq[1:10],
                                 control = list(removePunctuation = TRUE)),
-             terms_in_General_Inquirer_categories("Positiv"))
-}
+             terms_in_General_Inquirer_categories("Positiv"))}
 }
