@@ -17,10 +17,9 @@ function(x)
 PCorpus <-
 function(x,
          readerControl = list(reader = x$DefaultReader, language = "en"),
-         dbControl = list(dbName = "", dbType = "DB1"),
-         ...)
+         dbControl = list(dbName = "", dbType = "DB1"))
 {
-    readerControl <- prepareReader(readerControl, x$DefaultReader, ...)
+    readerControl <- prepareReader(readerControl, x$DefaultReader)
 
     if (is.function(readerControl$init))
         readerControl$init()
@@ -42,7 +41,11 @@ function(x,
     while (!eoi(x)) {
         x <- stepNext(x)
         elem <- getElem(x)
-        doc <- readerControl$reader(elem, readerControl$language, if (is.null(x$Names)) as.character(counter) else x$Names[counter])
+        id <- if (is.null(x$Names) || is.na(x$Names))
+                as.character(counter)
+            else
+                x$Names[counter]
+        doc <- readerControl$reader(elem, readerControl$language, id)
         filehash::dbInsert(db, ID(doc), doc)
         if (x$Length > 0) tdl[[counter]] <- ID(doc)
         else tdl <- c(tdl, ID(doc))
@@ -66,14 +69,11 @@ function(x, cmeta, dmeta)
     x
 }
 
-# The "..." are additional arguments for the FunctionGenerator reader
 VCorpus <-
 Corpus <-
-function(x,
-         readerControl = list(reader = x$DefaultReader, language = "en"),
-         ...)
+function(x, readerControl = list(reader = x$DefaultReader, language = "en"))
 {
-    readerControl <- prepareReader(readerControl, x$DefaultReader, ...)
+    readerControl <- prepareReader(readerControl, x$DefaultReader)
 
     if (is.function(readerControl$init))
         readerControl$init()
