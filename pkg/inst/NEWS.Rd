@@ -16,6 +16,8 @@
       \itemize{
         \item \code{GmaneSource()} (but still available via an example in
           \code{XMLSource()},
+        \item \code{preprocessReut21578XML()} (moved to package
+          \pkg{tm.corpus.Reuters21578}),
         \item \code{readGmane()} (but still available via an example in
           \code{readXML()},
 	\item \code{searchFullText()} and \code{tm_intersect()}
