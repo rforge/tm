@@ -1,11 +1,7 @@
 \name{Source}
 \alias{Source}
 \alias{eoi}
-\alias{eoi.DataframeSource}
-\alias{eoi.DirSource}
-\alias{eoi.URISource}
-\alias{eoi.VectorSource}
-\alias{eoi.XMLSource}
+\alias{eoi.Source}
 \alias{getElem}
 \alias{getElem.DataframeSource}
 \alias{getElem.DirSource}
@@ -26,12 +22,8 @@
 }
 \usage{
 Source(defaultReader = readPlain, encoding = "unknown", length = NA_integer_,
-       names = NA_character_, position = 0, vectorized = FALSE, class)
-\method{eoi}{DataframeSource}(x)
-\method{eoi}{DirSource}(x)
-\method{eoi}{URISource}(x)
-\method{eoi}{VectorSource}(x)
-\method{eoi}{XMLSource}(x)
+       names = NA_character_, position = 0, vectorized = TRUE, class)
+\method{eoi}{Source}(x)
 \method{getElem}{DataframeSource}(x)
 \method{getElem}{DirSource}(x)
 \method{getElem}{URISource}(x)
@@ -64,7 +56,7 @@ Source(defaultReader = readPlain, encoding = "unknown", length = NA_integer_,
   Each source must provide implementations for the three interface functions
   \code{eoi}, \code{getElem}, and \code{stepNext}. If \code{vectorized} is set
   \code{pGetElem} must be implemented as well. The function \code{eoi} returns
-  \code{TRUE} if the end of input of the source is reached.  \code{getElem}
+  \code{TRUE} if the end of input of the source is reached. \code{getElem}
   fetches the element at the current position, whereas \code{pGetElem} retrieves
   all elements in parallel at once. Retrieved elements must be encapsulated in a
   list with the named components \code{content} holding the document and

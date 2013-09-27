@@ -10,7 +10,7 @@ function(defaultReader = readPlain,
          length = NA_integer_,
          names = NA_character_,
          position = 0,
-         vectorized = FALSE,
+         vectorized = TRUE,
          class)
 {
     if (vectorized && (is.na(length) || length <= 0))
@@ -28,7 +28,7 @@ function(defaultReader = readPlain,
 # A vector where each component is interpreted as document
 VectorSource <- function(x, encoding = "unknown") {
     s <- Source(encoding = encoding, length = length(x), names = names(x),
-                vectorized = TRUE, class = "VectorSource")
+                class = "VectorSource")
     s$Content <- if (is.factor(x)) as.character(x) else x 
     s
 }
@@ -36,7 +36,7 @@ VectorSource <- function(x, encoding = "unknown") {
 # A data frame where each row is interpreted as document
 DataframeSource <- function(x, encoding = "unknown") {
     s <- Source(encoding = encoding, length = nrow(x), names = row.names(x),
-                vectorized = TRUE, class = "DataframeSource")
+                class = "DataframeSource")
     s$Content <- if (is.factor(x)) as.character(x) else x
     s
 }
@@ -54,15 +54,14 @@ DirSource <- function(directory = ".", encoding = "unknown", pattern = NULL, rec
              paste(d[is.na(isfile)], collapse = " "))
 
     s <- Source(encoding = encoding, length = sum(isfile),
-                names = basename(d[isfile]), vectorized = TRUE,
-                class = "DirSource")
+                names = basename(d[isfile]), class = "DirSource")
     s$FileList <- d[isfile]
     s
 }
 
-# A single document identified by a Uniform Resource Identifier
+# Documents identified by a Uniform Resource Identifier
 URISource <- function(x, encoding = "unknown") {
-    s <- Source(encoding = encoding, length = 1, class = "URISource")
+    s <- Source(encoding = encoding, length = length(x), class = "URISource")
     s$URI <- x
     s
 }
@@ -77,7 +76,8 @@ XMLSource <- function(x, parser, reader, encoding = "unknown") {
     XML::free(tree)
 
     s <- Source(defaultReader = reader, encoding = encoding,
-                length = length(content), class = "XMLSource")
+                length = length(content), vectorized = FALSE,
+                class = "XMLSource")
     s$Content <- content
     s$URI <- x
     s
@@ -96,7 +96,9 @@ getElem.DirSource <- function(x) {
     encoding <- x$Encoding
     list(content = readLines(filename, encoding = encoding), uri = filename)
 }
-getElem.URISource <- function(x) list(content = readLines(x$URI, encoding = x$Encoding), uri = x$URI)
+getElem.URISource <-
+function(x) list(content = readLines(x$URI[x$Position], encoding = x$Encoding),
+                 uri = x$URI[x$Position])
 getElem.VectorSource <- function(x) list(content = x$Content[x$Position], uri = NA)
 getElem.XMLSource <- function(x) list(content = XML::saveXML(x$Content[[x$Position]]), uri = x$URI)
 
@@ -105,11 +107,10 @@ pGetElem.DataframeSource <- function(x)
     lapply(seq_len(x$Length), function(y) list(content = x$Content[y,], uri = NA))
 pGetElem.DirSource <- function(x)
     lapply(x$FileList, function(y) list(content = readLines(y, encoding = x$Encoding), uri = y))
+pGetElem.URISource <- function(x)
+    lapply(x$URI, function(y) list(content = readLines(y, encoding = x$Encoding), uri = y))
 pGetElem.VectorSource <- function(x)
     lapply(x$Content, function(y) list(content = y, uri = NA))
 
 eoi <- function(x) UseMethod("eoi", x)
-eoi.DataframeSource <- function(x) nrow(x$Content) <= x$Position
-eoi.DirSource <- function(x) length(x$FileList) <= x$Position
-eoi.URISource <- function(x) 1 <= x$Position
-eoi.VectorSource <- eoi.XMLSource <- function(x) length(x$Content) <= x$Position
+eoi.Source <- function(x) x$Length <= x$Position

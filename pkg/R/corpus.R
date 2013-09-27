@@ -51,7 +51,8 @@ function(x,
         else tdl <- c(tdl, ID(doc))
         counter <- counter + 1
     }
-    names(tdl) <- x$Names
+    if (!is.null(x$Names) && !is.na(x$Names))
+        names(tdl) <- x$Names
 
     df <- data.frame(MetaID = rep(0, length(tdl)), stringsAsFactors = FALSE)
     filehash::dbInsert(db, "DMetaData", df)
@@ -109,7 +110,8 @@ function(x, readerControl = list(reader = x$DefaultReader, language = "en"))
             counter <- counter + 1
         }
     }
-    names(tdl) <- x$Names
+    if (!is.null(x$Names) && !is.na(x$Names))
+        names(tdl) <- x$Names
     df <- data.frame(MetaID = rep(0, length(tdl)), stringsAsFactors = FALSE)
     .VCorpus(tdl, .MetaDataNode(), df)
 }

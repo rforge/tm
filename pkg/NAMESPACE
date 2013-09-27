@@ -113,13 +113,11 @@ S3method("tm_filter", "Corpus")
 S3method("tm_index", "Corpus")
 #S3method("words", "Corpus")
 
-S3method("eoi", "DataframeSource")
 S3method("getElem", "DataframeSource")
 S3method("pGetElem", "DataframeSource")
 
 S3method("Content<-", "default")
 
-S3method("eoi", "DirSource")
 S3method("getElem", "DirSource")
 S3method("pGetElem", "DirSource")
 
@@ -168,6 +166,7 @@ S3method("as.PlainTextDocument", "RCV1Document")
 
 S3method("as.PlainTextDocument", "Reuters21578Document")
 
+S3method("eoi", "Source")
 S3method("stepNext", "Source")
 
 S3method("c", "TermDocumentMatrix")
@@ -193,7 +192,6 @@ S3method("meta<-", "TextRepository")
 S3method("print", "TextRepository")
 S3method("summary", "TextRepository")
 
-S3method("eoi", "URISource")
 S3method("getElem", "URISource")
 
 S3method("[", "VCorpus")
@@ -205,13 +203,11 @@ S3method("inspect", "VCorpus")
 S3method("TermDocumentMatrix", "VCorpus")
 S3method("tm_map", "VCorpus")
 
-S3method("eoi", "VectorSource")
 S3method("getElem", "VectorSource")
 S3method("pGetElem", "VectorSource")
 
 S3method("Content<-", "XMLDocument")
 
-S3method("eoi", "XMLSource")
 S3method("getElem", "XMLSource")
 
 export("as.DocumentTermMatrix",
