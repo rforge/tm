@@ -10,26 +10,26 @@ readXML(spec, doc)
 }
 \arguments{
   \item{spec}{A named list of lists each containing two
-    strings. The constructed reader will map each list
+    components. The constructed reader will map each list
     entry to an attribute or meta datum corresponding to the named list
     entry. Valid names include \code{Content} to access the document's
     content, any valid attribute name, and characters which are mapped to
     \code{\link{LocalMetaData}} entries.
 
-    Each list entry must consist of two strings: the first
-    describes the type of the second argument, and the second is the
+    Each list entry must consist of two components: the first must be a string
+    describing the type of the second argument, and the second is the
     specification entry. Valid combinations are:
     \describe{
-      \item{type = "node", spec = "XPathExpression"}{The XPath
+      \item{\code{type = "node", spec = "XPathExpression"}}{The XPath
 	expression \code{spec} extracts information from an \acronym{XML} node.}
-      \item{type = "attribute", spec = "XPathExpression"}{The XPath
+      \item{\code{type = "attribute", spec = "XPathExpression"}}{The XPath
 	expression \code{spec} extracts information from an attribute of
 	an \acronym{XML} node.}
-      \item{type = "function", spec = function(tree) \dots}{The function
+      \item{\code{type = "function", spec = function(tree) \dots}}{The function
 	\code{spec} is called, passing over a tree representation (as
 	delivered by \code{xmlInternalTreeParse} from package \pkg{XML})
 	of the read in \acronym{XML} document as first argument.}
-      \item{type = "unevaluated", spec = "String"}{The character vector
+      \item{\code{type = "unevaluated", spec = "String"}}{The character vector
 	\code{spec} is returned without modification.}
     }
   }

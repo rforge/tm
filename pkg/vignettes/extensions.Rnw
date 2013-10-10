@@ -275,14 +275,14 @@ Each list entry must consist of two character vectors: the first
 describes the type of the second argument, and the second is the
 specification entry. Valid combinations are:
 \begin{description}
-\item[type = "node", spec = "XPathExpression"] the XPath expression
+\item[\code{type = "node", spec = "XPathExpression"}] the XPath expression
   \code{spec} extracts information out of an \acronym{XML} node (as seen for
   \code{Author}, \code{Content}, \code{Heading}, and \code{Type} in our
   example specification).
-\item[type = "attribute", spec = "XPathExpression"] the XPath
+\item[\code{type = "attribute", spec = "XPathExpression"}] the XPath
   expression \code{spec} extracts information from an attribute
   of an \acronym{XML} node (like \code{Description} in our example).
-\item[type = "function", spec = function(tree) \ldots] The function
+\item[\code{type = "function", spec = function(tree) \ldots}] The function
   \code{spec} is called, passing over a tree representation (as
   delivered by \code{xmlInternalTreeParse()} from package \pkg{XML})
   of the read in \acronym{XML} document as first argument (as seen for
@@ -290,7 +290,7 @@ specification entry. Valid combinations are:
   nobody forces us to actually use the passed over tree, instead we
   can do anything we want (e.g., create a unique character vector via
   \code{tempfile()} to have a unique identification string).
-\item[type = "unevaluated", spec = "String"] the character vector
+\item[\code{type = "unevaluated", spec = "String"}] the character vector
   \code{spec} is returned without modification (e.g., \code{Origin} in
   our specification).
 \end{description}
