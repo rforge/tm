@@ -12,8 +12,9 @@
 }
 \arguments{
   \item{x}{A term-document matrix.}
-  \item{term}{A character holding a term.}
-  \item{corlimit}{A numeric for the lower correlation bound limit.}
+  \item{term}{A character holding a single term occuring in \code{x}.}
+  \item{corlimit}{A numeric for the lower correlation limit in the range
+    from zero to one.}
 }
 \value{A named numeric with those terms from \code{x} which correlate
   with \code{term} more than \code{corlimit}.}   
