@@ -11,9 +11,10 @@
 \method{findAssocs}{matrix}(x, term, corlimit)
 }
 \arguments{
-  \item{x}{A term-document matrix.}
-  \item{term}{A character holding a single term occuring in \code{x}.}
-  \item{corlimit}{A numeric for the lower correlation limit in the range
+  \item{x}{A term-document matrix, a document-term matrix, or a dense
+    correlation matrix.}
+  \item{term}{a character holding a single term occuring in \code{x}.}
+  \item{corlimit}{a numeric for the lower correlation limit in the range
     from zero to one.}
 }
 \value{A named numeric with those terms from \code{x} which correlate
