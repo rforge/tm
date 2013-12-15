@@ -406,21 +406,26 @@ function(x, lowfreq = 0, highfreq = Inf)
 }
 
 findAssocs <-
-function(x, term, corlimit)
+function(x, terms, corlimit)
     UseMethod("findAssocs", x)
 findAssocs.TermDocumentMatrix <-
-function(x, term, corlimit)
-    findAssocs(t(x), term, corlimit)
+function(x, terms, corlimit)
+    findAssocs(t(x), terms, corlimit)
 findAssocs.DocumentTermMatrix <-
-function(x, term, corlimit)
+function(x, terms, corlimit)
 {
-    ind <- term == Terms(x)
-    suppressWarnings(x.cor <- cor(as.matrix(x[, ind]), as.matrix(x[, !ind])))
-    findAssocs(x.cor, term, corlimit)
+    j <- match(terms, Terms(x))
+    suppressWarnings(findAssocs(slam::crossapply_simple_triplet_matrix(x[, j], x[, -j], cor),
+                                terms, corlimit))
 }
 findAssocs.matrix <-
-function(x, term, corlimit)
-    sort(round(x[term, which(x[term,] > corlimit)], 2), decreasing = TRUE)
+function(x, terms, corlimit)
+{
+    j <- x[terms, , drop = FALSE] > corlimit
+    structure(lapply(terms,
+                     function(t) sort(round(x[t, which(j[t, ])], 2), TRUE)),
+              names = terms)
+}
 
 removeSparseTerms <-
 function(x, sparse)
