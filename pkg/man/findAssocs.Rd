@@ -13,16 +13,16 @@
 \method{findAssocs}{matrix}(x, terms, corlimit)
 }
 \arguments{
-  \item{x}{A document-term matrix, a term-document matrix, or a dense
-    correlation matrix.}
+  \item{x}{A \code{\link{DocumentTermMatrix}}, a
+    \code{\link{TermDocumentMatrix}}, or a dense correlation matrix.}
   \item{terms}{a character holding terms occuring in \code{x}.}
-  \item{corlimit}{a numeric for the lower correlation limit in the range
-    from zero to one.}
+  \item{corlimit}{a numeric vector (of the same length as \code{terms}) for the
+    lower correlation limits of each term in the range from zero to one.}
 }
 \value{A named numeric with those different terms from \code{x} which correlate
 with \code{terms} more than \code{corlimit}.}   
 \examples{
 data("crude")
 tdm <- TermDocumentMatrix(crude)
-findAssocs(tdm, c("oil", "opec"), 0.7)
+findAssocs(tdm, c("oil", "opec"), c(0.7, 0.75))
 }
