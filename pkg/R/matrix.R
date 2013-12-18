@@ -414,16 +414,18 @@ function(x, terms, corlimit)
 findAssocs.DocumentTermMatrix <-
 function(x, terms, corlimit)
 {
-    j <- match(terms, Terms(x))
-    suppressWarnings(findAssocs(slam::crossapply_simple_triplet_matrix(x[, j], x[, -j], cor),
-                                terms, corlimit))
+    stopifnot(!is.na(j <- match(terms, Terms(x))))
+    suppressWarnings(
+        findAssocs(slam::crossapply_simple_triplet_matrix(x[, j], x[, -j], cor),
+                   terms, corlimit))
 }
 findAssocs.matrix <-
 function(x, terms, corlimit)
 {
-    j <- x[terms, , drop = FALSE] > corlimit
-    structure(lapply(terms,
-                     function(t) sort(round(x[t, which(j[t, ])], 2), TRUE)),
+    i <- match(terms, rownames(x))
+    rownames(x) <- NULL
+    j <- x[i, , drop = FALSE] > corlimit
+    structure(lapply(i, function(y) sort(round(x[y, which(j[y, ])], 2), TRUE)),
               names = terms)
 }
 
