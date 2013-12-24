@@ -13,7 +13,7 @@
 \arguments{
   \item{x}{A \code{\link{DocumentTermMatrix}} or a
     \code{\link{TermDocumentMatrix}}.}
-  \item{terms}{a character holding terms occuring in \code{x}.}
+  \item{terms}{a character holding unique terms occuring in \code{x}.}
   \item{corlimit}{a numeric vector (of the same length as \code{terms}) for the
     lower correlation limits of each term in the range from zero to one.}
 }

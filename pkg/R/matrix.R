@@ -414,7 +414,8 @@ function(x, terms, corlimit)
 findAssocs.DocumentTermMatrix <-
 function(x, terms, corlimit)
 {
-    stopifnot(!is.na(j <- match(terms, Terms(x))), corlimit >= 0, corlimit <= 1)
+    stopifnot(!is.na(j <- match(terms, Terms(x))), !duplicated(terms),
+              corlimit >= 0, corlimit <= 1)
     suppressWarnings(
         findAssocs(slam::crossapply_simple_triplet_matrix(x[, j], x[, -j], cor),
                    terms, corlimit))
