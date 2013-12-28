@@ -425,7 +425,7 @@ function(x, terms, corlimit)
 {
     i <- match(terms, rownames(x))
     rownames(x) <- NULL
-    j <- x[i, , drop = FALSE] > corlimit
+    j <- x[i, , drop = FALSE] >= corlimit
     structure(lapply(i, function(y) sort(round(x[y, which(j[y, ])], 2), TRUE)),
               names = terms)
 }
