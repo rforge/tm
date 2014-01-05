@@ -19,6 +19,8 @@ function(x,
          readerControl = list(reader = x$DefaultReader, language = "en"),
          dbControl = list(dbName = "", dbType = "DB1"))
 {
+    stopifnot(inherits(x, "Source"))
+
     readerControl <- prepareReader(readerControl, x$DefaultReader)
 
     if (is.function(readerControl$init))
@@ -74,6 +76,8 @@ VCorpus <-
 Corpus <-
 function(x, readerControl = list(reader = x$DefaultReader, language = "en"))
 {
+    stopifnot(inherits(x, "Source"))
+
     readerControl <- prepareReader(readerControl, x$DefaultReader)
 
     if (is.function(readerControl$init))

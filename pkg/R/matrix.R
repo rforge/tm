@@ -157,6 +157,8 @@ function(x)
 termFreq <-
 function(doc, control = list())
 {
+    stopifnot(inherits(doc, "TextDocument"))
+
     txt <- Content(doc)
 
     ## Conversion to lower characters
@@ -400,6 +402,9 @@ function(..., recursive = FALSE)
 findFreqTerms <-
 function(x, lowfreq = 0, highfreq = Inf)
 {
+    stopifnot(inherits(x, c("DocumentTermMatrix", "TermDocumentMatrix")),
+              is.numeric(lowfreq), is.numeric(highfreq))
+
     if (inherits(x, "DocumentTermMatrix")) x <- t(x)
     rs <- slam::row_sums(x)
     names(rs[rs >= lowfreq & rs <= highfreq])
@@ -416,6 +421,7 @@ function(x, terms, corlimit)
 {
     stopifnot(!is.na(j <- match(terms, Terms(x))), !duplicated(terms),
               corlimit >= 0, corlimit <= 1)
+
     suppressWarnings(
         findAssocs(slam::crossapply_simple_triplet_matrix(x[, j], x[, -j], cor),
                    terms, corlimit))
@@ -423,6 +429,8 @@ function(x, terms, corlimit)
 findAssocs.matrix <-
 function(x, terms, corlimit)
 {
+    stopifnot(is.numeric(x))
+
     i <- match(terms, rownames(x))
     rownames(x) <- NULL
     j <- x[i, , drop = FALSE] >= corlimit
@@ -433,14 +441,13 @@ function(x, terms, corlimit)
 removeSparseTerms <-
 function(x, sparse)
 {
-    if ((sparse <= 0) || (sparse >= 1))
-        stop("invalid sparse factor")
-    else {
-        m <- if (inherits(x, "DocumentTermMatrix")) t(x) else x
-        t <- table(m$i) > m$ncol * (1 - sparse)
-        termIndex <- as.numeric(names(t[t]))
-        if (inherits(x, "DocumentTermMatrix")) x[, termIndex] else x[termIndex,]
-    }
+    stopifnot(inherits(x, c("DocumentTermMatrix", "TermDocumentMatrix")),
+              sparse > 0, sparse < 1)
+
+    m <- if (inherits(x, "DocumentTermMatrix")) t(x) else x
+    t <- table(m$i) > m$ncol * (1 - sparse)
+    termIndex <- as.numeric(names(t[t]))
+    if (inherits(x, "DocumentTermMatrix")) x[, termIndex] else x[termIndex,]
 }
 
 CategorizedDocumentTermMatrix <-
