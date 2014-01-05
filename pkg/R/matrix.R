@@ -105,7 +105,7 @@ as.TermDocumentMatrix.DocumentTermMatrix <-
 function(x, ...)
     t(x)
 as.TermDocumentMatrix.term_frequency <-
-as.TermDocumentMatrix.textcnt <-    
+as.TermDocumentMatrix.textcnt <-
 function(x, ...)
 {
     m <- simple_triplet_matrix(i = seq_along(x),
@@ -133,7 +133,7 @@ as.DocumentTermMatrix.TermDocumentMatrix <-
 function(x, ...)
     t(x)
 as.DocumentTermMatrix.term_frequency <-
-as.DocumentTermMatrix.textcnt <-    
+as.DocumentTermMatrix.textcnt <-
 function(x, ...)
     t(as.TermDocumentMatrix(x))
 as.DocumentTermMatrix.default <-
@@ -317,12 +317,12 @@ function(x)
     UseMethod("nTerms")
 
 nDocs.DocumentTermMatrix <-
-nTerms.TermDocumentMatrix <-    
+nTerms.TermDocumentMatrix <-
 function(x)
     x$nrow
 
 nDocs.TermDocumentMatrix <-
-nTerms.DocumentTermMatrix <-    
+nTerms.DocumentTermMatrix <-
 function(x)
     x$ncol
 
@@ -346,14 +346,14 @@ function(x)
 
 Docs.TermDocumentMatrix <-
 Terms.DocumentTermMatrix <-
-function(x)    
+function(x)
 {
     s <- x$dimnames[[2L]]
     if(is.null(s))
         s <- rep.int(NA_character_, x$ncol)
     s
 }
-    
+
 c.term_frequency <-
 function(..., recursive = FALSE)
 {
