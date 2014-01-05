@@ -19,6 +19,8 @@ function(elem, language, id)
     PlainTextDocument(elem$content, id = id, language = language)
 
 readXML <- FunctionGenerator(function(spec, doc) {
+    stopifnot(is.list(spec), inherits(doc, "TextDocument"))
+
     spec <- spec
     doc <- doc
     function(elem, language, id) {
@@ -108,6 +110,8 @@ readRCV1asPlain <- readXML(spec = list(Author = list("unevaluated", ""),
 
 # readDOC needs antiword installed to be able to extract the text
 readDOC <- FunctionGenerator(function(AntiwordOptions = "") {
+    stopifnot(is.character(AntiwordOptions))
+
     AntiwordOptions <- AntiwordOptions
     function(elem, language, id) {
         content <- system2("antiword",
@@ -121,6 +125,8 @@ readPDF <-
 FunctionGenerator(function(engine = c("xpdf", "Rpoppler", "ghostscript", "Rcampdf", "custom"),
                            control = list(info = NULL, text = NULL))
 {
+    stopifnot(is.character(engine), is.list(control))
+
     engine <- match.arg(engine)
     control <- control
 

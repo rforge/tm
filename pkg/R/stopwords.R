@@ -1,5 +1,7 @@
 stopwords <- {
     function(kind = "en") {
+        stopifnot(is.character(kind))
+
         resolved <- map_IETF_Snowball(kind)
         base <- if (is.na(resolved))
             kind

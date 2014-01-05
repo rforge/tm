@@ -19,6 +19,8 @@
 # Map IETF language tags to languages used by the Snowball stemmer project
 # http://en.wikipedia.org/wiki/IETF_language_tag
 map_IETF_Snowball <- function(code) {
+    stopifnot(is.character(code))
+
     if (identical(code, "") || identical(code, character(0)))
         return("porter")
 

@@ -49,6 +49,8 @@ TermDocumentMatrix.PCorpus <-
 TermDocumentMatrix.VCorpus <-
 function(x, control = list())
 {
+    stopifnot(is.list(control))
+
     lazyTmMap <- meta(x, tag = "lazyTmMap", type = "corpus")
     if (!is.null(lazyTmMap))
         .Call("copyCorpus", x, materialize(x))
@@ -157,7 +159,7 @@ function(x)
 termFreq <-
 function(doc, control = list())
 {
-    stopifnot(inherits(doc, "TextDocument"))
+    stopifnot(inherits(doc, "TextDocument"), is.list(control))
 
     txt <- Content(doc)
 
