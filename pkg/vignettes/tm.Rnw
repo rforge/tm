@@ -294,20 +294,14 @@ elements.
 
 \section*{Dictionary}
 A dictionary is a (multi-)set of strings. It is often used to represent
-relevant terms in text mining. We provide a class \class{Dictionary}
-implementing such a dictionary concept. It can be created via the
-\code{Dictionary()} constructor, e.g.,
+relevant terms in text mining. Character vectors may be passed over to the
+\code{DocumentTermMatrix()} constructor. Then the created matrix is tabulated
+against the dictionary, i.e., only terms from the dictionary appear in the
+matrix. This allows to restrict the dimension of the matrix a priori and to
+focus on specific terms for distinct text mining contexts, e.g.,
 <<>>=
-(d <- Dictionary(c("prices", "crude", "oil")))
-@
-and may be passed over to the \code{DocumentTermMatrix()}
-constructor. Then the created matrix is tabulated against the
-dictionary, i.e., only terms from the dictionary appear in the
-matrix. This allows to restrict the dimension of the matrix a priori
-and to focus on specific terms for distinct text mining contexts,
-e.g.,
-<<>>=
-inspect(DocumentTermMatrix(reuters, list(dictionary = d)))
+inspect(DocumentTermMatrix(reuters,
+                           list(dictionary = c("prices", "crude", "oil"))))
 @
 
 \bibliographystyle{abbrvnat}

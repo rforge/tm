@@ -12,7 +12,6 @@ export("as.PlainTextDocument",
        "DateTimeStamp",
        "DBControl",
        "Description",
-       "Dictionary",
        "DirSource",
        "dissimilarity",
        "DMetaData",
@@ -96,7 +95,6 @@ export("as.PlainTextDocument",
        "XMLSource",
        "Zipf_plot")
 
-S3method("Dictionary", "character")
 S3method("removeNumbers", "character")
 S3method("removePunctuation", "character")
 S3method("removeWords", "character")
@@ -124,7 +122,6 @@ S3method("pGetElem", "DirSource")
 
 S3method("[", "DocumentTermMatrix")
 S3method("c", "DocumentTermMatrix")
-S3method("Dictionary", "DocumentTermMatrix")
 S3method("dimnames<-", "DocumentTermMatrix")
 S3method("dissimilarity", "DocumentTermMatrix")
 S3method("findAssocs", "DocumentTermMatrix")
@@ -170,7 +167,6 @@ S3method("stepNext", "Source")
 
 S3method("c", "TermDocumentMatrix")
 S3method("[", "TermDocumentMatrix")
-S3method("Dictionary", "TermDocumentMatrix")
 S3method("dimnames<-", "TermDocumentMatrix")
 S3method("dissimilarity", "TermDocumentMatrix")
 S3method("findAssocs", "TermDocumentMatrix")

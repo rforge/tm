@@ -14,6 +14,9 @@
     \itemize{
       \item Following functions have been removed:
       \itemize{
+        \item \code{Dictionary()} (use a character vector instead; use
+          \code{Terms()} to extract terms from a term-document or document-term
+          matrix),
         \item \code{GmaneSource()} (but still available via an example in
           \code{XMLSource()},
         \item \code{preprocessReut21578XML()} (moved to package
