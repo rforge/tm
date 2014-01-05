@@ -421,23 +421,28 @@ function(x, terms, corlimit)
 findAssocs.DocumentTermMatrix <-
 function(x, terms, corlimit)
 {
-    stopifnot(!is.na(j <- match(terms, Terms(x))), !duplicated(terms),
+    stopifnot(is.character(terms), is.numeric(corlimit),
               corlimit >= 0, corlimit <= 1)
 
+    j <- match(unique(terms), Terms(x), nomatch = 0L)
     suppressWarnings(
         findAssocs(slam::crossapply_simple_triplet_matrix(x[, j], x[, -j], cor),
-                   terms, corlimit))
+                   terms, rep_len(corlimit, length(terms))))
 }
 findAssocs.matrix <-
 function(x, terms, corlimit)
 {
     stopifnot(is.numeric(x))
 
-    i <- match(terms, rownames(x))
-    rownames(x) <- NULL
-    j <- x[i, , drop = FALSE] >= corlimit
-    structure(lapply(i, function(y) sort(round(x[y, which(j[y, ])], 2), TRUE)),
-              names = terms)
+    i <- match(terms, rownames(x), nomatch = 0L)
+    names(i) <- terms
+    mapply(function(i, cl) {
+           xi <- x[i, ]
+           t <- sort(round(xi[which(xi >= cl)], 2), TRUE)
+           if (!length(t))
+               names(t) <- NULL
+           t
+           }, i, corlimit)
 }
 
 removeSparseTerms <-

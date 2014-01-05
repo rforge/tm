@@ -13,7 +13,7 @@
 \arguments{
   \item{x}{A \code{\link{DocumentTermMatrix}} or a
     \code{\link{TermDocumentMatrix}}.}
-  \item{terms}{a character vector holding unique terms occuring in \code{x}.}
+  \item{terms}{a character vector holding terms.}
   \item{corlimit}{a numeric vector (of the same length as \code{terms};
     recycled otherwise) for the (inclusive) lower correlation limits of each
     term in the range from zero to one.}
@@ -25,5 +25,5 @@ correlation limit of \code{corlimit}.}
 \examples{
 data("crude")
 tdm <- TermDocumentMatrix(crude)
-findAssocs(tdm, c("oil", "opec"), c(0.7, 0.75))
+findAssocs(tdm, c("oil", "opec", "xyz"), c(0.7, 0.75, 0.1))
 }
