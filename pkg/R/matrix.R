@@ -442,7 +442,7 @@ removeSparseTerms <-
 function(x, sparse)
 {
     stopifnot(inherits(x, c("DocumentTermMatrix", "TermDocumentMatrix")),
-              sparse > 0, sparse < 1)
+              is.numeric(sparse), sparse > 0, sparse < 1)
 
     m <- if (inherits(x, "DocumentTermMatrix")) t(x) else x
     t <- table(m$i) > m$ncol * (1 - sparse)

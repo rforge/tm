@@ -13,16 +13,42 @@ function(defaultReader = readPlain,
          vectorized = TRUE,
          class)
 {
-    if (vectorized && (is.na(length) || length <= 0))
-        stop("vectorized sources must have positive length")
+    s <- structure(list(DefaultReader = defaultReader, Encoding = encoding,
+                        Length = length, Names = names, Position = position,
+                        Vectorized = vectorized),
+                   class = unique(c(class, "Source")))
+    stopifnot(is.Source(s))
+    s
+}
 
-    if (!is.null(names) && !is.na(names) && (length != length(names)))
-        stop("incorrect number of element names")
-
-    structure(list(DefaultReader = defaultReader, Encoding = encoding,
-                   Length = length, Names = names,
-                   Position = position, Vectorized = vectorized),
-              class = unique(c(class, "Source")))
+is.Source <-
+function(x)
+{
+    iss <- FALSE
+    if (!inherits(x, "Source"))
+        warning("wrong class")
+    else if (!is.list(x))
+        warning("invalid structure")
+    else if (!is.function(x$DefaultReader))
+        warning("invalid default reader")
+    else if (!is.character(x$Encoding))
+        warning("invalid encoding")
+    else if (!is.integer(x$Length))
+        warning("invalid length entry denoting the number of elements")
+    else if (!is.character(x$Names) && !is.null(x$Names))
+        warning("invalid element names")
+    else if (!is.numeric(x$Position))
+        warning("invalid position")
+    else if (!is.logical(x$Vectorized))
+        warning("invalid indicator for parallel element access")
+    else if (isTRUE(x$Vectorized) && (is.na(x$Length) || x$Length <= 0))
+        warning("vectorized sources must have a positive length entry")
+    else if (!is.null(x$Names) && !is.na(x$Names) &&
+             (x$Length != length(x$Names)))
+        warning("incorrect number of element names")
+    else
+        iss <- TRUE
+    iss
 }
 
 # A vector where each component is interpreted as document

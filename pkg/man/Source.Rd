@@ -11,6 +11,7 @@
 \alias{pGetElem}
 \alias{pGetElem.DataframeSource}
 \alias{pGetElem.DirSource}
+\alias{is.Source}
 \alias{pGetElem.VectorSource}
 \alias{Source}
 \alias{stepNext}
@@ -23,6 +24,7 @@
 \usage{
 Source(defaultReader = readPlain, encoding = "unknown", length = NA_integer_,
        names = NA_character_, position = 0, vectorized = TRUE, class)
+is.Source(x)
 \method{eoi}{Source}(x)
 \method{getElem}{DataframeSource}(x)
 \method{getElem}{DirSource}(x)
@@ -39,8 +41,9 @@ Source(defaultReader = readPlain, encoding = "unknown", length = NA_integer_,
   \item{defaultReader}{a reader function (generator).}
   \item{encoding}{a character specifying the encoding of the elements
     delivered by the source.}
-  \item{length}{a numeric denoting the number of elements delivered by the
-    source. If the length is unknown in advance it must be set to \code{NA}.}
+  \item{length}{an integer denoting the number of elements delivered by the
+    source. If the length is unknown in advance it must be set to
+    \code{NA_integer_}.}
   \item{names}{a character vector giving element names.}
   \item{position}{a numeric indicating the position in the source.}
   \item{vectorized}{a logical indicating the ability for parallel element
@@ -52,6 +55,9 @@ Source(defaultReader = readPlain, encoding = "unknown", length = NA_integer_,
   custom sources. Internally a source is represented as a \code{list} with the
   class attribute \code{Source}. Custom sources may extend the internal list
   structure with additional named components.
+
+  The function \code{is.Source} returns \code{TRUE} for a valid source and
+  \code{FALSE} otherwise.
 
   Each source must provide implementations for the three interface functions
   \code{eoi}, \code{getElem}, and \code{stepNext}. If \code{vectorized} is set
