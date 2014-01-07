@@ -1,3 +1,26 @@
+2014-01-07  Ingo Feinerer <feinerer@logic.at>
+
+	* DESCRIPTION (Version): Prepare for CRAN New Year release.
+
+2014-01-05  Ingo Feinerer <feinerer@logic.at>
+
+	* R/matrix.R (findAssocs): Allow multiple and non-existing terms.
+	Suggested by Christian Buchta.
+
+	* R/source.R (is.Source): New check for valid source.
+
+2013-12-28  Ingo Feinerer <feinerer@logic.at>
+
+	* R/matrix.R (findAssocs): Make corlimit inclusive.
+
+2013-09-27  Ingo Feinerer <feinerer@logic.at>
+
+	* R/source.R: Allow multiple URIs for URISource.
+
+2013-09-19  Ingo Feinerer <feinerer@logic.at>
+
+	* R/source.R (Source): New Source constructor.
+
 2013-08-26  Ingo Feinerer <feinerer@logic.at>
 
 	* R/source.R (DirSource): Report non-existent or non-readable files.
