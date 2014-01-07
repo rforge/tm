@@ -293,12 +293,13 @@ percentage of sparse (i.e., terms occurring 0 times in a document)
 elements.
 
 \section*{Dictionary}
-A dictionary is a (multi-)set of strings. It is often used to represent
-relevant terms in text mining. Character vectors may be passed over to the
-\code{DocumentTermMatrix()} constructor. Then the created matrix is tabulated
-against the dictionary, i.e., only terms from the dictionary appear in the
-matrix. This allows to restrict the dimension of the matrix a priori and to
-focus on specific terms for distinct text mining contexts, e.g.,
+A dictionary is a (multi-)set of strings. It is often used to denote relevant
+terms in text mining. We represent a dictionary with a character vector which
+may be passed to the \code{DocumentTermMatrix()} constructor as a control
+argument. Then the created matrix is tabulated against the dictionary, i.e.,
+only terms from the dictionary appear in the matrix. This allows to restrict
+the dimension of the matrix a priori and to focus on specific terms for
+distinct text mining contexts, e.g.,
 <<>>=
 inspect(DocumentTermMatrix(reuters,
                            list(dictionary = c("prices", "crude", "oil"))))
