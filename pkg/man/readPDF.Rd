@@ -35,8 +35,9 @@ readPDF(engine = c("xpdf", "Rpoppler", "ghostscript", "Rcampdf", "custom"),
     \item{\code{"ghostscript"}}{Ghostscript using \file{pdf_info.ps} and
       \file{ps2ascii.ps}.}
     \item{\code{"Rcampdf"}}{Perl CAM::PDF \acronym{PDF} manipulation library
-      as provided by the functions \code{\link[Rcampdf]{pdf_info}} and
-      \code{\link[Rcampdf]{pdf_text}} in package \pkg{Rcampdf}.}
+      as provided by the functions \code{pdf_info} and \code{pdf_text}
+      in package \pkg{Rcampdf}, available from the repository at
+      \url{http://datacube.wu.ac.at}.}   
     \item{\code{"custom"}}{custom user-provided extraction engine.}
   } 
 
