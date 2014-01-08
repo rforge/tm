@@ -18,11 +18,11 @@
           \code{Terms()} to extract terms from a document-term or term-document 
           matrix),
         \item \code{GmaneSource()} (but still available via an example in
-          \code{XMLSource()},
+          \code{XMLSource()}),
         \item \code{preprocessReut21578XML()} (moved to package
           \pkg{tm.corpus.Reuters21578}),
         \item \code{readGmane()} (but still available via an example in
-          \code{readXML()},
+          \code{readXML()}),
 	\item \code{searchFullText()} and \code{tm_intersect()}
         (use \code{grep()} instead).
       }
