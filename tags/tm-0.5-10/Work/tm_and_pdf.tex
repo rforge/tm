@@ -1,0 +1,157 @@
+\documentclass[a4paper]{article}
+\usepackage{url,a4wide}
+
+\newcommand{\file}[1]{`\textsf{#1}'}
+\newcommand{\strong}[1]{{\normalfont\fontseries{b}\selectfont #1}}
+\let\pkg=\strong
+
+\title{Text Mining and PDF}
+\author{Kurt Hornik}
+
+\begin{document}
+
+\maketitle{}
+
+A considerable amount of text of possible interest for text mining is
+nowadays contained in Portable Document Format (PDF) files.  In fact, we
+have been told that the best way to extract the text from a \LaTeX{}
+document is to create PDF output from the document and extract the text
+from the PDF file.  Thus, package \pkg{tm} provides the \verb|readPDF()|
+reader function for PDF files, which extracs both the text and the meta
+data in these files.
+
+The current implementation is based on programs \verb|pdfinfo| and
+\verb|pdftotext|, which on Debian-based systems are in package
+\verb|poppler-utils|, which provides several command line utilities
+(based on the Poppler library) for working with PDF files, and replaces
+the former \verb|xpdf-utils|.  However, apparently these utilities are
+not necessarily easily available on other systems (Windows?).  In
+addition, it might be more appropriate to work more directly with the
+Poppler library, or employ different libraries for handling PDF files.
+This document discusses available alternatives.
+
+Two years ago we added code for reading information in PDF files to the
+base R \pkg{tools} package, partially borrowing ideas from PDFMiner, a
+Python module for extracting information from PDF documents which
+``focuses entirely on getting and analyzing text data'' (Debian package
+\verb|python-pdfminer|).  For some time, the meta data extraction in the
+\pkg{tm} PDF reader used \verb|tools:::pdf_info()|.  However, it turns
+out that considerable additional effort would be needed to make even the
+basic information extraction fully functional (e.g., adding support for
+encryption), which would nevertheless yield only a rather limited set of
+PDF tools: so clearly, this route must be abandoned, and the code
+eventually be removed again.  (Which is somewhat unfortunate, as it
+provides a rather nice low-level interface to the objects in the PDF
+files.)
+
+We have also written a package \pkg{Rpoppler} which directly interfaces
+the Poppler library (specifically, using the Glib interface).  This
+works rather well, and is certainly more efficient than employing the
+shell utilities which use the Poppler library.  However, the portability
+issues will remain (installation needs the Poppler Glib interface
+development files: on Debian, they are conveniently available in package
+\verb|libpoppler-glib-dev|, on Fedora in \verb|poppler-glib-devel|),
+whereas the situation on other systems may be more complicated, and in
+particular we have not yet been able to determine whether the package
+can be made available for Windows).  The package was published on CRAN
+on 2013-08-08, with OS type unix for the time being.
+
+Web search reveals several pointers to alternative functionality, e.g.,
+\url{http://stackoverflow.com/questions/6187250/pdf-text-extraction} and 
+\url{http://stackoverflow.com/questions/3650957/how-to-extract-text-from-a-pdf}.
+We ignore commercial solutions.  The Python PDFminer module was already
+mentioned.  Calibre and Abiword can conveniently perform text
+extraction, but as far as I can see themselves use Poppler, with results
+identical to those of \verb|pdftotext|, and it seems there is no way to
+extract the meta data using either program.
+
+Ghostscript provides functionality for PostScript/PDF preview and
+printing.  The Ghostscript interpreter is employed in package
+\pkg{tools} for PDF compaction, and seems commonly available on Linux
+(not sure about Mac OSX), with Windows binaries available from
+\url{http://www.ghostscript.com/download/gsdnld.html}.  Ghostscript can
+extract text from PDF files either directly via the txtwrite output
+device, or via first converting to Postscript (e.g., using program
+\verb|pdf2ps|) and then extracting the text (e.g., using program
+\verb|ps2txt|).  Both programs in fact call the Ghostscript interpreter
+(the first using the ps2write output device, the second additionally
+using the \file{ps2ascii.ps} program that comes with every Ghostscript
+installation), so that alternatively one can directly call the
+Ghostscript interpreter to extract the text.  It is also possible to
+extract information using Ghostscript (e.g.,
+\url{http://stackoverflow.com/questions/2943281/using-ghostscript-to-get-page-size}).
+This needs file \file{pdf\_info.ps} available in the \file{toolbin}
+directory of the Ghostscript sources.  This extracts information
+somewhat differently from \verb|pdfinfo|, but in a form which should be
+conveniently usable for a PDF reader in package \pkg{tm}.  However, PDF
+strings in UTF-16BE are not encoded correctly, and PDF dates are left in
+PDF date format: the latter could be handled via
+\verb|tools:::PDF_Date_to_POSIXt()| (as long as this is available).
+
+The PoDoFo library (\url{http://podofo.sourceforge.net}) is a ``free,
+portable C++ library'' which includes classes to parse PDF files and
+extract information from these, and claims to be well-documented (see
+\url{http://podofo.sourceforge.net/support.html#api}).  Similar to
+Poppler, there is also a collection of shell tools for working with PDF
+files using the PoDoFo library, see
+\url{http://podofo.sourceforge.net/tools.html}.  On Debian, these tools
+are in package \verb|libpodofo-utils|, which includes
+\verb|podofopdfinfo| and \verb|podofotxtextract| for extracting
+information and text.  Assuming the tools are useful, one might also
+explore the potential of writing an R interface package for the library
+(in particular, if this also allows for more low-level access to the PDF
+objects than the Poppler Glib interface does).  However: currently,
+the library does not provide access to the CreationDate and ModDate
+information from the Info dictionary, and text extraction seems rather
+awful.
+
+Finally, the Perl CAM::PDF PDF manipulation library
+(\url{https://metacpan.org/release/CAM-PDF}, not mentioned in the above
+posts) provides a variety of Perl script utilities, including
+\file{pdfinfo.pl} and \file{getpdftext.pl} for extracting information
+and text, respectively.  On Debian, the library is available as package
+\verb|libcam-pdf-perl|, with these scripts made available as programs
+\verb|pdfinfo.cam-pdf| and \verb|getpdftext|.  Assuming Perl can be made
+available on all platforms supported by R, it seems one could create an
+R package providing the CAM::PDF modules and its dependencies (the
+Debian package depends on \verb|libcrypt-rc4-perl| and
+\verb|libtext-pdf-perl|) and the two \file{.pl} scripts using these
+modules.  The output from CAM::PDF pdfinfo is very similar to that of
+poppler-utils pdfinfo (the dates still seem to come in PDF format,
+though).  I have not checked (yet) how CAM::PDF text extraction compares
+to Poppler text extraction.  However, it seems that CAM::PDF has
+problems handling PDF strings in UTF-16BE (e.g., run its pdfinfo on file
+\file{AlleleRetain\_User\_Guide.pdf} in package \pkg{AlleleRetain}).
+
+My conclusions would be as follows.
+\begin{enumerate}
+ \item There are several ``reasonable'' mechanisms for extracting
+  information and text from PDF files for possible use in the PDF reader
+  in package \pkg{tm}.  We should thus provide a mechanism to select the
+  desired ``engine'', both as an argument to the reader generator and as
+  an option for package \pkg{tm} (there currently seems no mechanim for
+  package-level options, comparable to \verb|sets::sets_options()|).
+
+ \item Currently \verb|tm::readPDF()| hard-wires using \verb|pdftotext|:
+  this would need changing.
+
+ \item Every engine needs to provide a function for extracting
+  information to be used for the document meta data, and a function for
+  extracting the text to be used for the document content.  For the
+  former, we need to be able to extract the Author, CreationDate,
+  Subject, Title and Creator, ideally via \verb|$| subscripting with the
+  above name literals.  The dates would need to be POSIXt objects.
+
+ \item We now have Rpoppler and Ghostscript (`gs') engines, so it makes
+  perfect sense to start working on the engine mechanism.  For both
+  engines, integration into package \pkg{tm} is trivial by using
+  \verb|Rpoppler::PDF_info()| and \verb|Rpoppler::PDF_text()|, and
+  \verb|pdf_info_via_gs()| and \verb|pdf_text_via_gs()|, respectively.
+
+ \item The Ghostscript engine seems most portable, but is rather slow,
+  and there are a few PDF files Ghostscript cannot read.  So it should
+  be the fallback engine, to be used when no others were configured or
+  found to be available.
+\end{enumerate}
+
+\end{document}
