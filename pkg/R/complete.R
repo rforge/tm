@@ -51,12 +51,11 @@ function(x, dictionary,
                    lapply(possibleCompletions,
                           function(x) sort(table(x), decreasing = TRUE))
                n <- names(sapply(possibleCompletions, "[", 1))
-               structure(if (length(n) >= 1) n else NA, names = x)
+               structure(if (length(n)) n else NA, names = x)
            },
            random = {
                structure(sapply(possibleCompletions, function(x) {
-                   if (length(x) >= 1) sample(x, 1)
-                   else NA
+                   if (length(x)) sample(x, 1) else NA
                }), names = x)
            },
            shortest = {

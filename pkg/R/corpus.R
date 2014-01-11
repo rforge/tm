@@ -214,7 +214,7 @@ function(x, id = 0, mapping = NULL, left.mapping = NULL, level = 0)
         x$NodeID <- id
         id <<- id + 1
         level <<- level + 1
-        if (length(x$Children) > 0) {
+        if (length(x$Children)) {
             mapping <<- cbind(mapping, c(x$Children[[1]]$NodeID, id))
             left <- set_id(x$Children[[1]])
             if (level == 1) {
@@ -347,7 +347,7 @@ summary.Corpus <-
 function(object, ...)
 {
     print(object)
-    if (length(DMetaData(object)) > 0) {
+    if (length(DMetaData(object))) {
         cat(sprintf(ngettext(length(attr(CMetaData(object), "MetaData")),
                              "\nThe metadata consists of %d tag-value pair and a data frame\n",
                              "\nThe metadata consists of %d tag-value pairs and a data frame\n"),

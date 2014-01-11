@@ -41,7 +41,7 @@ function(x)
         warning("invalid position")
     else if (!is.logical(x$Vectorized))
         warning("invalid indicator for parallel element access")
-    else if (isTRUE(x$Vectorized) && (is.na(x$Length) || x$Length <= 0))
+    else if (isTRUE(x$Vectorized) && (is.na(x$Length) || x$Length <= 0L))
         warning("vectorized sources must have a positive length entry")
     else if (!is.null(x$Names) && !is.na(x$Names) &&
              (x$Length != length(x$Names)))
@@ -71,7 +71,7 @@ DataframeSource <- function(x, encoding = "unknown") {
 DirSource <- function(directory = ".", encoding = "unknown", pattern = NULL, recursive = FALSE, ignore.case = FALSE) {
     d <- dir(directory, full.names = TRUE, pattern = pattern, recursive = recursive, ignore.case = ignore.case)
 
-    if (length(d) == 0)
+    if (!length(d))
         stop("empty directory")
 
     isfile <- !file.info(d)[["isdir"]]
