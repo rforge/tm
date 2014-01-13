@@ -7,7 +7,7 @@ Authors@R: c(person("Ingo", "Feinerer", role = c("aut", "cre"),
              person("Kurt", "Hornik", role = "aut"),
              person("Artifex Software, Inc.", role = c("ctb", "cph"),
                     comment = "pdf_info.ps taken from GPL Ghostscript"))
-Depends: R (>= 2.14.0)
+Depends: R (>= 3.0.0)
 Imports: parallel, slam (>= 0.1-31)
 Suggests: filehash, proxy, Rcampdf, Rgraphviz, Rpoppler, SnowballC, XML
 SystemRequirements: Antiword (http://www.winfield.demon.nl/) for reading MS Word files,
