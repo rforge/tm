@@ -30,6 +30,10 @@ stopwords(kind = "en")
   \code{norwegian}, \code{portuguese}, \code{russian}, \code{spanish}, and
   \code{swedish}. Language names are case sensitive. Alternatively, their
   \acronym{IETF} language tags may be used.
+%
+%  Earlier \pkg{tm} versions (before 2013-06-14) used merged stopword lists from
+%  \url{http://www.ranks.nl/resources/stopwords.html} and the Snowball stemmer
+%  project. 
 }
 \value{A character vector containing the requested stopwords. An error
   is raised if no stopwords are available for the requested
