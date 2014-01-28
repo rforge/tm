@@ -1,3 +1,7 @@
+2014-01-28  Ingo Feinerer <feinerer@logic.at>
+
+	* R/utils.R (map_IETF_Snowball): Process three letter codes.
+
 2014-01-07  Ingo Feinerer <feinerer@logic.at>
 
 	* DESCRIPTION (Version): Prepare for CRAN New Year release.
