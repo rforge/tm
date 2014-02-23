@@ -11,11 +11,8 @@ function(x, dictionary,
                   "none", "random", "shortest"))
 {
     tokens <- scan_tokenizer(x)
-    sc <- unlist(lapply(x, function(x)
-                        paste(stemCompletion.character(tokens, dictionary, type),
-                              collapse = " ")),
-                 use.names = FALSE)
-    Content(x) <- if (is.character(sc)) sc else ""
+    Content(x) <- paste(stemCompletion.character(tokens, dictionary, type),
+                        collapse = " ")
     x
 }
 stemCompletion.character <-

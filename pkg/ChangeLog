@@ -1,3 +1,8 @@
+2014-02-23  Ingo Feinerer <feinerer@logic.at>
+
+	* R/complete.R (stemCompletion.PlainTextDocument): Avoid spurious
+	duplicate results. Reported by Seong-Hyeon Kim.
+
 2014-01-28  Ingo Feinerer <feinerer@logic.at>
 
 	* R/utils.R (map_IETF_Snowball): Process three letter codes.
