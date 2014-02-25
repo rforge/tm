@@ -11,8 +11,9 @@
 \alias{pGetElem}
 \alias{pGetElem.DataframeSource}
 \alias{pGetElem.DirSource}
-\alias{is.Source}
+\alias{pGetElem.URISource}
 \alias{pGetElem.VectorSource}
+\alias{is.Source}
 \alias{Source}
 \alias{stepNext}
 \alias{stepNext.Source}
@@ -33,6 +34,7 @@ is.Source(x)
 \method{getElem}{XMLSource}(x)
 \method{pGetElem}{DataframeSource}(x)
 \method{pGetElem}{DirSource}(x)
+\method{pGetElem}{URISource}(x)
 \method{pGetElem}{VectorSource}(x)
 \method{stepNext}{Source}(x)
 }
