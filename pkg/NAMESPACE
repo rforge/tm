@@ -188,6 +188,7 @@ S3method("print", "TextRepository")
 S3method("summary", "TextRepository")
 
 S3method("getElem", "URISource")
+S3method("pGetElem", "URISource")
 
 S3method("[", "VCorpus")
 S3method("[[", "VCorpus")

@@ -1,3 +1,7 @@
+2014-02-25  Ingo Feinerer <feinerer@logic.at>
+
+	* NAMESPACE: Export pGetElem.URISource.
+
 2014-02-23  Ingo Feinerer <feinerer@logic.at>
 
 	* R/complete.R (stemCompletion.PlainTextDocument): Avoid spurious
