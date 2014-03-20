@@ -8,7 +8,7 @@
 XMLSource(x, parser, reader, encoding = "unknown")
 }
 \arguments{
-  \item{x}{a file name or a connection.}
+  \item{x}{a Uniform Resource Identifier.}
   \item{parser}{a function accepting an \acronym{XML} tree (as delivered by
     \code{xmlTreeParse} in package \pkg{XML}) as input and returning a
     list of \acronym{XML} elements.}

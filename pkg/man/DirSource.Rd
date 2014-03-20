@@ -6,7 +6,7 @@
 }
 \usage{
 DirSource(directory = ".", encoding = "unknown", pattern = NULL,
-          recursive = FALSE, ignore.case = FALSE)
+          recursive = FALSE, ignore.case = FALSE, mode = "text")
 }
 \arguments{
   \item{directory}{A character vector of full path names; the default corresponds to the working directory \code{getwd()}.}

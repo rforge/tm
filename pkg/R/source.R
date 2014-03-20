@@ -2,74 +2,61 @@
 ## Sources
 
 getSources <- function()
-   c("DataframeSource", "DirSource", "ReutersSource", "URISource", "VectorSource")
+   c("DataframeSource", "DirSource", "ReutersSource","URISource", "VectorSource")
 
-Source <-
+SimpleSource <-
 function(defaultReader = readPlain,
          encoding = "unknown",
          length = NA_integer_,
          names = NA_character_,
          position = 0,
          vectorized = TRUE,
+         ...,
          class)
 {
-    s <- structure(list(DefaultReader = defaultReader, Encoding = encoding,
-                        Length = length, Names = names, Position = position,
-                        Vectorized = vectorized),
-                   class = unique(c(class, "Source")))
-    stopifnot(is.Source(s))
-    s
-}
-
-is.Source <-
-function(x)
-{
-    iss <- FALSE
-    if (!inherits(x, "Source"))
-        warning("wrong class")
-    else if (!is.list(x))
-        warning("invalid structure")
-    else if (!is.function(x$DefaultReader))
-        warning("invalid default reader")
-    else if (!is.character(x$Encoding))
+    if (!is.function(defaultReader))
+        stop("invalid default reader")
+    else if (!is.character(encoding))
         warning("invalid encoding")
-    else if (!is.integer(x$Length))
+    else if (!is.integer(length))
         warning("invalid length entry denoting the number of elements")
-    else if (!is.character(x$Names) && !is.null(x$Names))
+    else if (!is.character(names) && !is.null(names))
         warning("invalid element names")
-    else if (!is.numeric(x$Position))
+    else if (!is.numeric(position))
         warning("invalid position")
-    else if (!is.logical(x$Vectorized))
+    else if (!is.logical(vectorized))
         warning("invalid indicator for parallel element access")
-    else if (isTRUE(x$Vectorized) && (is.na(x$Length) || x$Length <= 0L))
+    else if (isTRUE(vectorized) && (is.na(length) || length <= 0L))
         warning("vectorized sources must have a positive length entry")
-    else if (!is.null(x$Names) && !is.na(x$Names) &&
-             (x$Length != length(x$Names)))
+    else if (!is.null(names) && !is.na(names) && (length != length(names)))
         warning("incorrect number of element names")
-    else
-        iss <- TRUE
-    iss
+
+    structure(list(DefaultReader = defaultReader, Encoding = encoding,
+                   Length = length, Names = names, Position = position,
+                   Vectorized = vectorized, ...),
+              class = unique(c(class, "SimpleSource", "Source")))
 }
 
 # A vector where each component is interpreted as document
-VectorSource <- function(x, encoding = "unknown") {
-    s <- Source(encoding = encoding, length = length(x), names = names(x),
-                class = "VectorSource")
-    s$Content <- if (is.factor(x)) as.character(x) else x 
-    s
-}
+VectorSource <-
+function(x, encoding = "unknown")
+    SimpleSource(encoding = encoding, length = length(x), names = names(x),
+                 Content = if (is.factor(x)) as.character(x) else x,
+                 class = "VectorSource")
 
 # A data frame where each row is interpreted as document
-DataframeSource <- function(x, encoding = "unknown") {
-    s <- Source(encoding = encoding, length = nrow(x), names = row.names(x),
-                class = "DataframeSource")
-    s$Content <- if (is.factor(x)) as.character(x) else x
-    s
-}
+DataframeSource <-
+function(x, encoding = "unknown")
+    SimpleSource(encoding = encoding, length = nrow(x), names = row.names(x),
+                 Content = if (is.factor(x)) as.character(x) else x,
+                 class = "DataframeSource")
 
 # A directory with files
-DirSource <- function(directory = ".", encoding = "unknown", pattern = NULL, recursive = FALSE, ignore.case = FALSE) {
-    d <- dir(directory, full.names = TRUE, pattern = pattern, recursive = recursive, ignore.case = ignore.case)
+DirSource <-
+function(directory = ".", encoding = "unknown", pattern = NULL,
+         recursive = FALSE, ignore.case = FALSE, mode = "text") {
+    d <- dir(directory, full.names = TRUE, pattern = pattern,
+             recursive = recursive, ignore.case = ignore.case)
 
     if (!length(d))
         stop("empty directory")
@@ -79,21 +66,22 @@ DirSource <- function(directory = ".", encoding = "unknown", pattern = NULL, rec
         stop("non-existent or non-readable file(s): ",
              paste(d[is.na(isfile)], collapse = " "))
 
-    s <- Source(encoding = encoding, length = sum(isfile),
-                names = basename(d[isfile]), class = "DirSource")
+    s <- SimpleSource(encoding = encoding, length = sum(isfile),
+                      names = basename(d[isfile]), Mode = mode,
+                      class = "DirSource")
     s$FileList <- d[isfile]
     s
 }
 
 # Documents identified by a Uniform Resource Identifier
-URISource <- function(x, encoding = "unknown") {
-    s <- Source(encoding = encoding, length = length(x), class = "URISource")
-    s$URI <- x
-    s
-}
+URISource <-
+function(x, encoding = "unknown", mode = "text")
+    SimpleSource(encoding = encoding, length = length(x), URI = x, Mode = mode,
+                 class = "URISource")
 
 ReutersSource <- function(x, encoding = "unknown")
-    XMLSource(x, function(tree) XML::xmlChildren(XML::xmlRoot(tree)), readReut21578XML, encoding)
+    XMLSource(x, function(tree) XML::xmlChildren(XML::xmlRoot(tree)),
+              readReut21578XML, encoding)
 
 # XML
 XMLSource <- function(x, parser, reader, encoding = "unknown") {
@@ -101,42 +89,75 @@ XMLSource <- function(x, parser, reader, encoding = "unknown") {
     content <- parser(tree)
     XML::free(tree)
 
-    s <- Source(defaultReader = reader, encoding = encoding,
-                length = length(content), vectorized = FALSE,
-                class = "XMLSource")
-    s$Content <- content
-    s$URI <- x
-    s
+    SimpleSource(defaultReader = reader, encoding = encoding,
+                 length = length(content), vectorized = FALSE,
+                 Content = content, URI = x, class = "XMLSource")
 }
 
 stepNext <- function(x) UseMethod("stepNext", x)
-stepNext.Source <- function(x) {
+stepNext.SimpleSource <- function(x) {
     x$Position <- x$Position + 1
     x
 }
 
+readContent <-
+function(x, encoding, mode)
+{
+    if (identical(mode, "text"))
+        readLines(x, encoding = encoding)
+    # TODO: else if (identical(x$Mode, "binary")) ...
+    else if (identical(mode, ""))
+        NULL
+}
+
 getElem <- function(x) UseMethod("getElem", x)
-getElem.DataframeSource <- function(x) list(content = x$Content[x$Position, ], uri = NA)
-getElem.DirSource <- function(x) {
+getElem.DataframeSource <-
+function(x)
+    list(content = x$Content[x$Position, ],
+         uri = NULL)
+getElem.DirSource <-
+function(x)
+{
     filename <- x$FileList[x$Position]
-    encoding <- x$Encoding
-    list(content = readLines(filename, encoding = encoding), uri = filename)
+    list(content = readContent(filename, x$Encoding, x$Mode),
+         uri = sprintf("file://%s", filename))
 }
 getElem.URISource <-
-function(x) list(content = readLines(x$URI[x$Position], encoding = x$Encoding),
-                 uri = x$URI[x$Position])
-getElem.VectorSource <- function(x) list(content = x$Content[x$Position], uri = NA)
-getElem.XMLSource <- function(x) list(content = XML::saveXML(x$Content[[x$Position]]), uri = x$URI)
+function(x)
+{
+    list(content = readContent(x$URI[x$Position], x$Encoding, x$Mode),
+         uri = x$URI[x$Position])
+}
+getElem.VectorSource <-
+function(x)
+    list(content = x$Content[x$Position],
+         uri = NULL)
+getElem.XMLSource <-
+function(x)
+    list(content = XML::saveXML(x$Content[[x$Position]]),
+         uri = x$URI)
 
 pGetElem <- function(x) UseMethod("pGetElem", x)
-pGetElem.DataframeSource <- function(x)
-    lapply(seq_len(x$Length), function(y) list(content = x$Content[y,], uri = NA))
-pGetElem.DirSource <- function(x)
-    lapply(x$FileList, function(y) list(content = readLines(y, encoding = x$Encoding), uri = y))
-pGetElem.URISource <- function(x)
-    lapply(x$URI, function(y) list(content = readLines(y, encoding = x$Encoding), uri = y))
-pGetElem.VectorSource <- function(x)
-    lapply(x$Content, function(y) list(content = y, uri = NA))
+pGetElem.DataframeSource <-
+function(x)
+    lapply(seq_len(x$Length),
+           function(y) list(content = x$Content[y,],
+                            uri = NULL))
+pGetElem.DirSource <-
+function(x)
+    lapply(x$FileList,
+           function(f) list(content = readContent(f, x$Encoding, x$Mode),
+                            uri = sprintf("file://%s", f)))
+pGetElem.URISource <-
+function(x)
+    lapply(x$URI,
+           function(uri) list(content = readContent(uri, x$Encoding, x$Mode),
+                              uri = uri))
+pGetElem.VectorSource <-
+function(x)
+    lapply(x$Content,
+           function(y) list(content = y,
+                            uri = NULL))
 
 eoi <- function(x) UseMethod("eoi", x)
-eoi.Source <- function(x) x$Length <= x$Position
+eoi.SimpleSource <- function(x) x$Length <= x$Position

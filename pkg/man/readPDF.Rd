@@ -85,7 +85,7 @@ if(all(file.exists(Sys.which(c("pdfinfo", "pdftotext"))))) {
                                                      id = "id1")
     pdf[1:13]
 }
-Corpus(URISource(uri),
+Corpus(URISource(uri, mode = ""),
        readerControl = list(reader = readPDF(engine = "ghostscript")))
 }
 \author{Ingo Feinerer}

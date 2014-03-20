@@ -1,7 +1,8 @@
 \name{Source}
 \alias{Source}
+\alias{SimpleSource}
 \alias{eoi}
-\alias{eoi.Source}
+\alias{eoi.SimpleSource}
 \alias{getElem}
 \alias{getElem.DataframeSource}
 \alias{getElem.DirSource}
@@ -13,20 +14,19 @@
 \alias{pGetElem.DirSource}
 \alias{pGetElem.URISource}
 \alias{pGetElem.VectorSource}
-\alias{is.Source}
 \alias{Source}
 \alias{stepNext}
-\alias{stepNext.Source}
+\alias{stepNext.SimpleSource}
 \title{Create and Access Sources}
 \description{
   Create and access sources which abstract input locations, like a
   directory, a connection, or simply an \R vector.
 }
 \usage{
-Source(defaultReader = readPlain, encoding = "unknown", length = NA_integer_,
-       names = NA_character_, position = 0, vectorized = TRUE, class)
-is.Source(x)
-\method{eoi}{Source}(x)
+SimpleSource(defaultReader = readPlain, encoding = "unknown",
+             length = NA_integer_, names = NA_character_, position = 0,
+             vectorized = TRUE, \dots, class)
+\method{eoi}{SimpleSource}(x)
 \method{getElem}{DataframeSource}(x)
 \method{getElem}{DirSource}(x)
 \method{getElem}{URISource}(x)
@@ -36,7 +36,7 @@ is.Source(x)
 \method{pGetElem}{DirSource}(x)
 \method{pGetElem}{URISource}(x)
 \method{pGetElem}{VectorSource}(x)
-\method{stepNext}{Source}(x)
+\method{stepNext}{SimpleSource}(x)
 }
 \arguments{
   \item{x}{a source.}
@@ -57,9 +57,6 @@ is.Source(x)
   custom sources. Internally a source is represented as a \code{list} with the
   class attribute \code{Source}. Custom sources may extend the internal list
   structure with additional named components.
-
-  The function \code{is.Source} returns \code{TRUE} for a valid source and
-  \code{FALSE} otherwise.
 
   Each source must provide implementations for the three interface functions
   \code{eoi}, \code{getElem}, and \code{stepNext}. If \code{vectorized} is set

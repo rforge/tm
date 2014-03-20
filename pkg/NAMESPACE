@@ -33,7 +33,6 @@ export("as.PlainTextDocument",
        "getTransformations",
        "ID",
        "inspect",
-       "is.Source",
        "Language",
        "LocalMetaData",
        "MC_tokenizer",
@@ -68,7 +67,7 @@ export("as.PlainTextDocument",
        "RCV1Document",
        "Reuters21578Document",
        "scan_tokenizer",
-       "Source",
+       "SimpleSource",
        "stemCompletion",
        "stemDocument",
        "stopwords",
@@ -162,8 +161,8 @@ S3method("as.PlainTextDocument", "RCV1Document")
 
 S3method("as.PlainTextDocument", "Reuters21578Document")
 
-S3method("eoi", "Source")
-S3method("stepNext", "Source")
+S3method("eoi", "SimpleSource")
+S3method("stepNext", "SimpleSource")
 
 S3method("c", "TermDocumentMatrix")
 S3method("[", "TermDocumentMatrix")

@@ -9,8 +9,8 @@
 ReutersSource(x, encoding = "unknown")
 }
 \arguments{
-  \item{x}{Either a character identifying the file or a connection.}
-  \item{encoding}{encoding to be assumed for input strings.  It is used to mark
+  \item{x}{A Uniform Resource Identifier.}
+  \item{encoding}{encoding to be assumed for input strings. It is used to mark
     character strings as known to be in Latin-1 or UTF-8: it is not used to
     re-encode the input.}
 }

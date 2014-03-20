@@ -1,23 +1,22 @@
 \name{URISource}
 \alias{URISource}
 \title{Uniform Resource Identifier Source}
-\description{  
-  Constructs a source which represents documents located by a
-  uniform resource identifier.
+\description{
+  Constructs a source which represents documents located by a uniform resource
+  identifier.
 }
 \usage{
-URISource(x, encoding = "unknown")
+URISource(x, encoding = "unknown", mode = "text")
 }
 \arguments{
-  \item{x}{A vector of Uniform Resource Identifier, i.e., either a
-    character identifying the file or a connection.}
-  \item{encoding}{encoding to be assumed for input strings.  It is used to mark
+  \item{x}{A vector of Uniform Resource Identifiers.}
+  \item{encoding}{encoding to be assumed for input strings. It is used to mark
     character strings as known to be in Latin-1 or UTF-8: it is not used to
     re-encode the input.}
 }
 \value{
   An object of class \code{URISource} which extends the class
-  \code{Source} representing documents located by a URI.
+  \code{Source} representing documents located by a \acronym{URI}.
 }
 \author{Ingo Feinerer}
 \seealso{
@@ -28,6 +27,6 @@ URISource(x, encoding = "unknown")
 \examples{
 loremipsum <- system.file("texts", "loremipsum.txt", package = "tm")
 ovid <- system.file("texts", "txt", "ovid_1.txt", package = "tm")
-us <- URISource(c(loremipsum, ovid))
+us <- URISource(sprintf("file://\%s", c(loremipsum, ovid)))
 inspect(Corpus(us))
 }
