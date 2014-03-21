@@ -5,7 +5,12 @@ CMetaData <- function(x) UseMethod("CMetaData", x)
 CMetaData.Corpus <- function(x) attr(x, "CMetaData")
 
 # Node ID, actual meta data, and possibly other nodes as children
-.MetaDataNode <- function(nodeid = 0, meta = list(create_date = as.POSIXlt(Sys.time(), tz = "GMT"), creator = Sys.getenv("LOGNAME")), children = NULL) {
+.MetaDataNode <-
+function(nodeid = 0,
+         meta = list(create_date = as.POSIXlt(Sys.time(), tz = "GMT"),
+                     creator = Sys.getenv("LOGNAME")),
+         children = NULL)
+{
     structure(list(NodeID = nodeid, MetaData = meta, Children = children),
               class = "MetaDataNode")
 }
@@ -156,7 +161,7 @@ prescindMeta <- function(x, meta) {
     df <- DMetaData(x)
 
     for (m in meta)
-        df <- cbind(df, structure(data.frame(I(meta(x, tag = m, type = "local"))), names = m))
+        df <- cbind(df, setNames(data.frame(I(meta(x, tag = m, type = "local"))), m))
 
     df
 }

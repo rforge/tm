@@ -219,7 +219,7 @@ function(doc, control = list())
 
     ## Check if the document content is NULL
     if (is.null(txt))
-        return(structure(integer(0), names = character(0)))
+        return(setNames(integer(0), character(0)))
 
     ## If dictionary is set tabulate against it
     dictionary <- control$dictionary
@@ -241,7 +241,9 @@ function(doc, control = list())
     tab <- tab[(nc >= lb) & (nc <= ub)]
 
     ## Return named integer
-    structure(as.integer(tab), names = names(tab), class = c("term_frequency", "integer"))
+    structure(as.integer(tab),
+              names = names(tab),
+              class = c("term_frequency", "integer"))
 }
 
 print.TermDocumentMatrix <-

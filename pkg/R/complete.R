@@ -29,7 +29,7 @@ function(x, dictionary,
                                                       value = TRUE))
     switch(type,
            first = {
-               structure(sapply(possibleCompletions, "[", 1), names = x)
+               setNames(sapply(possibleCompletions, "[", 1), x)
            },
            longest = {
                ordering <-
@@ -38,29 +38,29 @@ function(x, dictionary,
                possibleCompletions <-
                    mapply(function(x, id) x[id], possibleCompletions,
                           ordering, SIMPLIFY = FALSE)
-               structure(sapply(possibleCompletions, "[", 1), names = x)
+               setNames(sapply(possibleCompletions, "[", 1), x)
            },
            none = {
-               structure(x, names = x)
+               setNames(x, x)
            },
            prevalent = {
                possibleCompletions <-
                    lapply(possibleCompletions,
                           function(x) sort(table(x), decreasing = TRUE))
                n <- names(sapply(possibleCompletions, "[", 1))
-               structure(if (length(n)) n else NA, names = x)
+               setNames(if (length(n)) n else NA, x)
            },
            random = {
-               structure(sapply(possibleCompletions, function(x) {
+               setNames(sapply(possibleCompletions, function(x) {
                    if (length(x)) sample(x, 1) else NA
-               }), names = x)
+               }), x)
            },
            shortest = {
                ordering <- lapply(possibleCompletions, function(x) order(nchar(x)))
                possibleCompletions <-
                    mapply(function(x, id) x[id], possibleCompletions,
                           ordering, SIMPLIFY = FALSE)
-               structure(sapply(possibleCompletions, "[", 1), names = x)
+               setNames(sapply(possibleCompletions, "[", 1), x)
            }
            )
 }
