@@ -1,8 +1,10 @@
 ## Author: Ingo Feinerer
 ## Sources
 
-getSources <- function()
-   c("DataframeSource", "DirSource", "ReutersSource","URISource", "VectorSource")
+getSources <-
+function()
+   c("DataframeSource", "DirSource", "ReutersSource", "URISource",
+     "VectorSource")
 
 SimpleSource <-
 function(defaultReader = readPlain,
@@ -54,7 +56,13 @@ function(x, encoding = "unknown")
 # A directory with files
 DirSource <-
 function(directory = ".", encoding = "unknown", pattern = NULL,
-         recursive = FALSE, ignore.case = FALSE, mode = "text") {
+         recursive = FALSE, ignore.case = FALSE, mode = "text")
+{
+    if (!identical(mode, "text") &&
+        !identical(mode, "binary") &&
+        !identical(mode, ""))
+        stop(sprintf("invalid mode '%s'", mode))
+
     d <- dir(directory, full.names = TRUE, pattern = pattern,
              recursive = recursive, ignore.case = ignore.case)
 
@@ -76,8 +84,15 @@ function(directory = ".", encoding = "unknown", pattern = NULL,
 # Documents identified by a Uniform Resource Identifier
 URISource <-
 function(x, encoding = "unknown", mode = "text")
+{
+    if (!identical(mode, "text") &&
+        !identical(mode, "binary") &&
+        !identical(mode, ""))
+        stop(sprintf("invalid mode '%s'", mode))
+
     SimpleSource(encoding = encoding, length = length(x), URI = x, Mode = mode,
                  class = "URISource")
+}
 
 ReutersSource <- function(x, encoding = "unknown")
     XMLSource(x, function(tree) XML::xmlChildren(XML::xmlRoot(tree)),
@@ -105,9 +120,11 @@ function(x, encoding, mode)
 {
     if (identical(mode, "text"))
         readLines(x, encoding = encoding)
-    # TODO: else if (identical(x$Mode, "binary")) ...
+    # TODO: else if (identical(mode, "binary")) ...
     else if (identical(mode, ""))
         NULL
+    else
+        stop("invalid mode")
 }
 
 getElem <- function(x) UseMethod("getElem", x)
