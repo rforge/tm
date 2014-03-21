@@ -65,7 +65,8 @@ function(x, control = list())
     allTerms <- sort(unique(if (is.null(control$dictionary)) i else control$dictionary))
     i <- match(i, allTerms)
     j <- rep(seq_along(x), sapply(tflist, length))
-    docs <- as.character(unlist(lapply(x, ID)))
+    # TODO: Better use meta(x, "ID", type = "local")?
+    docs <- as.character(unlist(lapply(x, function(y) meta(y, "ID"))))
     if (length(docs) != length(x)) {
         warning("invalid document identifiers")
         docs <- NULL
@@ -161,7 +162,7 @@ function(doc, control = list())
 {
     stopifnot(inherits(doc, "TextDocument"), is.list(control))
 
-    txt <- Content(doc)
+    txt <- content(doc)
 
     ## Conversion to lower characters
     .tolower <- control$tolower
@@ -196,14 +197,14 @@ function(doc, control = list())
     ## Stopword filtering
     .stopwords <- control$stopwords
     if (isTRUE(.stopwords))
-        .stopwords <- function(x) x[is.na(match(x, stopwords(Language(doc))))] 
+        .stopwords <- function(x) x[is.na(match(x, stopwords(meta(doc, "Language"))))] 
     else if (is.character(.stopwords))
         .stopwords <- function(x) x[is.na(match(x, control$stopwords))]
 
     ## Stemming
     .stemming <- control$stemming
     if (isTRUE(.stemming))
-        .stemming <- function(x) stemDocument(x, Language(doc))
+        .stemming <- function(x) stemDocument(x, meta(doc, "Language"))
 
     ## Default order for options which support reordering
     or <- c("removePunctuation", "removeNumbers", "stopwords", "stemming")

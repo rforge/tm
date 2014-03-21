@@ -48,9 +48,9 @@ function(x,
             else
                 x$Names[counter]
         doc <- readerControl$reader(elem, readerControl$language, id)
-        filehash::dbInsert(db, ID(doc), doc)
-        if (x$Length > 0) tdl[[counter]] <- ID(doc)
-        else tdl <- c(tdl, ID(doc))
+        filehash::dbInsert(db, meta(doc, "ID"), doc)
+        if (x$Length > 0) tdl[[counter]] <- meta(doc, "ID")
+        else tdl <- c(tdl, meta(doc, "ID"))
         counter <- counter + 1
     }
     if (!is.null(x$Names) && !is.na(x$Names))
@@ -397,7 +397,7 @@ writeCorpus <-
 function(x, path = ".", filenames = NULL)
 {
     filenames <- file.path(path,
-                           if (is.null(filenames)) unlist(lapply(x, function(x) sprintf("%s.txt", ID(x))))
+                           if (is.null(filenames)) unlist(lapply(x, function(x) sprintf("%s.txt", meta(x, "ID"))))
                            else filenames)
     i <- 1
     for (o in x) {

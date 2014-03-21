@@ -11,7 +11,7 @@ function(x, dictionary,
                   "none", "random", "shortest"))
 {
     tokens <- scan_tokenizer(x)
-    Content(x) <- paste(stemCompletion.character(tokens, dictionary, type),
+    content(x) <- paste(stemCompletion.character(tokens, dictionary, type),
                         collapse = " ")
     x
 }

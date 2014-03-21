@@ -1,5 +1,30 @@
 # Author: Ingo Feinerer
 
+TextDocumentMeta <-
+function(author, datetimestamp, description, heading, id, language, origin, ...)
+{
+    structure(list(Author = as.person(author),
+                   DateTimeStamp = as.POSIXlt(datetimestamp, tz = "GMT"),
+                   Description = as.character(description),
+                   Heading = as.character(heading),
+                   ID = as.character(id),
+                   Language = as.character(language),
+                   Origin = as.character(origin),
+                   ...),
+              class = "TextDocumentMeta")
+}
+
+print.TextDocumentMeta <-
+function(x, ...)
+{
+    cat("Meta data:\n")
+    cat(sprintf("  %s: %s",
+                format(names(x), justify = "left"),
+                sapply(x, as.character)),
+        sep = "\n")
+    invisible(x)
+}
+
 # CMetaData = *MetaData* describing only the Document *C*ollection itself
 CMetaData <- function(x) UseMethod("CMetaData", x)
 CMetaData.Corpus <- function(x) attr(x, "CMetaData")
@@ -52,21 +77,13 @@ meta.Corpus <- function(x, tag, type = c("indexed", "corpus", "local")) {
     if (identical(type, "local"))
         return(lapply(x, meta, tag))
 }
-meta.TextDocument <- function(x, tag, type = NULL) {
-    if (missing(tag)) {
-        attrs <- sort(setdiff(names(attributes(x)), c("class", "LocalMetaData")))
-        cat("Available meta data pairs are:\n")
-        for (a in attrs)
-            cat(sprintf("  %-13s: %s\n", a, paste(as.character(attr(x, a)), collapse = " ")))
-        if (length(LocalMetaData(x))) {
-            cat("User-defined local meta data pairs are:\n")
-            print(LocalMetaData(x))
-        }
-    }
-    else {
-        if (tag %in% names(attributes(x))) attr(x, tag)
-        else LocalMetaData(x)[[tag]]
-    }
+meta.TextDocument <-
+function(x, tag, type = NULL)
+{
+    if (missing(tag))
+        x$meta
+    else
+        x$meta[[tag]]
 }
 meta.TextRepository <- function(x, tag, type = NULL) {
     if (missing(tag))
@@ -89,11 +106,10 @@ meta.TextRepository <- function(x, tag, type = NULL) {
         attr(x, "CMetaData")$MetaData[[tag]] <- value
     x
 }
-`meta<-.TextDocument` <- function(x, tag, type = NULL, value) {
-    if (tag %in% setdiff(names(attributes(x)), "Content"))
-        attr(x, tag) <- value
-    else
-        attr(x, "LocalMetaData")[[tag]] <- value
+`meta<-.TextDocument` <-
+function(x, tag, type = NULL, value)
+{
+    x$meta[[tag]] <- value
     x
 }
 `meta<-.TextRepository` <- function(x, tag, type = NULL, value) {
@@ -103,7 +119,7 @@ meta.TextRepository <- function(x, tag, type = NULL) {
 
 `content_meta<-` <- function(x, tag, value) {
     if (identical(tag, "Content"))
-        Content(x) <- value
+        content(x) <- value
     else
         meta(x, tag) <- value
     x

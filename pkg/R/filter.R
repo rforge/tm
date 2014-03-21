@@ -19,17 +19,17 @@ tm_index.Corpus <- function(x, ..., FUN, doclevel = TRUE, useMeta = FALSE) {
         return(FUN(x, ...))
 }
 
-sFilter <- function(x, s) {
-    con <- textConnection(s)
-    tokens <- scan(con, "character", quiet = TRUE)
-    close(con)
-    localMetaNames <- unique(unlist(lapply(x, function(y) names(LocalMetaData(y)))))
-    localMetaTokens <- localMetaNames[localMetaNames %in% tokens]
-    tags <- c("Author", "DateTimeStamp", "Description", "ID", "Origin", "Heading", "Language")
-    query.df <- prescindMeta(x, c(tags, localMetaTokens))
-    # Rename to avoid name conflicts
-    for (tag in tags)
-        names(query.df)[names(query.df) == tag] <- tolower(tag)
-    eval(parse(text = s), envir = query.df)
-}
-attr(sFilter, "doclevel") <- FALSE
+#sFilter <- function(x, s) {
+#    con <- textConnection(s)
+#    tokens <- scan(con, "character", quiet = TRUE)
+#    close(con)
+#    localMetaNames <- unique(unlist(lapply(x, function(y) names(LocalMetaData(y)))))
+#    localMetaTokens <- localMetaNames[localMetaNames %in% tokens]
+#    tags <- c("Author", "DateTimeStamp", "Description", "ID", "Origin", "Heading", "Language")
+#    query.df <- prescindMeta(x, c(tags, localMetaTokens))
+#    # Rename to avoid name conflicts
+#    for (tag in tags)
+#        names(query.df)[names(query.df) == tag] <- tolower(tag)
+#    eval(parse(text = s), envir = query.df)
+#}
+#attr(sFilter, "doclevel") <- FALSE

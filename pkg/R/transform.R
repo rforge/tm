@@ -26,7 +26,7 @@ tm_map.VCorpus <- function(x, FUN, ..., useMeta = FALSE, lazy = FALSE) {
         }
     }
     else {
-        Content(result) <- if (useMeta)
+        content(result) <- if (useMeta)
                 parallel::mclapply(x, FUN, ..., DMetaData = DMetaData(x))
             else
                 parallel::mclapply(x, FUN, ...)
@@ -80,24 +80,26 @@ getTransformations <- function()
     c("as.PlainTextDocument", "removeNumbers", "removePunctuation",
       "removeWords", "stemDocument", "stripWhitespace")
 
-as.PlainTextDocument <- function(x) UseMethod("as.PlainTextDocument", x)
-as.PlainTextDocument.PlainTextDocument <- identity
-as.PlainTextDocument.RCV1Document <- function(x) {
-    Content(x) <- unlist(XML::xmlApply(XML::xmlRoot(x)[["text"]], XML::xmlValue), use.names = FALSE)
-    class(x) <- c("PlainTextDocument", "TextDocument", "character")
-    x
-}
-as.PlainTextDocument.Reuters21578Document <- function(x) {
-    Content(x) <- unlist(XML::xmlApply(XML::xmlRoot(x)[["TEXT"]], XML::xmlValue), use.names = FALSE)
-    class(x) <- c("PlainTextDocument", "TextDocument", "character")
-    x
-}
+# Wrapper for transformation generation
+genMap <-
+function(FUN)
+    function(x, ...) {
+        content(x) <- FUN(x, ...)
+        x
+    }
 
-removeNumbers <- function(x) UseMethod("removeNumbers", x)
-removeNumbers.PlainTextDocument <- removeNumbers.character <- function(x) gsub("[[:digit:]]+", "", x)
+removeNumbers <-
+function(x)
+    UseMethod("removeNumbers", x)
+removeNumbers.character <-
+function(x)
+    gsub("[[:digit:]]+", "", x)
+removeNumbers.PlainTextDocument <- genMap(removeNumbers.character)
 
-removePunctuation <- function(x, preserve_intra_word_dashes = FALSE) UseMethod("removePunctuation", x)
-removePunctuation.PlainTextDocument <- removePunctuation.character <-
+removePunctuation <-
+function(x, preserve_intra_word_dashes = FALSE)
+    UseMethod("removePunctuation", x)
+removePunctuation.character <-
 function(x, preserve_intra_word_dashes = FALSE)
 {
     if (!preserve_intra_word_dashes)
@@ -109,20 +111,39 @@ function(x, preserve_intra_word_dashes = FALSE)
         gsub("\1", "-", x, fixed = TRUE)
     }
 }
+removePunctuation.PlainTextDocument <- genMap(removePunctuation.character)
 
-removeWords <- function(x, words) UseMethod("removeWords", x)
+removeWords <-
+function(x, words)
+    UseMethod("removeWords", x)
 # Improvements by Kurt Hornik
-removeWords.PlainTextDocument <- removeWords.character <- function(x, words)
-    gsub(sprintf("(*UCP)\\b(%s)\\b", paste(words, collapse = "|")), "", x, perl = TRUE)
+removeWords.character <-
+function(x, words)
+    gsub(sprintf("(*UCP)\\b(%s)\\b", paste(words, collapse = "|")), "", x,
+         perl = TRUE)
+removeWords.PlainTextDocument <- genMap(removeWords.character)
 
-stemDocument <- function(x, language = "english") UseMethod("stemDocument", x)
-stemDocument.character <- function(x, language = "english")
+stemDocument <-
+function(x, language = "english")
+    UseMethod("stemDocument", x)
+stemDocument.character <-
+function(x, language = "english")
     SnowballC::wordStem(x, language)
-stemDocument.PlainTextDocument <- function(x, language = Language(x)) {
-    s <- unlist(lapply(x, function(x) paste(stemDocument.character(unlist(strsplit(x, "[[:blank:]]")), language), collapse = " ")))
-    Content(x) <- if (is.character(s)) s else ""
+stemDocument.PlainTextDocument <-
+function(x, language = meta(x, "Language"))
+{
+    s <- unlist(lapply(content(x),
+      function(x) paste(stemDocument.character(unlist(strsplit(x, "[[:blank:]]")),
+                                               language),
+                        collapse = " ")))
+    content(x) <- if (is.character(s)) s else ""
     x
 }
 
-stripWhitespace <- function(x) UseMethod("stripWhitespace", x)
-stripWhitespace.PlainTextDocument <- stripWhitespace.character <- function(x) gsub("[[:space:]]+", " ", x)
+stripWhitespace <-
+function(x)
+    UseMethod("stripWhitespace", x)
+stripWhitespace.character <-
+function(x)
+    gsub("[[:space:]]+", " ", x)
+stripWhitespace.PlainTextDocument <- genMap(stripWhitespace.character)
