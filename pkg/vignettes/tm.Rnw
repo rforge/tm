@@ -207,8 +207,8 @@ document. Alternatively to \code{meta()} the function
 meta data and \pkg{tm} meta data structures and can be similarly used
 to get and set meta data information for text documents, e.g.:
 <<DublinCore>>=
-#DublinCore(crude[[1]], "Creator") <- "Ano Nymous"
-#meta(crude[[1]])
+DublinCore(crude[[1]], "Creator") <- "Ano Nymous"
+meta(crude[[1]])
 @
 
 For corpora the story is a bit more difficult. Corpora in \pkg{tm}

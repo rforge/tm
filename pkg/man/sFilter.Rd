@@ -29,7 +29,7 @@ sFilter(x, s)
 }
 \examples{
 data("crude")
-sFilter(crude, "id == '127' & heading == 'DIAMOND SHAMROCK (DIA) CUTS CRUDE PRICES'")
-sFilter(crude, "Places == 'usa'")
+#sFilter(crude, "id == '127' & heading == 'DIAMOND SHAMROCK (DIA) CUTS CRUDE PRICES'")
+#sFilter(crude, "Places == 'usa'")
 }
 \author{Ingo Feinerer}

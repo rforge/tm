@@ -84,7 +84,7 @@ getTransformations <- function()
 genMap <-
 function(FUN)
     function(x, ...) {
-        content(x) <- FUN(x, ...)
+        content(x) <- FUN(content(x), ...)
         x
     }
 

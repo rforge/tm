@@ -19,6 +19,4 @@ function(x)
 
 scan_tokenizer <-
 function(x)
-{
     scan(text = x, what = "character", quote = "", quiet = TRUE)
-}

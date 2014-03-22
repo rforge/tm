@@ -33,9 +33,9 @@ scan_tokenizer(x)
 }
 \examples{
 data("crude")
-MC_tokenizer(crude[[1]])
-scan_tokenizer(crude[[1]])
+MC_tokenizer(content(crude[[1]]))
+scan_tokenizer(content(crude[[1]]))
 strsplit_space_tokenizer <- function(x) unlist(strsplit(x, "[[:space:]]+"))
-strsplit_space_tokenizer(crude[[1]])
+strsplit_space_tokenizer(content(crude[[1]]))
 }
 \author{Ingo Feinerer}

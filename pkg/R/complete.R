@@ -10,7 +10,7 @@ function(x, dictionary,
          type = c("prevalent", "first", "longest",
                   "none", "random", "shortest"))
 {
-    tokens <- scan_tokenizer(x)
+    tokens <- scan_tokenizer(content(x))
     content(x) <- paste(stemCompletion.character(tokens, dictionary, type),
                         collapse = " ")
     x
@@ -20,8 +20,10 @@ function(x, dictionary,
          type = c("prevalent", "first", "longest",
                   "none", "random", "shortest"))
 {
+    # TODO: Use words() instead of manual splitting
     if (inherits(dictionary, "Corpus"))
-        dictionary <- unlist(lapply(dictionary, strsplit, "[^[:alnum:]]+"))
+        dictionary <- unlist(lapply(dictionary,
+          function(x) strsplit(content(x), "[^[:alnum:]]+")))
 
     type <- match.arg(type)
     possibleCompletions <- lapply(x, function(w) grep(sprintf("^%s", w),
