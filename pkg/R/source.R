@@ -115,12 +115,36 @@ stepNext.SimpleSource <- function(x) {
     x
 }
 
+# tau:::read_all_bytes
+read_all_bytes <-
+function(con, chunksize = 2 ^ 16)
+{
+    if(is.character(con)) {
+        return(readBin(con, raw(), file.info(con)$size))
+    }
+
+    if(!isOpen(con)) {
+        open(con, "rb")
+        on.exit(close(con))
+    }
+
+    bytes <- list()
+    repeat {
+        chunk <- readBin(con, raw(), chunksize)
+        bytes <- c(bytes, list(chunk))
+        if(length(chunk) < chunksize) break
+    }
+
+    unlist(bytes)
+}
+
 readContent <-
 function(x, encoding, mode)
 {
     if (identical(mode, "text"))
         readLines(x, encoding = encoding)
-    # TODO: else if (identical(mode, "binary")) ...
+    else if (identical(mode, "binary"))
+        read_all_bytes(x)
     else if (identical(mode, ""))
         NULL
     else
