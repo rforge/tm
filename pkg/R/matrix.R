@@ -62,11 +62,11 @@ function(x, control = list())
 
     v <- unlist(tflist)
     i <- names(v)
-    allTerms <- sort(unique(if (is.null(control$dictionary)) i else control$dictionary))
+    allTerms <-
+        sort(unique(if (is.null(control$dictionary)) i else control$dictionary))
     i <- match(i, allTerms)
     j <- rep(seq_along(x), sapply(tflist, length))
-    # TODO: Better use meta(x, "ID", type = "local")?
-    docs <- as.character(unlist(lapply(x, function(y) meta(y, "ID"))))
+    docs <- as.character(unlist(meta(x, "ID", "local")))
     if (length(docs) != length(x)) {
         warning("invalid document identifiers")
         docs <- NULL

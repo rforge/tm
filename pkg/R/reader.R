@@ -146,10 +146,11 @@ readTabular <- FunctionGenerator(function(mapping) {
     function(elem, language, id) {
         doc <- PlainTextDocument(id = id, language = language)
         for (n in names(mapping)) {
+            ec <- elem$content[, mapping[[n]]]
             if (identical(n, "Content"))
-                content(doc) <- value
+                content(doc) <- ec
             else
-                meta(doc, n) <- elem$content[, mapping[[n]]]
+                meta(doc, n) <- ec
         }
         doc
     }
