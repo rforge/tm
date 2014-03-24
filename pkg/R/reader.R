@@ -144,14 +144,11 @@ FunctionGenerator(function(engine = c("xpdf", "Rpoppler", "ghostscript",
 readTabular <- FunctionGenerator(function(mapping) {
     mapping <- mapping
     function(elem, language, id) {
-        doc <- PlainTextDocument(id = id, language = language)
-        for (n in names(mapping)) {
-            ec <- elem$content[, mapping[[n]]]
-            if (identical(n, "Content"))
-                content(doc) <- ec
-            else
-                meta(doc, n) <- ec
-        }
+        doc <- PlainTextDocument(
+          content = as.character(elem$content[, mapping[["Content"]]]),
+          id = id, language = language)
+        for (n in setdiff(names(mapping), "Content"))
+            meta(doc, n) <- elem$content[, mapping[[n]]]
         doc
     }
 })
