@@ -63,19 +63,30 @@ DMetaData.PCorpus <- function(x) {
     x
 }
 
-meta <- function(x, tag, type = NULL) UseMethod("meta", x)
-meta.Corpus <- function(x, tag, type = c("indexed", "corpus", "local")) {
+meta <-
+function(x, tag, type = NULL)
+    UseMethod("meta", x)
+meta.Corpus <-
+function(x, tag, type = c("indexed", "corpus", "local"))
+{
+    if (!missing(tag) && missing(type)) {
+        type <- if (tag %in% colnames(DMetaData(x)))
+            "indexed"
+        else if (tag %in% names(CMetaData(x)$MetaData))
+            "corpus"
+        else
+            "local"
+    }
     type <- match.arg(type)
     if (identical(type, "indexed"))
-        return(DMetaData(x)[tag])
-    if (missing(tag) && identical(type, "corpus"))
-        return(CMetaData(x))
-    if (identical(type, "corpus"))
-        return(CMetaData(x)$MetaData[[tag]])
-    if (missing(tag) && identical(type, "local"))
-        return(invisible(lapply(x, meta)))
-    if (identical(type, "local"))
-        return(lapply(x, meta, tag))
+        DMetaData(x)[tag]
+    else if (identical(type, "corpus")) {
+        if (missing(tag))
+            CMetaData(x)
+        else
+            CMetaData(x)$MetaData[[tag]]
+    } else if (identical(type, "local"))
+        lapply(x, meta, tag)
 }
 meta.TextDocument <-
 function(x, tag, type = NULL)
@@ -92,11 +103,13 @@ meta.TextRepository <- function(x, tag, type = NULL) {
         RepoMetaData(x)[[tag]]
 }
 
-`meta<-` <- function(x, tag, type = NULL, value) UseMethod("meta<-", x)
-`meta<-.Corpus` <- function(x, tag, type = c("indexed", "corpus", "local"), value) {
+`meta<-` <-
+function(x, tag, type = NULL, value)
+    UseMethod("meta<-", x)
+`meta<-.Corpus` <-
+function(x, tag, type = c("indexed", "corpus", "local"), value)
+{
     type <- match.arg(type)
-    if ((type != "indexed") && (type != "corpus") && (type != "local"))
-        stop("invalid type")
     if (identical(type, "indexed"))
         DMetaData(x)[, tag] <- value
     else if (identical(type, "local"))
@@ -114,14 +127,6 @@ function(x, tag, type = NULL, value)
 }
 `meta<-.TextRepository` <- function(x, tag, type = NULL, value) {
     attr(x, "RepoMetaData")[[tag]] <- value
-    x
-}
-
-`content_meta<-` <- function(x, tag, value) {
-    if (identical(tag, "Content"))
-        content(x) <- value
-    else
-        meta(x, tag) <- value
     x
 }
 
@@ -171,13 +176,4 @@ DublinCore <- function(x, tag = NULL) {
     DCtm <- Dublin_Core_tm(tag)
     meta(x, DCtm$tag) <- value
     x
-}
-
-prescindMeta <- function(x, meta) {
-    df <- DMetaData(x)
-
-    for (m in meta)
-        df <- cbind(df, setNames(data.frame(I(meta(x, tag = m, type = "local"))), m))
-
-    df
 }
