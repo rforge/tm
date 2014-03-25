@@ -298,7 +298,7 @@ function(..., recursive = FALSE)
     if (recursive)
         Reduce(c2, args)
     else {
-        args <- do.call("c", lapply(args, unclass))
+        args <- do.call("c", lapply(args, content))
         .VCorpus(args,
                  CorpusMeta(),
                  data.frame(MetaID = rep(0, length(args)),
@@ -318,9 +318,10 @@ function(..., recursive = FALSE)
     if (!all(unlist(lapply(args, inherits, class(x)))))
         stop("not all arguments are text documents")
 
-    dmeta <- data.frame(MetaID = rep(0, length(args)),
-                        stringsAsFactors = FALSE)
-    .VCorpus(args, CorpusMeta(), dmeta)
+    .VCorpus(args,
+             CorpusMeta(),
+             data.frame(MetaID = rep(0, length(args)),
+                        stringsAsFactors = FALSE))
 }
 
 content.Corpus <-

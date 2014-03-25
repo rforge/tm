@@ -40,7 +40,7 @@
 \examples{
 data("acq")
 data("crude")
-summary(c(acq, crude))
-summary(c(acq[[30]], crude[[10]]))
+c(acq, crude)
+c(acq[[30]], crude[[10]])
 c(TermDocumentMatrix(acq), TermDocumentMatrix(crude))
 }

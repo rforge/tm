@@ -21,6 +21,6 @@
 }
 \examples{
 data("acq")
-summary(acq)
+acq
 }
 \keyword{datasets}

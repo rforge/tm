@@ -69,10 +69,9 @@ unavailable).
 E.g., a simple source which accepts an \proglang{R} vector as input could be
 defined as
 <<keep.source=TRUE>>=
-VecSource <- function(x) {
+VecSource <- function(x)
     SimpleSource(length = length(x), names = names(x), content = as.character(x),
-                 class = "VectorSource")
-}
+                 class = "VecSource")
 @
 which overrides a few defaults (see \code{?Source} for defaults) and stores the
 vector in the \code{Content} list component. The functions \code{stepNext()} and
@@ -82,9 +81,9 @@ comparing the current position with the number of available elements as claimed
 by \code{Length}, respectively), so we only need custom methods for element
 access:
 <<keep.source=TRUE>>=
-getElem.VectorSource <-
+getElem.VecSource <-
 function(x) list(content = x$content[x$position], uri = NULL)
-pGetElem.VectorSource <-
+pGetElem.VecSource <-
 function(x) lapply(x$content, function(y) list(content = y, uri = NULL))
 @
 
@@ -111,8 +110,7 @@ yield the reader with the expected signature.
 
 E.g., the reader function \code{readPlain()} is defined as
 <<keep.source=TRUE>>=
-readPlain <-
-function(elem, language, id)
+readPlain <- function(elem, language, id)
     PlainTextDocument(elem$content, id = id, language = language)
 @
 For examples on readers using the function generator please have a look at
@@ -227,7 +225,8 @@ E.g., a custom source which can cope with our custom \acronym{XML}
 format could be:
 <<mySource,keep.source=TRUE>>=
 mySource <- function(x, encoding = "UTF-8")
-    XMLSource(x, function(tree) XML::xmlChildren(XML::xmlRoot(tree)), myXMLReader, encoding)
+    XMLSource(x, function(tree) XML::xmlChildren(XML::xmlRoot(tree)),
+              myXMLReader, encoding)
 @
 As you notice in this example we also provide a custom reader function
 (\code{myXMLReader}). See the next section for details.

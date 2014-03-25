@@ -102,7 +102,7 @@ XMLSource <- function(x, parser, reader, encoding = "unknown") {
     content <- parser(tree)
     XML::free(tree)
 
-    SimpleSource(defaultReader = reader, encoding = encoding,
+    SimpleSource(defaultreader = reader, encoding = encoding,
                  length = length(content), vectorized = FALSE,
                  content = content, uri = x, class = "XMLSource")
 }

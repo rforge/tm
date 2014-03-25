@@ -145,7 +145,7 @@ readTabular <- FunctionGenerator(function(mapping) {
     mapping <- mapping
     function(elem, language, id) {
         doc <- PlainTextDocument(
-            content = as.character(elem$content[, mapping[["content"]]]),
+            as.character(elem$content[, mapping[["content"]]]),
             id = id, language = language)
         for (n in setdiff(names(mapping), "content"))
             meta(doc, n) <- elem$content[, mapping[[n]]]

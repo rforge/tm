@@ -21,6 +21,6 @@
 }
 \examples{
 data("crude")
-summary(crude)
+crude
 }
 \keyword{datasets}
