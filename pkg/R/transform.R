@@ -9,9 +9,9 @@ tm_map.VCorpus <- function(x, FUN, ..., useMeta = FALSE, lazy = FALSE) {
         lazyTmMap <- meta(x, tag = "lazyTmMap", type = "corpus")
         local_fun <- local({
             useMeta <- useMeta
-            function(x, ..., DMetaData) {
+            function(x, ..., dmeta) {
                 if (useMeta)
-                    FUN(x, ..., DMetaData = DMetaData)
+                    FUN(x, ..., dmeta = dmeta)
                 else
                     FUN(x, ...)
             }
@@ -27,20 +27,20 @@ tm_map.VCorpus <- function(x, FUN, ..., useMeta = FALSE, lazy = FALSE) {
     }
     else {
         content(result) <- if (useMeta)
-                parallel::mclapply(x, FUN, ..., DMetaData = DMetaData(x))
+                parallel::mclapply(content(x), FUN, ..., dmeta = meta(x, type = "indexed"))
             else
-                parallel::mclapply(x, FUN, ...)
+                parallel::mclapply(content(x), FUN, ...)
     }
     result
 }
 tm_map.PCorpus <- function(x, FUN, ..., useMeta = FALSE, lazy = FALSE) {
     if (lazy)
         warning("lazy mapping is deactived when using database backend")
-    db <- filehash::dbInit(DBControl(x)[["dbName"]], DBControl(x)[["dbType"]])
+    db <- filehash::dbInit(x$dbcontrol[["dbName"]], x$dbcontrol[["dbType"]])
     i <- 1
     for (id in unlist(x)) {
         db[[id]] <- if (useMeta)
-            FUN(x[[i]], ..., DMetaData = DMetaData(x))
+            FUN(x[[i]], ..., dmeta = meta(x, type = "indexed"))
         else
             FUN(x[[i]], ...)
         i <- i + 1
@@ -61,7 +61,7 @@ materialize <- function(corpus, range = seq_along(corpus)) {
        if (any(idx)) {
            res <- unclass(corpus)[idx]
            for (m in lazyTmMap$maps)
-               res <- lapply(res, m, DMetaData = DMetaData(corpus))
+               res <- lapply(res, m, dmeta = meta(corpus, type = "indexed"))
            corpus[idx] <- res
            lazyTmMap$index[idx] <- FALSE
        }
@@ -130,7 +130,7 @@ stemDocument.character <-
 function(x, language = "english")
     SnowballC::wordStem(x, language)
 stemDocument.PlainTextDocument <-
-function(x, language = meta(x, "Language"))
+function(x, language = meta(x, "language"))
 {
     s <- unlist(lapply(content(x),
       function(x) paste(stemDocument.character(unlist(strsplit(x, "[[:blank:]]")),

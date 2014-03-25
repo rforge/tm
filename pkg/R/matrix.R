@@ -55,9 +55,7 @@ function(x, control = list())
     if (!is.null(lazyTmMap))
         .Call("copyCorpus", x, materialize(x))
 
-    names(x) <- NULL
-
-    tflist <- parallel::mclapply(x, termFreq, control)
+    tflist <- parallel::mclapply(unname(content(x)), termFreq, control)
     tflist <- lapply(tflist, function(y) y[y > 0])
 
     v <- unlist(tflist)

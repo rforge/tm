@@ -198,5 +198,9 @@ function(x)
            function(y) list(content = y,
                             uri = NULL))
 
-eoi <- function(x) UseMethod("eoi", x)
-eoi.SimpleSource <- function(x) x$length <= x$position
+eoi <-
+function(x)
+    UseMethod("eoi", x)
+eoi.SimpleSource <-
+function(x)
+    x$length <= x$position

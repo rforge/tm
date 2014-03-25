@@ -17,7 +17,7 @@ function(author, datetimestamp, description, heading, id, language, origin, ...)
 print.TextDocumentMeta <-
 function(x, ...)
 {
-    cat("Meta data:\n")
+    cat("Metadata:\n")
     cat(sprintf("  %s: %s",
                 format(names(x), justify = "left"),
                 sapply(x, as.character)),
@@ -25,68 +25,78 @@ function(x, ...)
     invisible(x)
 }
 
-# CMetaData = *MetaData* describing only the Document *C*ollection itself
-CMetaData <- function(x) UseMethod("CMetaData", x)
-CMetaData.Corpus <- function(x) attr(x, "CMetaData")
-
-# Node ID, actual meta data, and possibly other nodes as children
-.MetaDataNode <-
+# Node ID, actual metadata, and possibly other nodes as children
+CorpusMeta <-
 function(nodeid = 0,
-         meta = list(create_date = as.POSIXlt(Sys.time(), tz = "GMT"),
-                     creator = Sys.getenv("LOGNAME")),
+         value = list(create_date = as.POSIXlt(Sys.time(), tz = "GMT"),
+                      creator = Sys.getenv("LOGNAME")),
          children = NULL)
 {
-    structure(list(NodeID = nodeid, MetaData = meta, Children = children),
-              class = "MetaDataNode")
+    structure(list(nodeid = nodeid, value = value, children = children),
+              class = "CorpusMeta")
 }
-print.MetaDataNode <- function(x, ...) print(x$MetaData)
 
-DMetaData <- function(x) UseMethod("DMetaData", x)
-DMetaData.VCorpus <- function(x) attr(x, "DMetaData")
-DMetaData.PCorpus <- function(x) {
-    db <- filehash::dbInit(DBControl(x)[["dbName"]], DBControl(x)[["dbType"]])
-    result <- filehash::dbFetch(db, "DMetaData")
-    index <- attr(x, "DMetaData")[[1, "subset"]]
+print.CorpusMeta <-
+function(x, ...)
+    print(x$value)
+
+CorpusDMeta <-
+function(x)
+    UseMethod("CorpusDMeta", x)
+CorpusDMeta.VCorpus <-
+function(x)
+    x$dmeta
+CorpusDMeta.PCorpus <-
+function(x)
+{
+    db <- filehash::dbInit(x$dbcontrol[["dbName"]], x$dbcontrol[["dbType"]])
+    result <- filehash::dbFetch(db, "CorpusDMeta")
+    index <- x$dmeta[[1, "subset"]]
     if (!any(is.na(index)))
         result <- result[index, , drop = FALSE]
     result
 }
-`DMetaData<-` <- function(x, value) UseMethod("DMetaData<-", x)
-`DMetaData<-.PCorpus` <- function(x, value) {
-    db <- filehash::dbInit(DBControl(x)[["dbName"]], DBControl(x)[["dbType"]])
-    db[["DMetaData"]] <- value
-    attr(x, "DMetaData")[[1, "subset"]] <- NA
+
+`CorpusDMeta<-` <-
+function(x, value)
+    UseMethod("CorpusDMeta<-", x)
+`CorpusDMeta<-.PCorpus` <- function(x, value) {
+    db <- filehash::dbInit(x$dbcontrol[["dbName"]], x$dbcontrol[["dbType"]])
+    db[["CorpusDMeta"]] <- value
+    x$dmeta[[1, "subset"]] <- NA
     x
 }
-`DMetaData<-.VCorpus` <- function(x, value) {
-    attr(x, "DMetaData") <- value
+`CorpusDMeta<-.VCorpus` <-
+function(x, value)
+{
+    x$dmeta <- value
     x
 }
 
 meta <-
 function(x, tag, type = NULL)
     UseMethod("meta", x)
-meta.Corpus <-
+meta.VCorpus <- meta.PCorpus <-
 function(x, tag, type = c("indexed", "corpus", "local"))
 {
     if (!missing(tag) && missing(type)) {
-        type <- if (tag %in% colnames(DMetaData(x)))
+        type <- if (tag %in% colnames(CorpusDMeta(x)))
             "indexed"
-        else if (tag %in% names(CMetaData(x)$MetaData))
+        else if (tag %in% names(x$meta$value))
             "corpus"
         else
             "local"
     }
     type <- match.arg(type)
     if (identical(type, "indexed"))
-        DMetaData(x)[tag]
+        CorpusDMeta(x)[tag]
     else if (identical(type, "corpus")) {
         if (missing(tag))
-            CMetaData(x)
+            x$meta
         else
-            CMetaData(x)$MetaData[[tag]]
+            x$meta$value[[tag]]
     } else if (identical(type, "local"))
-        lapply(x, meta, tag)
+        lapply(content(x), meta, tag)
 }
 meta.TextDocument <-
 function(x, tag, type = NULL)
@@ -106,17 +116,17 @@ meta.TextRepository <- function(x, tag, type = NULL) {
 `meta<-` <-
 function(x, tag, type = NULL, value)
     UseMethod("meta<-", x)
-`meta<-.Corpus` <-
+`meta<-.VCorpus` <- `meta<-.PCorpus` <-
 function(x, tag, type = c("indexed", "corpus", "local"), value)
 {
     type <- match.arg(type)
     if (identical(type, "indexed"))
-        DMetaData(x)[, tag] <- value
+        CorpusDMeta(x)[, tag] <- value
     else if (identical(type, "local"))
         for (i in seq_along(x))
             meta(x[[i]], tag) <- value[i]
     else # (type == "corpus")
-        attr(x, "CMetaData")$MetaData[[tag]] <- value
+        x$meta$value[[tag]] <- value
     x
 }
 `meta<-.TextDocument` <-

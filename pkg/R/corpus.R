@@ -1,18 +1,10 @@
 # Author: Ingo Feinerer
 
 .PCorpus <-
-function(x, cmeta, dmeta, dbcontrol)
-{
-    attr(x, "CMetaData") <- cmeta
-    attr(x, "DMetaData") <- dmeta
-    attr(x, "DBControl") <- dbcontrol
-    class(x) <- c("PCorpus", "Corpus", "list")
-    x
-}
-
-DBControl <-
-function(x)
-    attr(x, "DBControl")
+function(x, meta, dmeta, dbcontrol)
+    structure(list(content = as.list(x), meta = meta, dmeta = dmeta,
+                   dbcontrol = dbcontrol),
+              class = c("PCorpus", "Corpus"))
 
 PCorpus <-
 function(x,
@@ -44,9 +36,9 @@ function(x,
         x <- stepNext(x)
         elem <- getElem(x)
         id <- if (is.null(x$names) || is.na(x$names))
-                as.character(counter)
-            else
-                x$names[counter]
+            as.character(counter)
+        else
+            x$names[counter]
         doc <- readerControl$reader(elem, readerControl$language, id)
         filehash::dbInsert(db, meta(doc, "id"), doc)
         if (x$length > 0) tdl[[counter]] <- meta(doc, "id")
@@ -57,20 +49,16 @@ function(x,
         names(tdl) <- x$names
 
     df <- data.frame(MetaID = rep(0, length(tdl)), stringsAsFactors = FALSE)
-    filehash::dbInsert(db, "DMetaData", df)
-    dmeta.df <- data.frame(key = "DMetaData", subset = I(list(NA)))
+    filehash::dbInsert(db, "CorpusDMeta", df)
+    dmeta.df <- data.frame(key = "CorpusDMeta", subset = I(list(NA)))
 
-    .PCorpus(tdl, .MetaDataNode(), dmeta.df, dbControl)
+    .PCorpus(tdl, CorpusMeta(), dmeta.df, dbControl)
 }
 
 .VCorpus <-
-function(x, cmeta, dmeta)
-{
-    attr(x, "CMetaData") <- cmeta
-    attr(x, "DMetaData") <- dmeta
-    class(x) <- c("VCorpus", "Corpus", "list")
-    x
-}
+function(x, meta, dmeta)
+    structure(list(content = as.list(x), meta = meta, dmeta = dmeta),
+              class = c("VCorpus", "Corpus"))
 
 VCorpus <-
 Corpus <-
@@ -93,9 +81,12 @@ function(x, readerControl = list(reader = x$defaultreader, language = "en"))
         list()
 
     if (x$vectorized)
-        tdl <- mapply(function(elem, id) readerControl$reader(elem, readerControl$language, id),
+        tdl <- mapply(function(elem, id)
+                          readerControl$reader(elem, readerControl$language, id),
                       pGetElem(x),
-                      id = if (is.null(x$names) || is.na(x$names)) as.character(seq_len(x$length)) else x$names,
+                      id = if (is.null(x$names) || is.na(x$names))
+                          as.character(seq_len(x$length))
+                      else x$names,
                       SIMPLIFY = FALSE)
     else {
         counter <- 1
@@ -117,34 +108,40 @@ function(x, readerControl = list(reader = x$defaultreader, language = "en"))
     if (!is.null(x$names) && !is.na(x$names))
         names(tdl) <- x$names
     df <- data.frame(MetaID = rep(0, length(tdl)), stringsAsFactors = FALSE)
-    .VCorpus(tdl, .MetaDataNode(), df)
+    .VCorpus(tdl, CorpusMeta(), df)
 }
 
 `[.PCorpus` <-
 function(x, i)
 {
-    if (missing(i)) return(x)
-    index <- attr(x, "DMetaData")[[1 , "subset"]]
-    attr(x, "DMetaData")[[1 , "subset"]] <- if (is.numeric(index)) index[i] else i
-    dmeta <- attr(x, "DMetaData")
-    .PCorpus(NextMethod("["), CMetaData(x), dmeta, DBControl(x))
+    if (!missing(i)) {
+        x$content <- x$content[i]
+        index <- x$dmeta[[1 , "subset"]]
+        x$dmeta[[1 , "subset"]] <- if (is.numeric(index)) index[i] else i
+    }
+    x
 }
 
 `[.VCorpus` <-
 function(x, i)
 {
-    if (missing(i)) return(x)
-    .VCorpus(NextMethod("["), CMetaData(x), DMetaData(x)[i, , drop = FALSE])
+    if (!missing(i)) {
+        x$content <- x$content[i]
+        x$dmeta <- x$dmeta[i, , drop = FALSE]
+    }
+    x
 }
 
 `[<-.PCorpus` <-
 function(x, i, value)
 {
-    db <- filehash::dbInit(DBControl(x)[["dbName"]], DBControl(x)[["dbType"]])
+    db <- filehash::dbInit(x$dbcontrol[["dbName"]], x$dbcontrol[["dbType"]])
     counter <- 1
-    for (id in unclass(x)[i]) {
-        if (identical(length(value), 1L)) db[[id]] <- value
-        else db[[id]] <- value[[counter]]
+    for (id in x$content[i]) {
+        db[[id]] <- if (identical(length(value), 1L))
+            value
+        else
+            value[[counter]]
         counter <- counter + 1
     }
     x
@@ -153,21 +150,18 @@ function(x, i, value)
 .map_name_index <-
 function(x, i)
 {
-    if (is.character(i)) {
-        if (is.null(names(x)))
-            match(i, meta(x, "id", type = "local"))
-        else
-            match(i, names(x))
-    }
-    i
+    if (is.character(i))
+        match(i, if (is.null(names(x))) meta(x, "id", "local") else names(x))
+    else
+        i
 }
 
 `[[.PCorpus` <-
 function(x, i)
 {
     i <- .map_name_index(x, i)
-    db <- filehash::dbInit(DBControl(x)[["dbName"]], DBControl(x)[["dbType"]])
-    filehash::dbFetch(db, NextMethod("[["))
+    db <- filehash::dbInit(x$dbcontrol[["dbName"]], x$dbcontrol[["dbType"]])
+    filehash::dbFetch(db, x$content[[i]])
 }
 `[[.VCorpus` <-
 function(x, i)
@@ -176,16 +170,15 @@ function(x, i)
     lazyTmMap <- meta(x, tag = "lazyTmMap", type = "corpus")
     if (!is.null(lazyTmMap))
         .Call("copyCorpus", x, materialize(x, i))
-    NextMethod("[[")
+    x$content[[i]]
 }
 
 `[[<-.PCorpus` <-
 function(x, i, value)
 {
     i <- .map_name_index(x, i)
-    db <- filehash::dbInit(DBControl(x)[["dbName"]], DBControl(x)[["dbType"]])
-    index <- unclass(x)[[i]]
-    db[[index]] <- value
+    db <- filehash::dbInit(x$dbcontrol[["dbName"]], x$dbcontrol[["dbType"]])
+    db[[x$content[[i]]]] <- value
     x
 }
 `[[<-.VCorpus` <-
@@ -198,11 +191,8 @@ function(x, i, value)
         lazyTmMap$index[i] <- FALSE
         meta(x, tag = "lazyTmMap", type = "corpus") <- lazyTmMap
     }
-    # Set the value
-    cl <- class(x)
-    y <- NextMethod("[[<-")
-    class(y) <- cl
-    y
+    x$content[[i]] <- value
+    x
 }
 
 # Update NodeIDs of a CMetaData tree
@@ -237,58 +227,58 @@ function(x, id = 0, mapping = NULL, left.mapping = NULL, level = 0)
 function(x)
 {
     indices.mapping <- NULL
-    for (m in levels(as.factor(DMetaData(x)$MetaID))) {
-        indices <- (DMetaData(x)$MetaID == m)
+    for (m in levels(as.factor(CorpusDMeta(x)$MetaID))) {
+        indices <- (CorpusDMeta(x)$MetaID == m)
         indices.mapping <- c(indices.mapping, list(m = indices))
         names(indices.mapping)[length(indices.mapping)] <- m
     }
     indices.mapping
 }
 
-c2 <-
-function(x, y, ...)
-{
-    # Update the CMetaData tree
-    cmeta <- .MetaDataNode(0, list(merge_date = as.POSIXlt(Sys.time(), tz = "GMT"), merger = Sys.getenv("LOGNAME")), list(CMetaData(x), CMetaData(y)))
-    update.struct <- .update_id(cmeta)
-
-    new <- .VCorpus(c(unclass(x), unclass(y)), update.struct$root, NULL)
-
-    # Find indices to be updated for the left tree
-    indices.mapping <- .find_indices(x)
-
-    # Update the DMetaData data frames for the left tree
-    for (i in 1:ncol(update.struct$left.mapping)) {
-        map <- update.struct$left.mapping[,i]
-        DMetaData(x)$MetaID <- replace(DMetaData(x)$MetaID, indices.mapping[[as.character(map[1])]], map[2])
-    }
-
-    # Find indices to be updated for the right tree
-    indices.mapping <- .find_indices(y)
-
-    # Update the DMetaData data frames for the right tree
-    for (i in 1:ncol(update.struct$right.mapping)) {
-        map <- update.struct$right.mapping[,i]
-        DMetaData(y)$MetaID <- replace(DMetaData(y)$MetaID, indices.mapping[[as.character(map[1])]], map[2])
-    }
-
-    # Merge the DMetaData data frames
-    labels <- setdiff(names(DMetaData(y)), names(DMetaData(x)))
-    na.matrix <- matrix(NA,
-                        nrow = nrow(DMetaData(x)),
-                        ncol = length(labels),
-                        dimnames = list(row.names(DMetaData(x)), labels))
-    x.dmeta.aug <- cbind(DMetaData(x), na.matrix)
-    labels <- setdiff(names(DMetaData(x)), names(DMetaData(y)))
-    na.matrix <- matrix(NA,
-                        nrow = nrow(DMetaData(y)),
-                        ncol = length(labels),
-                        dimnames = list(row.names(DMetaData(y)), labels))
-    y.dmeta.aug <- cbind(DMetaData(y), na.matrix)
-    DMetaData(new) <- rbind(x.dmeta.aug, y.dmeta.aug)
-
-    new
-}
+#c2 <-
+#function(x, y, ...)
+#{
+#    # Update the CMetaData tree
+#    cmeta <- .MetaDataNode(0, list(merge_date = as.POSIXlt(Sys.time(), tz = "GMT"), merger = Sys.getenv("LOGNAME")), list(CMetaData(x), CMetaData(y)))
+#    update.struct <- .update_id(cmeta)
+#
+#    new <- .VCorpus(c(unclass(x), unclass(y)), update.struct$root, NULL)
+#
+#    # Find indices to be updated for the left tree
+#    indices.mapping <- .find_indices(x)
+#
+#    # Update the CorpusDMeta data frames for the left tree
+#    for (i in 1:ncol(update.struct$left.mapping)) {
+#        map <- update.struct$left.mapping[,i]
+#        DMetaData(x)$MetaID <- replace(DMetaData(x)$MetaID, indices.mapping[[as.character(map[1])]], map[2])
+#    }
+#
+#    # Find indices to be updated for the right tree
+#    indices.mapping <- .find_indices(y)
+#
+#    # Update the CorpusDMeta data frames for the right tree
+#    for (i in 1:ncol(update.struct$right.mapping)) {
+#        map <- update.struct$right.mapping[,i]
+#        DMetaData(y)$MetaID <- replace(DMetaData(y)$MetaID, indices.mapping[[as.character(map[1])]], map[2])
+#    }
+#
+#    # Merge the CorpusDMeta data frames
+#    labels <- setdiff(names(DMetaData(y)), names(DMetaData(x)))
+#    na.matrix <- matrix(NA,
+#                        nrow = nrow(DMetaData(x)),
+#                        ncol = length(labels),
+#                        dimnames = list(row.names(DMetaData(x)), labels))
+#    x.dmeta.aug <- cbind(DMetaData(x), na.matrix)
+#    labels <- setdiff(names(DMetaData(x)), names(DMetaData(y)))
+#    na.matrix <- matrix(NA,
+#                        nrow = nrow(DMetaData(y)),
+#                        ncol = length(labels),
+#                        dimnames = list(row.names(DMetaData(y)), labels))
+#    y.dmeta.aug <- cbind(DMetaData(y), na.matrix)
+#    DMetaData(new) <- rbind(x.dmeta.aug, y.dmeta.aug)
+#
+#    new
+#}
 
 c.Corpus <-
 function(..., recursive = FALSE)
@@ -310,9 +300,9 @@ function(..., recursive = FALSE)
     else {
         args <- do.call("c", lapply(args, unclass))
         .VCorpus(args,
-                 cmeta = .MetaDataNode(),
-                 dmeta = data.frame(MetaID = rep(0, length(args)),
-                                    stringsAsFactors = FALSE))
+                 CorpusMeta(),
+                 data.frame(MetaID = rep(0, length(args)),
+                            stringsAsFactors = FALSE))
     }
 }
 
@@ -330,33 +320,41 @@ function(..., recursive = FALSE)
 
     dmeta <- data.frame(MetaID = rep(0, length(args)),
                         stringsAsFactors = FALSE)
-    .VCorpus(args, .MetaDataNode(), dmeta)
+    .VCorpus(args, CorpusMeta(), dmeta)
 }
+
+content.Corpus <-
+function(x)
+    x$content
+
+`content<-.Corpus` <-
+function(x, value)
+{
+    x$content <- value
+    x
+}
+
+length.Corpus <-
+function(x)
+    length(content(x))
 
 print.Corpus <-
 function(x, ...)
 {
     cat(sprintf(ngettext(length(x),
-                         "A corpus with %d text document\n",
-                         "A corpus with %d text documents\n"),
+                         "A corpus with %d text document\n\n",
+                         "A corpus with %d text documents\n\n"),
                 length(x)))
-    invisible(x)
-}
 
-summary.Corpus <-
-function(object, ...)
-{
-    print(object)
-    if (length(DMetaData(object))) {
-        cat(sprintf(ngettext(length(attr(CMetaData(object), "MetaData")),
-                             "\nThe metadata consists of %d tag-value pair and a data frame\n",
-                             "\nThe metadata consists of %d tag-value pairs and a data frame\n"),
-                    length(CMetaData(object)$MetaData)))
-        cat("Available tags are:\n")
-        cat(strwrap(paste(names(CMetaData(object)$MetaData), collapse = " "), indent = 2, exdent = 2), "\n")
-        cat("Available variables in the data frame are:\n")
-        cat(strwrap(paste(names(DMetaData(object)), collapse = " "), indent = 2, exdent = 2), "\n")
-    }
+    meta <- meta(x, type = "corpus")$value
+    dmeta <- meta(x, type = "indexed")
+
+    cat("Metadata:\n")
+    cat(sprintf("  Tag-value pairs. Tags: %s\n",
+                paste(names(meta), collapse = " ")))
+    cat("  Data frame. Variables:", colnames(dmeta), "\n")
+
+    invisible(x)
 }
 
 inspect <-
@@ -365,24 +363,26 @@ function(x)
 inspect.PCorpus <-
 function(x)
 {
-    summary(x)
+    print(x)
     cat("\n")
-    db <- filehash::dbInit(DBControl(x)[["dbName"]], DBControl(x)[["dbType"]])
+    db <- filehash::dbInit(x$dbcontrol[["dbName"]], x$dbcontrol[["dbType"]])
     show(filehash::dbMultiFetch(db, unlist(x)))
+    invisible(x)
 }
 inspect.VCorpus <-
 function(x)
 {
-    summary(x)
+    print(x)
     cat("\n")
-    print(noquote(lapply(x, identity)))
+    print(noquote(content(x)))
+    invisible(x)
 }
 
 lapply.PCorpus <-
 function(X, FUN, ...)
 {
-    db <- filehash::dbInit(DBControl(X)[["dbName"]], DBControl(X)[["dbType"]])
-    lapply(filehash::dbMultiFetch(db, unlist(X)), FUN, ...)
+    db <- filehash::dbInit(X$dbcontrol[["dbName"]], X$dbcontrol[["dbType"]])
+    lapply(filehash::dbMultiFetch(db, unlist(content(X))), FUN, ...)
 }
 lapply.VCorpus <-
 function(X, FUN, ...)
@@ -390,7 +390,7 @@ function(X, FUN, ...)
     lazyTmMap <- meta(X, tag = "lazyTmMap", type = "corpus")
     if (!is.null(lazyTmMap))
         .Call("copyCorpus", X, materialize(X))
-    base::lapply(X, FUN, ...)
+    lapply(content(X), FUN, ...)
 }
 
 writeCorpus <-

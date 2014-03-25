@@ -5,13 +5,6 @@ function(x)
 `content<-` <-
 function(x, value)
     UseMethod("content<-", x)
-`content<-.Corpus` <-
-function(x, value) {
-    attrs <- attributes(x)
-    x <- value
-    mostattributes(x) <- attrs
-    x
-}
 `content<-.PlainTextDocument` <-
 function(x, value)
 {

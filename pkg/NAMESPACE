@@ -3,16 +3,12 @@ import(parallel)
 import(slam)
 
 export("as.PlainTextDocument",
-       "CMetaData",
        "content",
        "content<-",
        "Corpus", # alias to VCorpus
        "DataframeSource",
-       "DBControl",
        "DirSource",
        "dissimilarity",
-       "DMetaData",
-       "DMetaData<-",
        "Docs",
        "DocumentTermMatrix",
        "DublinCore",
@@ -91,11 +87,9 @@ S3method("stemDocument", "character")
 S3method("stripWhitespace", "character")
 
 S3method("c", "Corpus")
-S3method("CMetaData", "Corpus")
-S3method("meta", "Corpus")
-S3method("meta<-", "Corpus")
+S3method("content", "Corpus")
+S3method("length", "Corpus")
 S3method("print", "Corpus")
-S3method("summary", "Corpus")
 S3method("tm_filter", "Corpus")
 S3method("tm_index", "Corpus")
 #S3method("words", "Corpus")
@@ -119,15 +113,15 @@ S3method("tm_term_score", "DocumentTermMatrix")
 
 S3method("tm_term_score", "term_frequency")
 
-S3method("print", "MetaDataNode")
+S3method("print", "CorpusMeta")
 
 S3method("[", "PCorpus")
 S3method("[<-", "PCorpus")
 S3method("[[", "PCorpus")
 S3method("[[<-", "PCorpus")
-S3method("DMetaData", "PCorpus")
-S3method("DMetaData<-", "PCorpus")
 S3method("inspect", "PCorpus")
+S3method("meta", "PCorpus")
+S3method("meta<-", "PCorpus")
 S3method("TermDocumentMatrix", "PCorpus")
 S3method("tm_map", "PCorpus")
 
@@ -177,9 +171,9 @@ S3method("pGetElem", "URISource")
 S3method("[", "VCorpus")
 S3method("[[", "VCorpus")
 S3method("[[<-", "VCorpus")
-S3method("DMetaData", "VCorpus")
-S3method("DMetaData<-", "VCorpus")
 S3method("inspect", "VCorpus")
+S3method("meta", "VCorpus")
+S3method("meta<-", "VCorpus")
 S3method("TermDocumentMatrix", "VCorpus")
 S3method("tm_map", "VCorpus")
 
