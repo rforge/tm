@@ -7,7 +7,7 @@ function()
      "VectorSource")
 
 SimpleSource <-
-function(defaultReader = readPlain,
+function(defaultreader = readPlain,
          encoding = "unknown",
          length = NA_integer_,
          names = NA_character_,
@@ -16,7 +16,7 @@ function(defaultReader = readPlain,
          ...,
          class)
 {
-    if (!is.function(defaultReader))
+    if (!is.function(defaultreader))
         stop("invalid default reader")
     else if (!is.character(encoding))
         warning("invalid encoding")
@@ -33,9 +33,9 @@ function(defaultReader = readPlain,
     else if (!is.null(names) && !is.na(names) && (length != length(names)))
         warning("incorrect number of element names")
 
-    structure(list(DefaultReader = defaultReader, Encoding = encoding,
-                   Length = length, Names = names, Position = position,
-                   Vectorized = vectorized, ...),
+    structure(list(defaultreader = defaultreader, encoding = encoding,
+                   length = length, names = names, position = position,
+                   vectorized = vectorized, ...),
               class = unique(c(class, "SimpleSource", "Source")))
 }
 
@@ -43,14 +43,14 @@ function(defaultReader = readPlain,
 VectorSource <-
 function(x, encoding = "unknown")
     SimpleSource(encoding = encoding, length = length(x), names = names(x),
-                 Content = if (is.factor(x)) as.character(x) else x,
+                 content = if (is.factor(x)) as.character(x) else x,
                  class = "VectorSource")
 
 # A data frame where each row is interpreted as document
 DataframeSource <-
 function(x, encoding = "unknown")
     SimpleSource(encoding = encoding, length = nrow(x), names = row.names(x),
-                 Content = if (is.factor(x)) as.character(x) else x,
+                 content = if (is.factor(x)) as.character(x) else x,
                  class = "DataframeSource")
 
 # A directory with files
@@ -74,11 +74,9 @@ function(directory = ".", encoding = "unknown", pattern = NULL,
         stop("non-existent or non-readable file(s): ",
              paste(d[is.na(isfile)], collapse = " "))
 
-    s <- SimpleSource(encoding = encoding, length = sum(isfile),
-                      names = basename(d[isfile]), Mode = mode,
-                      class = "DirSource")
-    s$FileList <- d[isfile]
-    s
+    SimpleSource(encoding = encoding, length = sum(isfile),
+                 names = basename(d[isfile]), mode = mode,
+                 filelist = d[isfile], class = "DirSource")
 }
 
 # Documents identified by a Uniform Resource Identifier
@@ -90,7 +88,7 @@ function(x, encoding = "unknown", mode = "text")
         !identical(mode, ""))
         stop(sprintf("invalid mode '%s'", mode))
 
-    SimpleSource(encoding = encoding, length = length(x), URI = x, Mode = mode,
+    SimpleSource(encoding = encoding, length = length(x), uri = x, mode = mode,
                  class = "URISource")
 }
 
@@ -106,12 +104,12 @@ XMLSource <- function(x, parser, reader, encoding = "unknown") {
 
     SimpleSource(defaultReader = reader, encoding = encoding,
                  length = length(content), vectorized = FALSE,
-                 Content = content, URI = x, class = "XMLSource")
+                 content = content, uri = x, class = "XMLSource")
 }
 
 stepNext <- function(x) UseMethod("stepNext", x)
 stepNext.SimpleSource <- function(x) {
-    x$Position <- x$Position + 1
+    x$position <- x$position + 1
     x
 }
 
@@ -154,51 +152,51 @@ function(x, encoding, mode)
 getElem <- function(x) UseMethod("getElem", x)
 getElem.DataframeSource <-
 function(x)
-    list(content = x$Content[x$Position, ],
+    list(content = x$content[x$position, ],
          uri = NULL)
 getElem.DirSource <-
 function(x)
 {
-    filename <- x$FileList[x$Position]
-    list(content = readContent(filename, x$Encoding, x$Mode),
+    filename <- x$filelist[x$position]
+    list(content = readContent(filename, x$encoding, x$mode),
          uri = sprintf("file://%s", filename))
 }
 getElem.URISource <-
 function(x)
 {
-    list(content = readContent(x$URI[x$Position], x$Encoding, x$Mode),
-         uri = x$URI[x$Position])
+    list(content = readContent(x$uri[x$position], x$encoding, x$mode),
+         uri = x$uri[x$position])
 }
 getElem.VectorSource <-
 function(x)
-    list(content = x$Content[x$Position],
+    list(content = x$content[x$position],
          uri = NULL)
 getElem.XMLSource <-
 function(x)
-    list(content = XML::saveXML(x$Content[[x$Position]]),
-         uri = x$URI)
+    list(content = XML::saveXML(x$content[[x$position]]),
+         uri = x$uri)
 
 pGetElem <- function(x) UseMethod("pGetElem", x)
 pGetElem.DataframeSource <-
 function(x)
-    lapply(seq_len(x$Length),
-           function(y) list(content = x$Content[y,],
+    lapply(seq_len(x$length),
+           function(y) list(content = x$content[y,],
                             uri = NULL))
 pGetElem.DirSource <-
 function(x)
-    lapply(x$FileList,
-           function(f) list(content = readContent(f, x$Encoding, x$Mode),
+    lapply(x$filelist,
+           function(f) list(content = readContent(f, x$encoding, x$mode),
                             uri = sprintf("file://%s", f)))
 pGetElem.URISource <-
 function(x)
-    lapply(x$URI,
-           function(uri) list(content = readContent(uri, x$Encoding, x$Mode),
+    lapply(x$uri,
+           function(uri) list(content = readContent(uri, x$encoding, x$mode),
                               uri = uri))
 pGetElem.VectorSource <-
 function(x)
-    lapply(x$Content,
+    lapply(x$content,
            function(y) list(content = y,
                             uri = NULL))
 
 eoi <- function(x) UseMethod("eoi", x)
-eoi.SimpleSource <- function(x) x$Length <= x$Position
+eoi.SimpleSource <- function(x) x$length <= x$position

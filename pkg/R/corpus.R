@@ -16,12 +16,12 @@ function(x)
 
 PCorpus <-
 function(x,
-         readerControl = list(reader = x$DefaultReader, language = "en"),
+         readerControl = list(reader = x$defaultreader, language = "en"),
          dbControl = list(dbName = "", dbType = "DB1"))
 {
     stopifnot(inherits(x, "Source"))
 
-    readerControl <- prepareReader(readerControl, x$DefaultReader)
+    readerControl <- prepareReader(readerControl, x$defaultreader)
 
     if (is.function(readerControl$init))
         readerControl$init()
@@ -34,8 +34,8 @@ function(x,
     db <- filehash::dbInit(dbControl$dbName, dbControl$dbType)
 
     # Allocate memory in advance if length is known
-    tdl <- if (x$Length > 0)
-        vector("list", as.integer(x$Length))
+    tdl <- if (x$length > 0)
+        vector("list", as.integer(x$length))
     else
         list()
 
@@ -43,18 +43,18 @@ function(x,
     while (!eoi(x)) {
         x <- stepNext(x)
         elem <- getElem(x)
-        id <- if (is.null(x$Names) || is.na(x$Names))
+        id <- if (is.null(x$names) || is.na(x$names))
                 as.character(counter)
             else
-                x$Names[counter]
+                x$names[counter]
         doc <- readerControl$reader(elem, readerControl$language, id)
-        filehash::dbInsert(db, meta(doc, "ID"), doc)
-        if (x$Length > 0) tdl[[counter]] <- meta(doc, "ID")
-        else tdl <- c(tdl, meta(doc, "ID"))
+        filehash::dbInsert(db, meta(doc, "id"), doc)
+        if (x$length > 0) tdl[[counter]] <- meta(doc, "id")
+        else tdl <- c(tdl, meta(doc, "id"))
         counter <- counter + 1
     }
-    if (!is.null(x$Names) && !is.na(x$Names))
-        names(tdl) <- x$Names
+    if (!is.null(x$names) && !is.na(x$names))
+        names(tdl) <- x$names
 
     df <- data.frame(MetaID = rep(0, length(tdl)), stringsAsFactors = FALSE)
     filehash::dbInsert(db, "DMetaData", df)
@@ -74,11 +74,11 @@ function(x, cmeta, dmeta)
 
 VCorpus <-
 Corpus <-
-function(x, readerControl = list(reader = x$DefaultReader, language = "en"))
+function(x, readerControl = list(reader = x$defaultreader, language = "en"))
 {
     stopifnot(inherits(x, "Source"))
 
-    readerControl <- prepareReader(readerControl, x$DefaultReader)
+    readerControl <- prepareReader(readerControl, x$defaultreader)
 
     if (is.function(readerControl$init))
         readerControl$init()
@@ -87,35 +87,35 @@ function(x, readerControl = list(reader = x$DefaultReader, language = "en"))
         on.exit(readerControl$exit())
 
     # Allocate memory in advance if length is known
-    tdl <- if (x$Length > 0)
-        vector("list", as.integer(x$Length))
+    tdl <- if (x$length > 0)
+        vector("list", as.integer(x$length))
     else
         list()
 
-    if (x$Vectorized)
-        tdl <- mapply(function(x, id) readerControl$reader(x, readerControl$language, id),
+    if (x$vectorized)
+        tdl <- mapply(function(elem, id) readerControl$reader(elem, readerControl$language, id),
                       pGetElem(x),
-                      id = if (is.null(x$Names) || is.na(x$Names)) as.character(seq_len(x$Length)) else x$Names,
+                      id = if (is.null(x$names) || is.na(x$names)) as.character(seq_len(x$length)) else x$names,
                       SIMPLIFY = FALSE)
     else {
         counter <- 1
         while (!eoi(x)) {
             x <- stepNext(x)
             elem <- getElem(x)
-            id <- if (is.null(x$Names) || is.na(x$Names))
+            id <- if (is.null(x$names) || is.na(x$names))
                 as.character(counter)
             else
-                x$Names[counter]
+                x$names[counter]
             doc <- readerControl$reader(elem, readerControl$language, id)
-            if (x$Length > 0)
+            if (x$length > 0)
                 tdl[[counter]] <- doc
             else
                 tdl <- c(tdl, list(doc))
             counter <- counter + 1
         }
     }
-    if (!is.null(x$Names) && !is.na(x$Names))
-        names(tdl) <- x$Names
+    if (!is.null(x$names) && !is.na(x$names))
+        names(tdl) <- x$names
     df <- data.frame(MetaID = rep(0, length(tdl)), stringsAsFactors = FALSE)
     .VCorpus(tdl, .MetaDataNode(), df)
 }
@@ -155,7 +155,7 @@ function(x, i)
 {
     if (is.character(i)) {
         if (is.null(names(x)))
-            match(i, meta(x, "ID", type = "local"))
+            match(i, meta(x, "id", type = "local"))
         else
             match(i, names(x))
     }
@@ -397,11 +397,13 @@ writeCorpus <-
 function(x, path = ".", filenames = NULL)
 {
     filenames <- file.path(path,
-                           if (is.null(filenames)) unlist(lapply(x, function(x) sprintf("%s.txt", meta(x, "ID"))))
-                           else filenames)
-    i <- 1
-    for (o in x) {
-        writeLines(as.PlainTextDocument(o), filenames[i])
-        i <- i + 1
-    }
+      if (is.null(filenames))
+          sprintf("%s.txt", as.character(meta(x, "id", "local")))
+      else filenames)
+
+    stopifnot(length(x) == length(filenames))
+
+    mapply(function(doc, f) writeLines(as.character(doc), f), x, filenames)
+
+    invisible(x)
 }

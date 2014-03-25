@@ -3,13 +3,13 @@
 TextDocumentMeta <-
 function(author, datetimestamp, description, heading, id, language, origin, ...)
 {
-    structure(list(Author = as.person(author),
-                   DateTimeStamp = as.POSIXlt(datetimestamp, tz = "GMT"),
-                   Description = as.character(description),
-                   Heading = as.character(heading),
-                   ID = as.character(id),
-                   Language = as.character(language),
-                   Origin = as.character(origin),
+    structure(list(author = as.person(author),
+                   datetimestamp = as.POSIXlt(datetimestamp, tz = "GMT"),
+                   description = as.character(description),
+                   heading = as.character(heading),
+                   id = as.character(id),
+                   language = as.character(language),
+                   origin = as.character(origin),
                    ...),
               class = "TextDocumentMeta")
 }
@@ -138,12 +138,12 @@ function(DCElem = c("title", "creator", "description", "date", "identifier", "la
 {
     DCElem <- tolower(DCElem)
     DCElem <- match.arg(DCElem)
-    if (identical(DCElem, "title")) return(list(tag = "Heading", type = "local"))
-    if (identical(DCElem, "creator")) return(list(tag = "Author", type = "local"))
-    if (identical(DCElem, "description")) return(list(tag = "Description", type = "local"))
-    if (identical(DCElem, "date")) return(list(tag = "DateTimeStamp", type = "local"))
-    if (identical(DCElem, "identifier")) return(list(tag = "ID", type = "local"))
-    if (identical(DCElem, "language")) return(list(tag = "Language", type = "local"))
+    if (identical(DCElem, "title")) return(list(tag = "heading", type = "local"))
+    if (identical(DCElem, "creator")) return(list(tag = "author", type = "local"))
+    if (identical(DCElem, "description")) return(list(tag = "description", type = "local"))
+    if (identical(DCElem, "date")) return(list(tag = "datetimestamp", type = "local"))
+    if (identical(DCElem, "identifier")) return(list(tag = "id", type = "local"))
+    if (identical(DCElem, "language")) return(list(tag = "language", type = "local"))
     # Source -> Origin ?
 
     if (identical(DCElem, "subject") || identical(DCElem, "publisher") || identical(DCElem, "contributor") ||

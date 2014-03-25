@@ -6,9 +6,9 @@ function()
     c("readDOC", "readPDF", "readReut21578XML", "readReut21578XMLasPlain",
       "readPlain", "readRCV1", "readRCV1asPlain", "readTabular", "readXML")
 
-prepareReader <- function(readerControl, defaultReader = NULL, ...) {
+prepareReader <- function(readerControl, defaultreader = NULL, ...) {
     if (is.null(readerControl$reader))
-        readerControl$reader <- defaultReader
+        readerControl$reader <- defaultreader
     if (inherits(readerControl$reader, "FunctionGenerator"))
         readerControl$reader <- readerControl$reader(...)
     if (is.null(readerControl$language))
@@ -27,66 +27,66 @@ readXML <- FunctionGenerator(function(spec, doc) {
     doc <- doc
     function(elem, language, id) {
         tree <- XML::xmlParse(elem$content, asText = TRUE)
-        content(doc) <- if ("Content" %in% names(spec))
-            .xml_content(tree, spec[["Content"]])
+        content(doc) <- if ("content" %in% names(spec))
+            .xml_content(tree, spec[["content"]])
         else
             XML::xmlTreeParse(elem$content, asText = TRUE)
-        for (n in setdiff(names(spec), "Content"))
+        for (n in setdiff(names(spec), "content"))
             meta(doc, n) <- .xml_content(tree, spec[[n]])
         XML::free(tree)
         if (!is.na(language))
-            meta(doc, "Language") <- language
+            meta(doc, "language") <- language
         doc
     }
 })
 
 Reut21578XMLSpec <-
-    list(Author = list("node", "/REUTERS/TEXT/AUTHOR"),
-         DateTimeStamp = list("function", function(node)
+    list(author = list("node", "/REUTERS/TEXT/AUTHOR"),
+         datetimestamp = list("function", function(node)
            strptime(sapply(XML::getNodeSet(node, "/REUTERS/DATE"),
                            XML::xmlValue),
                     format = "%d-%B-%Y %H:%M:%S",
                     tz = "GMT")),
-         Description = list("unevaluated", ""),
-         Heading = list("node", "/REUTERS/TEXT/TITLE"),
-         ID = list("attribute", "/REUTERS/@NEWID"),
-         TOPICS = list("attribute", "/REUTERS/@TOPICS"),
-         LEWISSPLIT = list("attribute", "/REUTERS/@LEWISSPLIT"),
-         CGISPLIT = list("attribute", "/REUTERS/@CGISPLIT"),
-         OLDID = list("attribute", "/REUTERS/@OLDID"),
-         Origin = list("unevaluated", "Reuters-21578 XML"),
-         Topics = list("node", "/REUTERS/TOPICS/D"),
-         Places = list("node", "/REUTERS/PLACES/D"),
-         People = list("node", "/REUTERS/PEOPLE/D"),
-         Orgs = list("node", "/REUTERS/ORGS/D"),
-         Exchanges = list("node", "/REUTERS/EXCHANGES/D"))
+         description = list("unevaluated", ""),
+         heading = list("node", "/REUTERS/TEXT/TITLE"),
+         id = list("attribute", "/REUTERS/@NEWID"),
+         topics = list("attribute", "/REUTERS/@TOPICS"),
+         lewissplit = list("attribute", "/REUTERS/@LEWISSPLIT"),
+         cgisplit = list("attribute", "/REUTERS/@CGISPLIT"),
+         oldid = list("attribute", "/REUTERS/@OLDID"),
+         origin = list("unevaluated", "Reuters-21578 XML"),
+         topics = list("node", "/REUTERS/TOPICS/D"),
+         places = list("node", "/REUTERS/PLACES/D"),
+         people = list("node", "/REUTERS/PEOPLE/D"),
+         orgs = list("node", "/REUTERS/ORGS/D"),
+         exchanges = list("node", "/REUTERS/EXCHANGES/D"))
 readReut21578XML <- readXML(spec = Reut21578XMLSpec, doc = XMLTextDocument())
 readReut21578XMLasPlain <-
 readXML(spec = c(Reut21578XMLSpec,
-                 list(Content = list("node", "/REUTERS/TEXT/BODY"))),
+                 list(content = list("node", "/REUTERS/TEXT/BODY"))),
         doc = PlainTextDocument())
 
 RCV1Spec <-
-    list(Author = list("unevaluated", ""),
-         DateTimeStamp = list("function", function(node)
+    list(author = list("unevaluated", ""),
+         datetimestamp = list("function", function(node)
            as.POSIXlt(as.character(XML::getNodeSet(node, "/newsitem/@date")),
                       tz = "GMT")),
-         Description = list("unevaluated", ""),
-         Heading = list("node", "/newsitem/title"),
-         ID = list("attribute", "/newsitem/@itemid"),
-         Origin = list("unevaluated", "Reuters Corpus Volume 1"),
-         Publisher = list("attribute",
+         description = list("unevaluated", ""),
+         heading = list("node", "/newsitem/title"),
+         id = list("attribute", "/newsitem/@itemid"),
+         origin = list("unevaluated", "Reuters Corpus Volume 1"),
+         publisher = list("attribute",
            "/newsitem/metadata/dc[@element='dc.publisher']/@value"),
-         Topics = list("attribute",
+         topics = list("attribute",
            "/newsitem/metadata/codes[@class='bip:topics:1.0']/code/@code"),
-         Industries = list("attribute",
+         industries = list("attribute",
            "/newsitem/metadata/codes[@class='bip:industries:1.0']/code/@code"),
-         Countries = list("attribute",
+         countries = list("attribute",
            "/newsitem/metadata/codes[@class='bip:countries:1.0']/code/@code"))
 readRCV1 <- readXML(spec = RCV1Spec, doc = XMLTextDocument())
 readRCV1asPlain <-
 readXML(spec = c(Reut21578XMLSpec,
-                 list(Content = list("node", "/newsitem/text"))),
+                 list(content = list("node", "/newsitem/text"))),
         doc = PlainTextDocument())
 
 # readDOC needs antiword installed to be able to extract the text
@@ -145,9 +145,9 @@ readTabular <- FunctionGenerator(function(mapping) {
     mapping <- mapping
     function(elem, language, id) {
         doc <- PlainTextDocument(
-          content = as.character(elem$content[, mapping[["Content"]]]),
-          id = id, language = language)
-        for (n in setdiff(names(mapping), "Content"))
+            content = as.character(elem$content[, mapping[["content"]]]),
+            id = id, language = language)
+        for (n in setdiff(names(mapping), "content"))
             meta(doc, n) <- elem$content[, mapping[[n]]]
         doc
     }

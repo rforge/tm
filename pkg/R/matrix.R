@@ -35,7 +35,7 @@ function(x, weighting)
     ## and hope for the best ...
     ## </NOTE>
     else if(is.character(weighting) && (length(weighting) == 2L))
-        attr(x, "Weighting") <- weighting
+        attr(x, "weighting") <- weighting
     else
         stop("invalid weighting")
     x
@@ -66,7 +66,7 @@ function(x, control = list())
         sort(unique(if (is.null(control$dictionary)) i else control$dictionary))
     i <- match(i, allTerms)
     j <- rep(seq_along(x), sapply(tflist, length))
-    docs <- as.character(unlist(meta(x, "ID", "local")))
+    docs <- as.character(meta(x, "id", "local"))
     if (length(docs) != length(x)) {
         warning("invalid document identifiers")
         docs <- NULL
@@ -149,7 +149,7 @@ t.DocumentTermMatrix <-
 function(x)
 {
     m <- NextMethod("t")
-    attr(m, "Weighting") <- attr(x, "Weighting")
+    attr(m, "weighting") <- attr(x, "weighting")
     class(m) <- if(inherits(x, "DocumentTermMatrix"))
         TermDocumentMatrix_classes
     else
@@ -263,7 +263,7 @@ function(x, ...)
     cat(sprintf("Sparsity           : %s%%\n", sparsity))
     cat("Maximal term length:", max(nchar(Terms(x), type = "chars"), 0), "\n")
     cat(sprintf("Weighting          : %s (%s)\n",
-                attr(x, "Weighting")[1L], attr(x, "Weighting")[2L]))
+                attr(x, "weighting")[1L], attr(x, "weighting")[2L]))
     invisible(x)
 }
 
@@ -281,7 +281,7 @@ function(x)
 function(x, i, j, ..., drop)
 {
     m <- NextMethod("[")
-    attr(m, "Weighting") <- attr(x, "Weighting")
+    attr(m, "weighting") <- attr(x, "weighting")
     class(m) <- if (inherits(x, "DocumentTermMatrix"))
         DocumentTermMatrix_classes
     else
@@ -371,7 +371,7 @@ function(..., recursive = FALSE)
     if(length(m) == 1L)
         return(m[[1L]])
 
-    weighting <- attr(m[[1L]], "Weighting")
+    weighting <- attr(m[[1L]], "weighting")
 
     allTermsNonUnique <- unlist(lapply(m, function(x) Terms(x)[x$i]))
     allTerms <- unique(allTermsNonUnique)
