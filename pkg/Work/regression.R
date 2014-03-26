@@ -6,7 +6,7 @@ data("acq")
 
 # Lazy transformations
 acq <- tm_map(acq, stemDocument, lazy = TRUE)
-CMetaData(acq)
+meta(acq, type = "corpus")
 acq[[1]]
 acq[[17]]
-CMetaData(acq)
+meta(acq, type = "corpus")

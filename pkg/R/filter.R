@@ -18,10 +18,10 @@ function(x, ..., FUN, doclevel = TRUE, useMeta = FALSE)
         doclevel <- attr(FUN, "doclevel")
     if (doclevel) {
         if (useMeta)
-            unlist(parallel::mclapply(content(x), FUN, ...,
+            unlist(mclapply(content(x), FUN, ...,
                                       dmeta = meta(x, type = "indexed")))
         else
-            unlist(parallel::mclapply(content(x), FUN, ...))
+            unlist(mclapply(content(x), FUN, ...))
     }
     else
         FUN(x, ...)

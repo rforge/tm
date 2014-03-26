@@ -27,9 +27,9 @@ tm_map.VCorpus <- function(x, FUN, ..., useMeta = FALSE, lazy = FALSE) {
     }
     else {
         content(result) <- if (useMeta)
-                parallel::mclapply(content(x), FUN, ..., dmeta = meta(x, type = "indexed"))
+                mclapply(content(x), FUN, ..., dmeta = meta(x, type = "indexed"))
             else
-                parallel::mclapply(content(x), FUN, ...)
+                mclapply(content(x), FUN, ...)
     }
     result
 }
@@ -53,16 +53,19 @@ tm_map.PCorpus <- function(x, FUN, ..., useMeta = FALSE, lazy = FALSE) {
 
 # Materialize lazy mappings
 # Improvements by Christian Buchta
-materialize <- function(corpus, range = seq_along(corpus)) {
+materialize <-
+function(corpus, range = seq_along(corpus))
+{
     lazyTmMap <- meta(corpus, tag = "lazyTmMap", type = "corpus")
     if (!is.null(lazyTmMap)) {
        # Make valid and lazy index
        idx <- (seq_along(corpus) %in% range) & lazyTmMap$index
        if (any(idx)) {
-           res <- unclass(corpus)[idx]
+           res <- content(corpus)[idx]
            for (m in lazyTmMap$maps)
                res <- lapply(res, m, dmeta = meta(corpus, type = "indexed"))
-           corpus[idx] <- res
+           #corpus$content[idx] <- res
+           content(corpus)[idx] <- res
            lazyTmMap$index[idx] <- FALSE
        }
     }

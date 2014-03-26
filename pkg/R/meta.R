@@ -74,7 +74,7 @@ function(x, value)
 }
 
 meta.VCorpus <- meta.PCorpus <-
-function(x, tag = NULL, type = c("indexed", "corpus", "local"))
+function(x, tag = NULL, ..., type = c("indexed", "corpus", "local"))
 {
     if (!is.null(tag) && missing(type)) {
         type <- if (tag %in% colnames(CorpusDMeta(x)))
@@ -101,18 +101,12 @@ function(x, tag = NULL, type = c("indexed", "corpus", "local"))
         stop("invalid type")
 }
 meta.TextDocument <-
-function(x, tag = NULL)
+function(x, tag = NULL, ...)
 {
     if (is.null(tag))
         x$meta
     else
         x$meta[[tag]]
-}
-meta.TextRepository <- function(x, tag = NULL) {
-    if (is.null(tag))
-        RepoMetaData(x)
-    else
-        RepoMetaData(x)[[tag]]
 }
 
 `meta<-.VCorpus` <- `meta<-.PCorpus` <-
@@ -131,13 +125,9 @@ function(x, tag, type = c("indexed", "corpus", "local"), value)
     x
 }
 `meta<-.TextDocument` <-
-function(x, tag, value)
+function(x, tag, ..., value)
 {
     x$meta[[tag]] <- value
-    x
-}
-`meta<-.TextRepository` <- function(x, tag, value) {
-    attr(x, "RepoMetaData")[[tag]] <- value
     x
 }
 

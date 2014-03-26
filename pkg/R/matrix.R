@@ -55,7 +55,7 @@ function(x, control = list())
     if (!is.null(lazyTmMap))
         .Call("copyCorpus", x, materialize(x))
 
-    tflist <- parallel::mclapply(unname(content(x)), termFreq, control)
+    tflist <- mclapply(unname(content(x)), termFreq, control)
     tflist <- lapply(tflist, function(y) y[y > 0])
 
     v <- unlist(tflist)
@@ -195,14 +195,14 @@ function(doc, control = list())
     ## Stopword filtering
     .stopwords <- control$stopwords
     if (isTRUE(.stopwords))
-        .stopwords <- function(x) x[is.na(match(x, stopwords(meta(doc, "Language"))))] 
+        .stopwords <- function(x) x[is.na(match(x, stopwords(meta(doc, "language"))))] 
     else if (is.character(.stopwords))
         .stopwords <- function(x) x[is.na(match(x, control$stopwords))]
 
     ## Stemming
     .stemming <- control$stemming
     if (isTRUE(.stemming))
-        .stemming <- function(x) stemDocument(x, meta(doc, "Language"))
+        .stemming <- function(x) stemDocument(x, meta(doc, "language"))
 
     ## Default order for options which support reordering
     or <- c("removePunctuation", "removeNumbers", "stopwords", "stemming")

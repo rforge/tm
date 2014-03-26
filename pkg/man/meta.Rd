@@ -8,23 +8,20 @@
 \alias{meta<-.TextDocument}
 \alias{meta.Corpus}
 \alias{meta<-.Corpus}
-\alias{meta.TextRepository}
-\alias{meta<-.TextRepository}
 \title{Meta Data Management}
 \description{
-  Methods to access and modify meta data of documents, corpora, and
-  repositories. In addition to \pkg{tm}'s internal meta data structures,
+  Methods to access and modify meta data of documents and corpora.
+  In addition to \pkg{tm}'s internal meta data structures,
   Simple Dublin Core meta data mappings are available.
 }
 \usage{
 \method{meta}{Corpus}(x, tag, type = c("indexed", "corpus", "local"))
 \method{meta}{TextDocument}(x, tag, type = NULL)
-\method{meta}{TextRepository}(x, tag, type = NULL)
 content_meta(x, tag) <- value
 DublinCore(x, tag = NULL)
 }
 \arguments{
-  \item{x}{Either a text document, a corpus, or a text repository.}
+  \item{x}{A text document or a corpus.}
   \item{tag}{A character identifying the name of the meta datum.}
   \item{type}{A character specifying which meta data of a corpus should
     be considered.}
@@ -49,9 +46,6 @@ DublinCore(x, tag = NULL)
       specific meta data (\code{\link{CMetaData}}). Depending whether a
       tag is set or not, all or only the meta data identified by the tag
       is displayed or modified.}
-    \item{x = "TextRepository", tag = NULL}{If no \code{tag} is given, this
-      method pretty prints all \code{x}'s meta data. If \code{tag}
-      is provided its value in the meta data is returned.}
   }
 
   Simple Dublin Core meta data is only available locally at each
