@@ -77,11 +77,11 @@ DublinCore(x, tag = NULL)
 data("crude")
 meta(crude[[1]])
 DublinCore(crude[[1]])
-meta(crude[[1]], tag = "Topics")
-meta(crude[[1]], tag = "Comment") <- "A short comment."
-meta(crude[[1]], tag = "Topics") <- NULL
+meta(crude[[1]], tag = "topics")
+meta(crude[[1]], tag = "comment") <- "A short comment."
+meta(crude[[1]], tag = "topics") <- NULL
 DublinCore(crude[[1]], tag = "creator") <- "Ano Nymous"
-DublinCore(crude[[1]], tag = "Format") <- "XML"
+DublinCore(crude[[1]], tag = "format") <- "XML"
 DublinCore(crude[[1]])
 meta(crude[[1]])
 meta(crude)

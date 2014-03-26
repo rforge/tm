@@ -73,13 +73,10 @@ function(x, value)
     x
 }
 
-meta <-
-function(x, tag, type = NULL)
-    UseMethod("meta", x)
 meta.VCorpus <- meta.PCorpus <-
-function(x, tag, type = c("indexed", "corpus", "local"))
+function(x, tag = NULL, type = c("indexed", "corpus", "local"))
 {
-    if (!missing(tag) && missing(type)) {
+    if (!is.null(tag) && missing(type)) {
         type <- if (tag %in% colnames(CorpusDMeta(x)))
             "indexed"
         else if (tag %in% names(x$meta$value))
@@ -88,54 +85,58 @@ function(x, tag, type = c("indexed", "corpus", "local"))
             "local"
     }
     type <- match.arg(type)
-    if (identical(type, "indexed"))
-        CorpusDMeta(x)[tag]
-    else if (identical(type, "corpus")) {
-        if (missing(tag))
+    if (identical(type, "indexed")) {
+        if (is.null(tag))
+            CorpusDMeta(x)
+        else
+            CorpusDMeta(x)[tag]
+    } else if (identical(type, "corpus")) {
+        if (is.null(tag))
             x$meta
         else
             x$meta$value[[tag]]
     } else if (identical(type, "local"))
         lapply(content(x), meta, tag)
+    else
+        stop("invalid type")
 }
 meta.TextDocument <-
-function(x, tag, type = NULL)
+function(x, tag = NULL)
 {
-    if (missing(tag))
+    if (is.null(tag))
         x$meta
     else
         x$meta[[tag]]
 }
-meta.TextRepository <- function(x, tag, type = NULL) {
-    if (missing(tag))
+meta.TextRepository <- function(x, tag = NULL) {
+    if (is.null(tag))
         RepoMetaData(x)
     else
         RepoMetaData(x)[[tag]]
 }
 
-`meta<-` <-
-function(x, tag, type = NULL, value)
-    UseMethod("meta<-", x)
 `meta<-.VCorpus` <- `meta<-.PCorpus` <-
 function(x, tag, type = c("indexed", "corpus", "local"), value)
 {
     type <- match.arg(type)
     if (identical(type, "indexed"))
         CorpusDMeta(x)[, tag] <- value
-    else if (identical(type, "local"))
+    else if (type == "corpus")
+        x$meta$value[[tag]] <- value
+    else if (identical(type, "local")) {
         for (i in seq_along(x))
             meta(x[[i]], tag) <- value[i]
-    else # (type == "corpus")
-        x$meta$value[[tag]] <- value
+    } else
+        stop("invalid type")
     x
 }
 `meta<-.TextDocument` <-
-function(x, tag, type = NULL, value)
+function(x, tag, value)
 {
     x$meta[[tag]] <- value
     x
 }
-`meta<-.TextRepository` <- function(x, tag, type = NULL, value) {
+`meta<-.TextRepository` <- function(x, tag, value) {
     attr(x, "RepoMetaData")[[tag]] <- value
     x
 }

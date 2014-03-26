@@ -3,8 +3,6 @@ import(parallel)
 import(slam)
 
 export("as.PlainTextDocument",
-       "content",
-       "content<-",
        "Corpus", # alias to VCorpus
        "DataframeSource",
        "DirSource",
@@ -28,8 +26,6 @@ export("as.PlainTextDocument",
        "MC_tokenizer",
        "makeChunks",
        "materialize",
-       "meta",
-       "meta<-",
        "nDocs",
        "nTerms",
        "readPlain",

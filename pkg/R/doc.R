@@ -1,23 +1,3 @@
-content <-
-function(x)
-    UseMethod("content", x)
-
-`content<-` <-
-function(x, value)
-    UseMethod("content<-", x)
-`content<-.PlainTextDocument` <-
-function(x, value)
-{
-    x$content <- as.character(value)
-    x
-}
-`content<-.XMLTextDocument` <-
-function(x, value)
-{
-    x$content <- value
-    x
-}
-
 PlainTextDocument <-
 function(x = character(0),
          author = character(0),
@@ -38,7 +18,7 @@ function(x = character(0),
 
 as.character.PlainTextDocument <-
 function(x, ...)
-    content(x)
+    x$content
 
 as.PlainTextDocument <-
 function(x)
@@ -47,6 +27,13 @@ function(x)
 content.PlainTextDocument <-
 function(x)
     x$content
+
+`content<-.PlainTextDocument` <-
+function(x, value)
+{
+    x$content <- as.character(value)
+    x
+}
 
 print.PlainTextDocument <-
 function(x, ...)
@@ -70,4 +57,11 @@ function(x = list(),
                    meta = TextDocumentMeta(author, datetimestamp, description,
                                            heading, id, language, origin, ...)),
               class = c("XMLTextDocument", "TextDocument"))
+}
+
+`content<-.XMLTextDocument` <-
+function(x, value)
+{
+    x$content <- value
+    x
 }
