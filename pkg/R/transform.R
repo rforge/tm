@@ -38,7 +38,7 @@ tm_map.PCorpus <- function(x, FUN, ..., useMeta = FALSE, lazy = FALSE) {
         warning("lazy mapping is deactived when using database backend")
     db <- filehash::dbInit(x$dbcontrol[["dbName"]], x$dbcontrol[["dbType"]])
     i <- 1
-    for (id in unlist(x)) {
+    for (id in unlist(content(x))) {
         db[[id]] <- if (useMeta)
             FUN(x[[i]], ..., dmeta = meta(x, type = "indexed"))
         else

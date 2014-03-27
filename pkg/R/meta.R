@@ -74,7 +74,7 @@ function(x, value)
 }
 
 meta.VCorpus <- meta.PCorpus <-
-function(x, tag = NULL, ..., type = c("indexed", "corpus", "local"))
+function(x, tag = NULL, type = c("indexed", "corpus", "local"), ...)
 {
     if (!is.null(tag) && missing(type)) {
         type <- if (tag %in% colnames(CorpusDMeta(x)))
@@ -110,7 +110,7 @@ function(x, tag = NULL, ...)
 }
 
 `meta<-.VCorpus` <- `meta<-.PCorpus` <-
-function(x, tag, type = c("indexed", "corpus", "local"), value)
+function(x, tag, type = c("indexed", "corpus", "local"), ..., value)
 {
     type <- match.arg(type)
     if (identical(type, "indexed"))

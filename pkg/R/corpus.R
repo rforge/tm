@@ -367,7 +367,7 @@ function(x)
     print(x)
     cat("\n")
     db <- filehash::dbInit(x$dbcontrol[["dbName"]], x$dbcontrol[["dbType"]])
-    show(filehash::dbMultiFetch(db, unlist(x)))
+    show(filehash::dbMultiFetch(db, unlist(content(x))))
     invisible(x)
 }
 inspect.VCorpus <-
