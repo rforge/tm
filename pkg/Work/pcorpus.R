@@ -11,10 +11,8 @@ r <- tm_map(r, genMap(tolower))
 r <- tm_map(r, removeWords, stopwords("english"))
 r <- tm_map(r, stemDocument)
 
-meta(r, "id") == '10' &
-meta(r, "heading") == 'COMPUTER TERMINAL SYSTEMS <CPML> COMPLETES SALE'
-#tm_filter(r, FUN = sFilter, query)
-#tm_index(r, pattern = "partner")
+r[meta(r, "id") == '10' &
+  meta(r, "heading") == 'COMPUTER TERMINAL SYSTEMS <CPML> COMPLETES SALE']
 meta(r, tag = "test", "corpus") <- 1:3
 meta(r, tag = "cl1") <- 1:10
 print(r)

@@ -1,11 +1,5 @@
 # Author: Ingo Feinerer
 
-.PCorpus <-
-function(x, meta, dmeta, dbcontrol)
-    structure(list(content = as.list(x), meta = meta, dmeta = dmeta,
-                   dbcontrol = dbcontrol),
-              class = c("PCorpus", "Corpus"))
-
 PCorpus <-
 function(x,
          readerControl = list(reader = x$defaultreader, language = "en"),
@@ -48,20 +42,14 @@ function(x,
     if (!is.null(x$names) && !is.na(x$names))
         names(tdl) <- x$names
 
-    df <- data.frame(MetaID = rep(0, length(tdl)), stringsAsFactors = FALSE)
-    filehash::dbInsert(db, "CorpusDMeta", df)
-    dmeta.df <- data.frame(key = "CorpusDMeta", subset = I(list(NA)))
-
-    .PCorpus(tdl, CorpusMeta(), dmeta.df, dbControl)
+    structure(list(content = tdl,
+                   meta = CorpusMeta(),
+                   dmeta = data.frame(row.names = seq_along(tdl)),
+                   dbcontrol = dbControl),
+              class = c("PCorpus", "Corpus"))
 }
 
-.VCorpus <-
-function(x, meta, dmeta)
-    structure(list(content = as.list(x), meta = meta, dmeta = dmeta),
-              class = c("VCorpus", "Corpus"))
-
-VCorpus <-
-Corpus <-
+VCorpus <- Corpus <-
 function(x, readerControl = list(reader = x$defaultreader, language = "en"))
 {
     stopifnot(inherits(x, "Source"))
@@ -107,42 +95,19 @@ function(x, readerControl = list(reader = x$defaultreader, language = "en"))
     }
     if (!is.null(x$names) && !is.na(x$names))
         names(tdl) <- x$names
-    df <- data.frame(MetaID = rep(0, length(tdl)), stringsAsFactors = FALSE)
-    .VCorpus(tdl, CorpusMeta(), df)
+
+    structure(list(content = tdl,
+                   meta = CorpusMeta(),
+                   dmeta = data.frame(row.names = seq_along(tdl))),
+              class = c("VCorpus", "Corpus"))
 }
 
-`[.PCorpus` <-
-function(x, i)
-{
-    if (!missing(i)) {
-        x$content <- x$content[i]
-        index <- x$dmeta[[1 , "subset"]]
-        x$dmeta[[1 , "subset"]] <- if (is.numeric(index)) index[i] else i
-    }
-    x
-}
-
-`[.VCorpus` <-
+`[.PCorpus` <- `[.VCorpus` <-
 function(x, i)
 {
     if (!missing(i)) {
         x$content <- x$content[i]
         x$dmeta <- x$dmeta[i, , drop = FALSE]
-    }
-    x
-}
-
-`[<-.PCorpus` <-
-function(x, i, value)
-{
-    db <- filehash::dbInit(x$dbcontrol[["dbName"]], x$dbcontrol[["dbType"]])
-    counter <- 1
-    for (id in x$content[i]) {
-        db[[id]] <- if (identical(length(value), 1L))
-            value
-        else
-            value[[counter]]
-        counter <- counter + 1
     }
     x
 }
@@ -347,7 +312,7 @@ function(x, ...)
                          "A corpus with %d text documents\n\n"),
                 length(x)))
 
-    meta <- meta(x, type = "corpus")$value
+    meta <- meta(x, type = "corpus")
     dmeta <- meta(x, type = "indexed")
 
     cat("Metadata:\n")
@@ -379,20 +344,22 @@ function(x)
     invisible(x)
 }
 
-lapply.PCorpus <-
-function(X, FUN, ...)
-{
-    db <- filehash::dbInit(X$dbcontrol[["dbName"]], X$dbcontrol[["dbType"]])
-    lapply(filehash::dbMultiFetch(db, unlist(content(X))), FUN, ...)
-}
-lapply.VCorpus <-
-function(X, FUN, ...)
-{
-    lazyTmMap <- meta(X, tag = "lazyTmMap", type = "corpus")
-    if (!is.null(lazyTmMap))
-        .Call("copyCorpus", X, materialize(X))
-    lapply(content(X), FUN, ...)
-}
+# TODO: lapply() is not generic but as.list() is
+#
+#lapply.PCorpus <-
+#function(X, FUN, ...)
+#{
+#    db <- filehash::dbInit(X$dbcontrol[["dbName"]], X$dbcontrol[["dbType"]])
+#    lapply(filehash::dbMultiFetch(db, unlist(content(X))), FUN, ...)
+#}
+#lapply.VCorpus <-
+#function(X, FUN, ...)
+#{
+#    lazyTmMap <- meta(X, tag = "lazyTmMap", type = "corpus")
+#    if (!is.null(lazyTmMap))
+#        .Call("copyCorpus", X, materialize(X))
+#    lapply(content(X), FUN, ...)
+#}
 
 writeCorpus <-
 function(x, path = ".", filenames = NULL)

@@ -109,10 +109,7 @@ S3method("tm_term_score", "DocumentTermMatrix")
 
 S3method("tm_term_score", "term_frequency")
 
-S3method("print", "CorpusMeta")
-
 S3method("[", "PCorpus")
-S3method("[<-", "PCorpus")
 S3method("[[", "PCorpus")
 S3method("[[<-", "PCorpus")
 S3method("inspect", "PCorpus")

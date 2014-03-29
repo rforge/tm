@@ -25,98 +25,42 @@ function(x, ...)
     invisible(x)
 }
 
-# Node ID, actual metadata, and possibly other nodes as children
 CorpusMeta <-
-function(nodeid = 0,
-         value = list(create_date = as.POSIXlt(Sys.time(), tz = "GMT"),
-                      creator = Sys.getenv("LOGNAME")),
-         children = NULL)
-{
-    structure(list(nodeid = nodeid, value = value, children = children),
-              class = "CorpusMeta")
-}
-
-print.CorpusMeta <-
-function(x, ...)
-    print(x$value)
-
-CorpusDMeta <-
-function(x)
-    UseMethod("CorpusDMeta", x)
-CorpusDMeta.VCorpus <-
-function(x)
-    x$dmeta
-CorpusDMeta.PCorpus <-
-function(x)
-{
-    db <- filehash::dbInit(x$dbcontrol[["dbName"]], x$dbcontrol[["dbType"]])
-    result <- filehash::dbFetch(db, "CorpusDMeta")
-    index <- x$dmeta[[1, "subset"]]
-    if (!any(is.na(index)))
-        result <- result[index, , drop = FALSE]
-    result
-}
-
-`CorpusDMeta<-` <-
-function(x, value)
-    UseMethod("CorpusDMeta<-", x)
-`CorpusDMeta<-.PCorpus` <- function(x, value) {
-    db <- filehash::dbInit(x$dbcontrol[["dbName"]], x$dbcontrol[["dbType"]])
-    db[["CorpusDMeta"]] <- value
-    x$dmeta[[1, "subset"]] <- NA
-    x
-}
-`CorpusDMeta<-.VCorpus` <-
-function(x, value)
-{
-    x$dmeta <- value
-    x
-}
+function(...)
+    structure(list(...), class = "CorpusMeta")
 
 meta.VCorpus <- meta.PCorpus <-
 function(x, tag = NULL, type = c("indexed", "corpus", "local"), ...)
 {
     if (!is.null(tag) && missing(type)) {
-        type <- if (tag %in% colnames(CorpusDMeta(x)))
-            "indexed"
-        else if (tag %in% names(x$meta$value))
-            "corpus"
-        else
-            "local"
+        type <- if (tag %in% colnames(x$dmeta)) "indexed"
+        else if (tag %in% names(x$meta)) "corpus"
+        else "local"
     }
     type <- match.arg(type)
-    if (identical(type, "indexed")) {
-        if (is.null(tag))
-            CorpusDMeta(x)
-        else
-            CorpusDMeta(x)[tag]
-    } else if (identical(type, "corpus")) {
-        if (is.null(tag))
-            x$meta
-        else
-            x$meta$value[[tag]]
-    } else if (identical(type, "local"))
-        lapply(content(x), meta, tag)
-    else
+    if (identical(type, "indexed"))
+        if (is.null(tag)) x$dmeta else x$dmeta[tag]
+    else if (identical(type, "corpus"))
+        if (is.null(tag)) x$meta else x$meta[[tag]]
+    else if (identical(type, "local")) {
+        lapply(seq_along(x), function(i) meta(x[[i]], tag))
+        # TODO: If content(x) returns the actual documents we could also use
+        # lapply(content(x), meta, tag)
+    } else
         stop("invalid type")
 }
 meta.TextDocument <-
 function(x, tag = NULL, ...)
-{
-    if (is.null(tag))
-        x$meta
-    else
-        x$meta[[tag]]
-}
+    if (is.null(tag)) x$meta else x$meta[[tag]]
 
 `meta<-.VCorpus` <- `meta<-.PCorpus` <-
 function(x, tag, type = c("indexed", "corpus", "local"), ..., value)
 {
     type <- match.arg(type)
     if (identical(type, "indexed"))
-        CorpusDMeta(x)[, tag] <- value
+        x$dmeta[, tag] <- value
     else if (type == "corpus")
-        x$meta$value[[tag]] <- value
+        x$meta[[tag]] <- value
     else if (identical(type, "local")) {
         for (i in seq_along(x))
             meta(x[[i]], tag) <- value[i]
