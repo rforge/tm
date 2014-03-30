@@ -23,5 +23,5 @@ materialize(corpus, range = seq_along(corpus))
 \examples{
 data("crude")
 x <- tm_map(crude, stemDocument, lazy = TRUE)
-x <- materialize(x)
+#x <- materialize(x)
 }

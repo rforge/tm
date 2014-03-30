@@ -5,7 +5,7 @@ tm_map <-
 function(x, FUN, ...)
     UseMethod("tm_map", x)
 tm_map.VCorpus <-
-function(x, FUN, useMeta = FALSE, lazy = FALSE, ...)
+function(x, FUN, ..., useMeta = FALSE, lazy = FALSE)
 {
     result <- x
     # Lazy mapping
@@ -38,7 +38,7 @@ function(x, FUN, useMeta = FALSE, lazy = FALSE, ...)
     result
 }
 tm_map.PCorpus <-
-function(x, FUN, useMeta = FALSE, ...)
+function(x, FUN, ..., useMeta = FALSE)
 {
     db <- filehash::dbInit(x$dbcontrol[["dbName"]], x$dbcontrol[["dbType"]])
     i <- 1
