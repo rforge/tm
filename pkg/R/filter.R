@@ -19,7 +19,7 @@ function(x, ..., FUN, doclevel = TRUE, useMeta = FALSE)
     if (doclevel) {
         if (useMeta)
             unlist(mclapply(content(x), FUN, ...,
-                                      dmeta = meta(x, type = "indexed")))
+                            dmeta = meta(x, type = "indexed")))
         else
             unlist(mclapply(content(x), FUN, ...))
     }

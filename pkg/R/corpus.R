@@ -245,29 +245,26 @@ function(x)
 #    new
 #}
 
-c.Corpus <-
+c.VCorpus <-
 function(..., recursive = FALSE)
 {
     args <- list(...)
     x <- args[[1L]]
 
-    if(length(args) == 1L)
+    if (length(args) == 1L)
         return(x)
 
     if (!all(unlist(lapply(args, inherits, class(x)))))
         stop("not all arguments are of the same corpus type")
 
-    if (inherits(x, "PCorpus"))
-        stop("concatenation of corpora with underlying databases is not supported")
-
     if (recursive)
         Reduce(c2, args)
     else {
         args <- do.call("c", lapply(args, content))
-        .VCorpus(args,
-                 CorpusMeta(),
-                 data.frame(MetaID = rep(0, length(args)),
-                            stringsAsFactors = FALSE))
+        structure(list(content = args,
+                       meta = CorpusMeta(),
+                       dmeta = data.frame(row.names = seq_along(args))),
+                  class = c("VCorpus", "Corpus"))
     }
 }
 
@@ -277,34 +274,43 @@ function(..., recursive = FALSE)
     args <- list(...)
     x <- args[[1L]]
 
-    if(length(args) == 1L)
+    if (length(args) == 1L)
         return(x)
 
     if (!all(unlist(lapply(args, inherits, class(x)))))
         stop("not all arguments are text documents")
 
-    .VCorpus(args,
-             CorpusMeta(),
-             data.frame(MetaID = rep(0, length(args)),
-                        stringsAsFactors = FALSE))
+    structure(list(content = args,
+                   meta = CorpusMeta(),
+                   dmeta = data.frame(row.names = seq_along(args))),
+              class = c("VCorpus", "Corpus"))
 }
 
-content.Corpus <-
-function(x)
-    x$content
+as.list.PCorpus <- as.list.VCorpus <-
+function(x, ...)
+    content(x)
 
-`content<-.Corpus` <-
-function(x, value)
+content.VCorpus <-
+function(x)
 {
-    x$content <- value
-    x
+    lazyTmMap <- meta(x, tag = "lazyTmMap", type = "corpus")
+    if (!is.null(lazyTmMap))
+        .Call("copyCorpus", x, materialize(x))
+    x$content
 }
 
-length.Corpus <-
+content.PCorpus <-
 function(x)
-    length(content(x))
+{
+    db <- filehash::dbInit(x$dbcontrol[["dbName"]], x$dbcontrol[["dbType"]])
+    filehash::dbMultiFetch(db, unlist(x$content))
+}
 
-print.Corpus <-
+length.PCorpus <- length.VCorpus <-
+function(x)
+    length(x$content)
+
+print.PCorpus <- print.VCorpus <-
 function(x, ...)
 {
     cat(sprintf(ngettext(length(x),
@@ -326,16 +332,7 @@ function(x, ...)
 inspect <-
 function(x)
     UseMethod("inspect", x)
-inspect.PCorpus <-
-function(x)
-{
-    print(x)
-    cat("\n")
-    db <- filehash::dbInit(x$dbcontrol[["dbName"]], x$dbcontrol[["dbType"]])
-    show(filehash::dbMultiFetch(db, unlist(content(x))))
-    invisible(x)
-}
-inspect.VCorpus <-
+inspect.PCorpus <- inspect.VCorpus <-
 function(x)
 {
     print(x)
@@ -343,23 +340,6 @@ function(x)
     print(noquote(content(x)))
     invisible(x)
 }
-
-# TODO: lapply() is not generic but as.list() is
-#
-#lapply.PCorpus <-
-#function(X, FUN, ...)
-#{
-#    db <- filehash::dbInit(X$dbcontrol[["dbName"]], X$dbcontrol[["dbType"]])
-#    lapply(filehash::dbMultiFetch(db, unlist(content(X))), FUN, ...)
-#}
-#lapply.VCorpus <-
-#function(X, FUN, ...)
-#{
-#    lazyTmMap <- meta(X, tag = "lazyTmMap", type = "corpus")
-#    if (!is.null(lazyTmMap))
-#        .Call("copyCorpus", X, materialize(X))
-#    lapply(content(X), FUN, ...)
-#}
 
 writeCorpus <-
 function(x, path = ".", filenames = NULL)

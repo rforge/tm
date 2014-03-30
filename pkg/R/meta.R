@@ -42,11 +42,9 @@ function(x, tag = NULL, type = c("indexed", "corpus", "local"), ...)
         if (is.null(tag)) x$dmeta else x$dmeta[tag]
     else if (identical(type, "corpus"))
         if (is.null(tag)) x$meta else x$meta[[tag]]
-    else if (identical(type, "local")) {
-        lapply(seq_along(x), function(i) meta(x[[i]], tag))
-        # TODO: If content(x) returns the actual documents we could also use
-        # lapply(content(x), meta, tag)
-    } else
+    else if (identical(type, "local"))
+        lapply(x, meta, tag)
+    else
         stop("invalid type")
 }
 meta.TextDocument <-

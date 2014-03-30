@@ -27,7 +27,6 @@ export("as.PlainTextDocument",
        "inspect",
        "MC_tokenizer",
        "makeChunks",
-       "materialize",
        "nDocs",
        "nTerms",
        "readPlain",
@@ -82,10 +81,6 @@ S3method("stemCompletion", "character")
 S3method("stemDocument", "character")
 S3method("stripWhitespace", "character")
 
-S3method("c", "Corpus")
-S3method("content", "Corpus")
-S3method("length", "Corpus")
-S3method("print", "Corpus")
 S3method("tm_filter", "Corpus")
 S3method("tm_index", "Corpus")
 #S3method("words", "Corpus")
@@ -112,9 +107,13 @@ S3method("tm_term_score", "term_frequency")
 S3method("[", "PCorpus")
 S3method("[[", "PCorpus")
 S3method("[[<-", "PCorpus")
+S3method("as.list", "PCorpus")
+S3method("content", "PCorpus")
 S3method("inspect", "PCorpus")
+S3method("length", "VCorpus")
 S3method("meta", "PCorpus")
 S3method("meta<-", "PCorpus")
+S3method("print", "PCorpus")
 S3method("TermDocumentMatrix", "PCorpus")
 S3method("tm_map", "PCorpus")
 
@@ -159,9 +158,14 @@ S3method("pGetElem", "URISource")
 S3method("[", "VCorpus")
 S3method("[[", "VCorpus")
 S3method("[[<-", "VCorpus")
+S3method("as.list", "VCorpus")
+S3method("c", "VCorpus")
+S3method("content", "VCorpus")
 S3method("inspect", "VCorpus")
+S3method("length", "VCorpus")
 S3method("meta", "VCorpus")
 S3method("meta<-", "VCorpus")
+S3method("print", "VCorpus")
 S3method("TermDocumentMatrix", "VCorpus")
 S3method("tm_map", "VCorpus")
 
@@ -198,4 +202,4 @@ S3method("nDocs", "TermDocumentMatrix")
 S3method("nTerms", "DocumentTermMatrix")
 S3method("nTerms", "TermDocumentMatrix")
 
-useDynLib("tm")
+useDynLib(tm, copyCorpus)

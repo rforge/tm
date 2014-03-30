@@ -51,12 +51,6 @@ function(x, control = list())
 {
     stopifnot(is.list(control))
 
-    lazyTmMap <- meta(x, tag = "lazyTmMap", type = "corpus")
-    if (!is.null(lazyTmMap))
-        .Call("copyCorpus", x, materialize(x))
-
-    # TODO: At the moment content(x) delivers for a PCorpus database indices
-    #       (instead of the actual documents)
     tflist <- mclapply(unname(content(x)), termFreq, control)
     tflist <- lapply(tflist, function(y) y[y > 0])
 

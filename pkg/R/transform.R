@@ -1,8 +1,12 @@
 # Author: Ingo Feinerer
 # Transformations
 
-tm_map <- function(x, FUN, ..., useMeta = FALSE, lazy = FALSE) UseMethod("tm_map", x)
-tm_map.VCorpus <- function(x, FUN, ..., useMeta = FALSE, lazy = FALSE) {
+tm_map <-
+function(x, FUN, ...)
+    UseMethod("tm_map", x)
+tm_map.VCorpus <-
+function(x, FUN, useMeta = FALSE, lazy = FALSE, ...)
+{
     result <- x
     # Lazy mapping
     if (lazy) {
@@ -26,19 +30,19 @@ tm_map.VCorpus <- function(x, FUN, ..., useMeta = FALSE, lazy = FALSE) {
         }
     }
     else {
-        content(result) <- if (useMeta)
+        result$content <- if (useMeta)
                 mclapply(content(x), FUN, ..., dmeta = meta(x, type = "indexed"))
             else
                 mclapply(content(x), FUN, ...)
     }
     result
 }
-tm_map.PCorpus <- function(x, FUN, ..., useMeta = FALSE, lazy = FALSE) {
-    if (lazy)
-        warning("lazy mapping is deactived when using database backend")
+tm_map.PCorpus <-
+function(x, FUN, useMeta = FALSE, ...)
+{
     db <- filehash::dbInit(x$dbcontrol[["dbName"]], x$dbcontrol[["dbType"]])
     i <- 1
-    for (id in unlist(content(x))) {
+    for (id in unlist(x$content)) {
         db[[id]] <- if (useMeta)
             FUN(x[[i]], ..., dmeta = meta(x, type = "indexed"))
         else
@@ -54,26 +58,25 @@ tm_map.PCorpus <- function(x, FUN, ..., useMeta = FALSE, lazy = FALSE) {
 # Materialize lazy mappings
 # Improvements by Christian Buchta
 materialize <-
-function(corpus, range = seq_along(corpus))
+function(x, range = seq_along(x))
 {
-    lazyTmMap <- meta(corpus, tag = "lazyTmMap", type = "corpus")
+    lazyTmMap <- meta(x, tag = "lazyTmMap", type = "corpus")
     if (!is.null(lazyTmMap)) {
        # Make valid and lazy index
-       idx <- (seq_along(corpus) %in% range) & lazyTmMap$index
+       idx <- (seq_along(x) %in% range) & lazyTmMap$index
        if (any(idx)) {
-           res <- content(corpus)[idx]
+           res <- x$content[idx]
            for (m in lazyTmMap$maps)
-               res <- lapply(res, m, dmeta = meta(corpus, type = "indexed"))
-           #corpus$content[idx] <- res
-           content(corpus)[idx] <- res
+               res <- lapply(res, m, dmeta = meta(x, type = "indexed"))
+           x$content[idx] <- res
            lazyTmMap$index[idx] <- FALSE
        }
     }
     # Clean up if everything is materialized
     if (!any(lazyTmMap$index))
         lazyTmMap <- NULL
-    meta(corpus, tag = "lazyTmMap", type = "corpus") <- lazyTmMap
-    corpus
+    meta(x, tag = "lazyTmMap", type = "corpus") <- lazyTmMap
+    x
 }
 
 tm_reduce <- function(x, tmFuns, ...)
