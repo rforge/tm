@@ -1,6 +1,13 @@
 ## Author: Ingo Feinerer
 ## Reader
 
+FunctionGenerator <-
+function(x)
+{
+    class(x) <- c("FunctionGenerator", "function")
+    x
+}
+
 getReaders <-
 function()
     c("readDOC", "readPDF", "readReut21578XML", "readReut21578XMLasPlain",
