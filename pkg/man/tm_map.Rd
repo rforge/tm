@@ -35,15 +35,15 @@
   of documents with pending lazy transformations.
 }
 \note{
-Please be aware that lazy transformations are an experimental feature and
-change \R's standard evaluation semantics.
+Lazy transformations change \R's standard evaluation semantics.
 }
 \examples{
 data("crude")
-tm_map(crude, stemDocument)
-## Generate a custom transformation function which takes the heading
-## as new content
+tm_map(crude, stemDocument, lazy = TRUE)
+## Generate a custom transformation function which takes the heading as new content
 headings <- function(x)
-    PlainTextDocument(Heading(x), id = ID(x), language = Language(x))
+    PlainTextDocument(meta(x, "heading"),
+                      id = meta(x, "id"),
+                      language = meta(x, "language"))
 inspect(tm_map(crude, headings))
 }

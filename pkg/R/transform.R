@@ -5,77 +5,45 @@ tm_map <-
 function(x, FUN, ...)
     UseMethod("tm_map", x)
 tm_map.VCorpus <-
-function(x, FUN, ..., useMeta = FALSE, lazy = FALSE)
+function(x, FUN, ..., lazy = FALSE)
 {
-    result <- x
     # Lazy mapping
     if (lazy) {
-        lazyTmMap <- meta(x, tag = "lazyTmMap", type = "corpus")
-        local_fun <- local({
-            useMeta <- useMeta
-            function(x, ..., dmeta) {
-                if (useMeta)
-                    FUN(x, ..., dmeta = dmeta)
-                else
-                    FUN(x, ...)
-            }
-        })
-        if (is.null(lazyTmMap)) {
-            meta(result, tag = "lazyTmMap", type = "corpus") <-
-                list(index = rep(TRUE, length(result)), maps = list(local_fun))
-        }
-        else {
-            lazyTmMap$maps <- c(lazyTmMap$maps, list(local_fun))
-            meta(result, tag = "lazyTmMap", type = "corpus") <- lazyTmMap
-        }
-    }
-    else {
-        result$content <- if (useMeta)
-                mclapply(content(x), FUN, ..., dmeta = meta(x, type = "indexed"))
-            else
-                mclapply(content(x), FUN, ...)
-    }
-    result
+        fun <- function(x) FUN(x, ...)
+        if (is.null(x$lazy))
+            x$lazy <- list(index = rep(TRUE, length(x)), maps = list(fun))
+        else
+            x$lazy$maps <- c(x$lazy$maps, list(fun))
+    } else
+        x$content <- mclapply(content(x), FUN, ...)
+    x
 }
 tm_map.PCorpus <-
-function(x, FUN, ..., useMeta = FALSE)
+function(x, FUN, ...)
 {
     db <- filehash::dbInit(x$dbcontrol[["dbName"]], x$dbcontrol[["dbType"]])
-    i <- 1
-    for (id in unlist(x$content)) {
-        db[[id]] <- if (useMeta)
-            FUN(x[[i]], ..., dmeta = meta(x, type = "indexed"))
-        else
-            FUN(x[[i]], ...)
-        i <- i + 1
-    }
-    # Suggested by Christian Buchta
+    for (i in seq_along(x))
+        db[[x$content[[i]]]] <- FUN(x[[i]], ...)
     filehash::dbReorganize(db)
-
     x
 }
 
 # Materialize lazy mappings
-# Improvements by Christian Buchta
 materialize <-
 function(x, range = seq_along(x))
 {
-    lazyTmMap <- meta(x, tag = "lazyTmMap", type = "corpus")
-    if (!is.null(lazyTmMap)) {
-       # Make valid and lazy index
-       idx <- (seq_along(x) %in% range) & lazyTmMap$index
-       if (any(idx)) {
-           res <- x$content[idx]
-           for (m in lazyTmMap$maps)
-               res <- lapply(res, m, dmeta = meta(x, type = "indexed"))
-           x$content[idx] <- res
-           lazyTmMap$index[idx] <- FALSE
+    if (!is.null(x$lazy)) {
+       i <- (seq_along(x) %in% range) & x$lazy$index
+       if (any(i)) {
+           x$content[i] <-
+               mclapply(x$content[i], function(d) tm_reduce(d, x$lazy$maps))
+           x$lazy$index[i] <- FALSE
        }
+
+       # Clean up if everything is materialized
+       if (!any(x$lazy$index))
+           x$lazy <- NULL
     }
-    # Clean up if everything is materialized
-    if (!any(lazyTmMap$index))
-        lazyTmMap <- NULL
-    meta(x, tag = "lazyTmMap", type = "corpus") <- lazyTmMap
     x
 }
 

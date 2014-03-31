@@ -20,10 +20,7 @@ function(x,
     db <- filehash::dbInit(dbControl$dbName, dbControl$dbType)
 
     # Allocate memory in advance if length is known
-    tdl <- if (x$length > 0)
-        vector("list", as.integer(x$length))
-    else
-        list()
+    tdl <- if (x$length > 0) vector("list", as.integer(x$length)) else list()
 
     counter <- 1
     while (!eoi(x)) {
@@ -63,10 +60,7 @@ function(x, readerControl = list(reader = x$defaultreader, language = "en"))
         on.exit(readerControl$exit())
 
     # Allocate memory in advance if length is known
-    tdl <- if (x$length > 0)
-        vector("list", as.integer(x$length))
-    else
-        list()
+    tdl <- if (x$length > 0) vector("list", as.integer(x$length)) else list()
 
     if (x$vectorized)
         tdl <- mapply(function(elem, id)
@@ -102,12 +96,24 @@ function(x, readerControl = list(reader = x$defaultreader, language = "en"))
               class = c("VCorpus", "Corpus"))
 }
 
-`[.PCorpus` <- `[.VCorpus` <-
+`[.PCorpus` <-
 function(x, i)
 {
     if (!missing(i)) {
         x$content <- x$content[i]
         x$dmeta <- x$dmeta[i, , drop = FALSE]
+    }
+    x
+}
+
+`[.VCorpus` <-
+function(x, i)
+{
+    if (!missing(i)) {
+        x$content <- x$content[i]
+        x$dmeta <- x$dmeta[i, , drop = FALSE]
+        if (!is.null(x$lazy))
+            x$lazy$index <- x$lazy$index[i]
     }
     x
 }
@@ -132,9 +138,8 @@ function(x, i)
 function(x, i)
 {
     i <- .map_name_index(x, i)
-    lazyTmMap <- meta(x, tag = "lazyTmMap", type = "corpus")
-    if (!is.null(lazyTmMap))
-        .Call("copyCorpus", x, materialize(x, i))
+    if (!is.null(x$lazy))
+        .Call(copyCorpus, x, materialize(x, i))
     x$content[[i]]
 }
 
@@ -150,54 +155,11 @@ function(x, i, value)
 function(x, i, value)
 {
     i <- .map_name_index(x, i)
-    # Mark new objects as not active for lazy mapping
-    lazyTmMap <- meta(x, tag = "lazyTmMap", type = "corpus")
-    if (!is.null(lazyTmMap)) {
-        lazyTmMap$index[i] <- FALSE
-        meta(x, tag = "lazyTmMap", type = "corpus") <- lazyTmMap
-    }
+    # Mark new objects as inactive for lazy mapping
+    if (!is.null(x$lazy))
+        x$lazy$index[i] <- FALSE
     x$content[[i]] <- value
     x
-}
-
-# Update NodeIDs of a CMetaData tree
-.update_id <-
-function(x, id = 0, mapping = NULL, left.mapping = NULL, level = 0)
-{
-    # Traversal of (binary) CMetaData tree with setup of NodeIDs
-    set_id <- function(x) {
-        x$NodeID <- id
-        id <<- id + 1
-        level <<- level + 1
-        if (length(x$Children)) {
-            mapping <<- cbind(mapping, c(x$Children[[1]]$NodeID, id))
-            left <- set_id(x$Children[[1]])
-            if (level == 1) {
-                left.mapping <<- mapping
-                mapping <<- NULL
-            }
-            mapping <<- cbind(mapping, c(x$Children[[2]]$NodeID, id))
-            right <- set_id(x$Children[[2]])
-
-            x$Children <- list(left, right)
-        }
-        level <<- level - 1
-        x
-    }
-    list(root = set_id(x), left.mapping = left.mapping, right.mapping = mapping)
-}
-
-# Find indices to be updated for a CMetaData tree
-.find_indices <-
-function(x)
-{
-    indices.mapping <- NULL
-    for (m in levels(as.factor(CorpusDMeta(x)$MetaID))) {
-        indices <- (CorpusDMeta(x)$MetaID == m)
-        indices.mapping <- c(indices.mapping, list(m = indices))
-        names(indices.mapping)[length(indices.mapping)] <- m
-    }
-    indices.mapping
 }
 
 #c2 <-
@@ -293,9 +255,8 @@ function(x, ...)
 content.VCorpus <-
 function(x)
 {
-    lazyTmMap <- meta(x, tag = "lazyTmMap", type = "corpus")
-    if (!is.null(lazyTmMap))
-        .Call("copyCorpus", x, materialize(x))
+    if (!is.null(x$lazy))
+        .Call(copyCorpus, x, materialize(x))
     x$content
 }
 

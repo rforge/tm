@@ -26,7 +26,6 @@ export("as.PlainTextDocument",
        "getTransformations",
        "inspect",
        "MC_tokenizer",
-       "makeChunks",
        "nDocs",
        "nTerms",
        "readPlain",
@@ -81,8 +80,6 @@ S3method("stemCompletion", "character")
 S3method("stemDocument", "character")
 S3method("stripWhitespace", "character")
 
-S3method("tm_filter", "Corpus")
-S3method("tm_index", "Corpus")
 #S3method("words", "Corpus")
 
 S3method("getElem", "DataframeSource")
@@ -115,6 +112,8 @@ S3method("meta", "PCorpus")
 S3method("meta<-", "PCorpus")
 S3method("print", "PCorpus")
 S3method("TermDocumentMatrix", "PCorpus")
+S3method("tm_filter", "PCorpus")
+S3method("tm_index", "PCorpus")
 S3method("tm_map", "PCorpus")
 
 S3method("content", "PlainTextDocument")
@@ -167,6 +166,8 @@ S3method("meta", "VCorpus")
 S3method("meta<-", "VCorpus")
 S3method("print", "VCorpus")
 S3method("TermDocumentMatrix", "VCorpus")
+S3method("tm_filter", "VCorpus")
+S3method("tm_index", "VCorpus")
 S3method("tm_map", "VCorpus")
 
 S3method("getElem", "VectorSource")
