@@ -20,10 +20,8 @@ function(x, dictionary,
          type = c("prevalent", "first", "longest",
                   "none", "random", "shortest"))
 {
-    # TODO: Use words() instead of manual splitting
     if (inherits(dictionary, "Corpus"))
-        dictionary <- unlist(lapply(dictionary,
-          function(x) strsplit(content(x), "[^[:alnum:]]+")))
+        dictionary <- unlist(lapply(dictionary, words))
 
     type <- match.arg(type)
     possibleCompletions <- lapply(x, function(w) grep(sprintf("^%s", w),

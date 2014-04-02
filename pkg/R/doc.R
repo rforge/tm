@@ -18,7 +18,7 @@ function(x = character(0),
 
 as.character.PlainTextDocument <-
 function(x, ...)
-    x$content
+    content(x)
 
 as.PlainTextDocument <-
 function(x)
@@ -41,6 +41,10 @@ function(x, ...)
     cat(noquote(content(x)), sep = "\n")
     invisible(x)
 }
+
+words.PlainTextDocument <-
+function(x, ...)
+    unique(MC_tokenizer(content(x)))
 
 XMLTextDocument <-
 function(x = list(),

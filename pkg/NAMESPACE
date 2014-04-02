@@ -1,4 +1,4 @@
-importFrom("NLP", "content", "content<-", "meta", "meta<-")
+importFrom("NLP", "content", "content<-", "meta", "meta<-", "words")
 importFrom("parallel", "mclapply")
 importFrom("stats", "setNames")
 
@@ -66,7 +66,6 @@ export("as.PlainTextDocument",
        "weightTfIdf",
        "weightBin",
        "weightSMART",
-#       "words",
        "writeCorpus",
        "XMLSource",
        "Zipf_plot")
@@ -78,8 +77,6 @@ S3method("stemCompletion", "character")
 S3method("stemDocument", "character")
 S3method("stripWhitespace", "character")
 
-#S3method("words", "Corpus")
-
 S3method("getElem", "DataframeSource")
 S3method("pGetElem", "DataframeSource")
 
@@ -89,7 +86,6 @@ S3method("pGetElem", "DirSource")
 S3method("[", "DocumentTermMatrix")
 S3method("c", "DocumentTermMatrix")
 S3method("dimnames<-", "DocumentTermMatrix")
-S3method("dissimilarity", "DocumentTermMatrix")
 S3method("findAssocs", "DocumentTermMatrix")
 S3method("inspect", "DocumentTermMatrix")
 S3method("plot", "DocumentTermMatrix")
@@ -116,7 +112,6 @@ S3method("tm_map", "PCorpus")
 
 S3method("content", "PlainTextDocument")
 S3method("content<-", "PlainTextDocument")
-S3method("dissimilarity", "PlainTextDocument")
 S3method("print", "PlainTextDocument")
 S3method("removeNumbers", "PlainTextDocument")
 S3method("removePunctuation", "PlainTextDocument")
@@ -125,7 +120,7 @@ S3method("stemCompletion", "PlainTextDocument")
 S3method("stemDocument", "PlainTextDocument")
 S3method("stripWhitespace", "PlainTextDocument")
 S3method("tm_term_score", "PlainTextDocument")
-#S3method("words", "PlainTextDocument")
+S3method("words", "PlainTextDocument")
 
 S3method("eoi", "SimpleSource")
 S3method("stepNext", "SimpleSource")
@@ -133,7 +128,6 @@ S3method("stepNext", "SimpleSource")
 S3method("c", "TermDocumentMatrix")
 S3method("[", "TermDocumentMatrix")
 S3method("dimnames<-", "TermDocumentMatrix")
-S3method("dissimilarity", "TermDocumentMatrix")
 S3method("findAssocs", "TermDocumentMatrix")
 S3method("inspect", "TermDocumentMatrix")
 S3method("plot", "TermDocumentMatrix")
