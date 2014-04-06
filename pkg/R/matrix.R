@@ -156,7 +156,18 @@ function(doc, control = list())
 {
     stopifnot(inherits(doc, "TextDocument"), is.list(control))
 
-    txt <- content(doc)
+    ## Tokenize the corpus
+    .tokenize <- control$tokenize
+    if (is.null(.tokenize) || identical(.tokenize, "words"))
+        .tokenize <- words
+    else if (identical(.tokenize, "MC"))
+        .tokenize <- MC_tokenizer
+    else if (identical(.tokenize, "scan"))
+        .tokenize <- scan_tokenizer
+    if (is.function(.tokenize))
+        txt <- .tokenize(doc)
+    else
+        stop("invalid tokenizer")
 
     ## Conversion to lower characters
     .tolower <- control$tolower
@@ -164,15 +175,6 @@ function(doc, control = list())
         .tolower <- tolower
     if (is.function(.tolower))
         txt <- .tolower(txt)
-
-    ## Tokenize the corpus
-    .tokenize <- control$tokenize
-    if (is.null(.tokenize) || identical(.tokenize, "scan"))
-        .tokenize <- scan_tokenizer
-    else if (identical(.tokenize, "MC"))
-        .tokenize <- MC_tokenizer
-    if (is.function(.tokenize))
-        txt <- .tokenize(txt)
 
     ## Punctuation removal
     .removePunctuation <- control$removePunctuation

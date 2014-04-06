@@ -110,6 +110,7 @@ S3method("tm_filter", "PCorpus")
 S3method("tm_index", "PCorpus")
 S3method("tm_map", "PCorpus")
 
+S3method("as.character", "PlainTextDocument")
 S3method("content", "PlainTextDocument")
 S3method("content<-", "PlainTextDocument")
 S3method("print", "PlainTextDocument")

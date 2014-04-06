@@ -10,8 +10,7 @@ function(x, dictionary,
          type = c("prevalent", "first", "longest",
                   "none", "random", "shortest"))
 {
-    tokens <- scan_tokenizer(content(x))
-    content(x) <- paste(stemCompletion.character(tokens, dictionary, type),
+    content(x) <- paste(stemCompletion.character(words(x), dictionary, type),
                         collapse = " ")
     x
 }
@@ -21,7 +20,7 @@ function(x, dictionary,
                   "none", "random", "shortest"))
 {
     if (inherits(dictionary, "Corpus"))
-        dictionary <- unlist(lapply(dictionary, words))
+        dictionary <- unique(unlist(lapply(dictionary, words)))
 
     type <- match.arg(type)
     possibleCompletions <- lapply(x, function(w) grep(sprintf("^%s", w),
@@ -34,7 +33,7 @@ function(x, dictionary,
            longest = {
                ordering <-
                    lapply(possibleCompletions,
-                          function(x) order(nchar(x),decreasing = TRUE))
+                          function(x) order(nchar(x), decreasing = TRUE))
                possibleCompletions <-
                    mapply(function(x, id) x[id], possibleCompletions,
                           ordering, SIMPLIFY = FALSE)

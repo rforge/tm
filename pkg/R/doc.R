@@ -44,7 +44,10 @@ function(x, ...)
 
 words.PlainTextDocument <-
 function(x, ...)
-    unique(MC_tokenizer(content(x)))
+{
+    w <- MC_tokenizer(x)
+    w[nzchar(w)]
+}
 
 XMLTextDocument <-
 function(x = list(),
