@@ -455,22 +455,3 @@ function(x, sparse)
     termIndex <- as.numeric(names(t[t]))
     if (inherits(x, "DocumentTermMatrix")) x[, termIndex] else x[termIndex,]
 }
-
-CategorizedDocumentTermMatrix <-
-function(x, c)
-{
-    if(inherits(x, "TermDocumentMatrix"))
-        x <- t(x)
-    else if(!inherits(x, "DocumentTermMatrix"))
-        stop("wrong class")
-
-    if(length(c) != nDocs(x))
-        stop("invalid category ids")
-
-    attr(x, "Category") <- c
-
-    class(x) <- c("CategorizedDocumentTermMatrix",
-                  DocumentTermMatrix_classes)
-
-    x
-}
