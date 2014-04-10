@@ -4,20 +4,6 @@ stemCompletion <-
 function(x, dictionary,
          type = c("prevalent", "first", "longest",
                   "none", "random", "shortest"))
-    UseMethod("stemCompletion", x)
-stemCompletion.PlainTextDocument <-
-function(x, dictionary,
-         type = c("prevalent", "first", "longest",
-                  "none", "random", "shortest"))
-{
-    content(x) <- paste(stemCompletion.character(words(x), dictionary, type),
-                        collapse = " ")
-    x
-}
-stemCompletion.character <-
-function(x, dictionary,
-         type = c("prevalent", "first", "longest",
-                  "none", "random", "shortest"))
 {
     if (inherits(dictionary, "Corpus"))
         dictionary <- unique(unlist(lapply(dictionary, words)))
@@ -47,7 +33,7 @@ function(x, dictionary,
                    lapply(possibleCompletions,
                           function(x) sort(table(x), decreasing = TRUE))
                n <- names(sapply(possibleCompletions, "[", 1))
-               setNames(if (length(n)) n else NA, x)
+               setNames(if (length(n)) n else rep(NA, length(x)), x)
            },
            random = {
                setNames(sapply(possibleCompletions, function(x) {
