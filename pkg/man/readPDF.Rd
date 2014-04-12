@@ -83,7 +83,7 @@ if(all(file.exists(Sys.which(c("pdfinfo", "pdftotext"))))) {
     pdf <- readPDF(control = list(text = "-layout"))(elem = list(uri = uri),
                                                      language = "en",
                                                      id = "id1")
-    pdf[1:13]
+    content(pdf)[1:13]
 }
 Corpus(URISource(uri, mode = ""),
        readerControl = list(reader = readPDF(engine = "ghostscript")))
