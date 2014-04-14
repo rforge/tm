@@ -5,7 +5,7 @@
   Constructs a directory source.
 }
 \usage{
-DirSource(directory = ".", encoding = "unknown", pattern = NULL,
+DirSource(directory = ".", encoding = "", pattern = NULL,
           recursive = FALSE, ignore.case = FALSE, mode = "text")
 }
 \arguments{

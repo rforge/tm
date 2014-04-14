@@ -6,7 +6,7 @@
   identifier.
 }
 \usage{
-URISource(x, encoding = "unknown", mode = "text")
+URISource(x, encoding = "", mode = "text")
 }
 \arguments{
   \item{x}{A vector of Uniform Resource Identifiers.}

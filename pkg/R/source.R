@@ -8,7 +8,7 @@ function()
 
 SimpleSource <-
 function(defaultreader = readPlain,
-         encoding = "unknown",
+         encoding = "",
          length = NA_integer_,
          names = NA_character_,
          position = 0,
@@ -55,7 +55,7 @@ function(x, encoding = "unknown")
 
 # A directory with files
 DirSource <-
-function(directory = ".", encoding = "unknown", pattern = NULL,
+function(directory = ".", encoding = "", pattern = NULL,
          recursive = FALSE, ignore.case = FALSE, mode = "text")
 {
     if (!identical(mode, "text") &&
@@ -81,7 +81,7 @@ function(directory = ".", encoding = "unknown", pattern = NULL,
 
 # Documents identified by a Uniform Resource Identifier
 URISource <-
-function(x, encoding = "unknown", mode = "text")
+function(x, encoding = "", mode = "text")
 {
     if (!identical(mode, "text") &&
         !identical(mode, "binary") &&
