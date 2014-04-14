@@ -140,7 +140,8 @@ readContent <-
 function(x, encoding, mode)
 {
     if (identical(mode, "text"))
-        readLines(x, encoding = encoding)
+        iconv(readLines(x, warn = FALSE),
+              from = encoding, to = "UTF-8", sub = "byte")
     else if (identical(mode, "binary"))
         read_all_bytes(x)
     else if (identical(mode, ""))

@@ -10,9 +10,8 @@ URISource(x, encoding = "unknown", mode = "text")
 }
 \arguments{
   \item{x}{A vector of Uniform Resource Identifiers.}
-  \item{encoding}{encoding to be assumed for input strings. It is used to mark
-    character strings as known to be in Latin-1 or UTF-8: it is not used to
-    re-encode the input.}
+  \item{encoding}{A character string describing the current encoding. It is
+    passed to \code{\link{iconv}} to convert the input to \code{"UTF-8"}.}
 }
 \value{
   An object of class \code{URISource} which extends the class
@@ -22,7 +21,7 @@ URISource(x, encoding = "unknown", mode = "text")
 \seealso{
   \code{\link{DirSource}} for accessing a directory, and
   \code{\link{getSources}} to list available sources.
-  \code{\link{Encoding}} on encodings in \R.
+  \code{\link{Encoding}} and \code{\link{iconv}} on encodings in \R.
 }
 \examples{
 loremipsum <- system.file("texts", "loremipsum.txt", package = "tm")
