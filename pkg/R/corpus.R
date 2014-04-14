@@ -162,50 +162,18 @@ function(x, i, value)
     x
 }
 
-#c2 <-
-#function(x, y, ...)
-#{
-#    # Update the CMetaData tree
-#    cmeta <- .MetaDataNode(0, list(merge_date = as.POSIXlt(Sys.time(), tz = "GMT"), merger = Sys.getenv("LOGNAME")), list(CMetaData(x), CMetaData(y)))
-#    update.struct <- .update_id(cmeta)
-#
-#    new <- .VCorpus(c(unclass(x), unclass(y)), update.struct$root, NULL)
-#
-#    # Find indices to be updated for the left tree
-#    indices.mapping <- .find_indices(x)
-#
-#    # Update the CorpusDMeta data frames for the left tree
-#    for (i in 1:ncol(update.struct$left.mapping)) {
-#        map <- update.struct$left.mapping[,i]
-#        DMetaData(x)$MetaID <- replace(DMetaData(x)$MetaID, indices.mapping[[as.character(map[1])]], map[2])
-#    }
-#
-#    # Find indices to be updated for the right tree
-#    indices.mapping <- .find_indices(y)
-#
-#    # Update the CorpusDMeta data frames for the right tree
-#    for (i in 1:ncol(update.struct$right.mapping)) {
-#        map <- update.struct$right.mapping[,i]
-#        DMetaData(y)$MetaID <- replace(DMetaData(y)$MetaID, indices.mapping[[as.character(map[1])]], map[2])
-#    }
-#
-#    # Merge the CorpusDMeta data frames
-#    labels <- setdiff(names(DMetaData(y)), names(DMetaData(x)))
-#    na.matrix <- matrix(NA,
-#                        nrow = nrow(DMetaData(x)),
-#                        ncol = length(labels),
-#                        dimnames = list(row.names(DMetaData(x)), labels))
-#    x.dmeta.aug <- cbind(DMetaData(x), na.matrix)
-#    labels <- setdiff(names(DMetaData(x)), names(DMetaData(y)))
-#    na.matrix <- matrix(NA,
-#                        nrow = nrow(DMetaData(y)),
-#                        ncol = length(labels),
-#                        dimnames = list(row.names(DMetaData(y)), labels))
-#    y.dmeta.aug <- cbind(DMetaData(y), na.matrix)
-#    DMetaData(new) <- rbind(x.dmeta.aug, y.dmeta.aug)
-#
-#    new
-#}
+outer_union <-
+function(x, y, ...)
+{
+    if (nrow(x) > 0L)
+        x[, setdiff(names(y), names(x))] <- NA
+    if (nrow(y) > 0L)
+        y[, setdiff(names(x), names(y))] <- NA
+    res <- rbind(x, y)
+    if (ncol(res) == 0L)
+        res <- data.frame(row.names = seq_len(nrow(x) + nrow(y)))
+    res
+}
 
 c.VCorpus <-
 function(..., recursive = FALSE)
@@ -219,15 +187,12 @@ function(..., recursive = FALSE)
     if (!all(unlist(lapply(args, inherits, class(x)))))
         stop("not all arguments are of the same corpus type")
 
-    if (recursive)
-        Reduce(c2, args)
-    else {
-        args <- do.call("c", lapply(args, content))
-        structure(list(content = args,
-                       meta = CorpusMeta(),
-                       dmeta = data.frame(row.names = seq_along(args))),
-                  class = c("VCorpus", "Corpus"))
-    }
+    structure(list(content = do.call("c", lapply(args, content)),
+                   meta = structure(do.call("c",
+                     lapply(args, function(a) meta(a, type = "corpus"))),
+                                    class = "CorpusMeta"),
+                   dmeta = Reduce(outer_union, lapply(args, meta))),
+              class = c("VCorpus", "Corpus"))
 }
 
 c.TextDocument <-
