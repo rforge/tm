@@ -250,16 +250,19 @@ function(x, ...)
     format <- c("term", "document")
     if (inherits(x, "DocumentTermMatrix"))
         format <- rev(format)
-    cat(sprintf("A %s-%s matrix (%d %ss, %d %ss)\n",
-                format[1L], format[2L], nrow(x),
-                format[1L], ncol(x), format[2L]))
-    cat(sprintf("\nNon-/sparse entries: %d/%.0f\n",
+    writeLines(sprintf("<<%s (%ss: %d, %ss: %d)>>",
+                       class(x)[1], format[1L], nrow(x), format[2L], ncol(x)))
+    writeLines(sprintf("Non-/sparse entries: %d/%.0f",
                 length(x$v), prod(dim(x)) - length(x$v)))
-    sparsity <- if (identical(prod(dim(x)), 0L)) 100 else round((1 - length(x$v)/prod(dim(x))) * 100)
-    cat(sprintf("Sparsity           : %s%%\n", sparsity))
-    cat("Maximal term length:", max(nchar(Terms(x), type = "chars"), 0), "\n")
-    cat(sprintf("Weighting          : %s (%s)\n",
-                attr(x, "weighting")[1L], attr(x, "weighting")[2L]))
+    sparsity <- if (identical(prod(dim(x)), 0L))
+        100
+    else
+        round((1 - length(x$v)/prod(dim(x))) * 100)
+    writeLines(sprintf("Sparsity           : %s%%", sparsity))
+    writeLines(sprintf("Maximal term length: %s",
+                       max(nchar(Terms(x), type = "chars"), 0)))
+    writeLines(sprintf("Weighting          : %s (%s)",
+                       attr(x, "weighting")[1L], attr(x, "weighting")[2L]))
     invisible(x)
 }
 

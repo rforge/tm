@@ -56,7 +56,8 @@ function(x, value)
 print.PlainTextDocument <-
 function(x, ...)
 {
-    cat(noquote(content(x)), sep = "\n")
+    writeLines(sprintf("<<PlainTextDocument (metadata: %d)>>\n", length(x$meta)))
+    writeLines(content(x))
     invisible(x)
 }
 

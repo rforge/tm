@@ -221,19 +221,11 @@ function(x)
 print.PCorpus <- print.VCorpus <-
 function(x, ...)
 {
-    cat(sprintf(ngettext(length(x),
-                         "A corpus with %d text document\n\n",
-                         "A corpus with %d text documents\n\n"),
-                length(x)))
-
-    meta <- meta(x, type = "corpus")
-    dmeta <- meta(x, type = "indexed")
-
-    cat("Metadata:\n")
-    cat(sprintf("  Tag-value pairs. Tags: %s\n",
-                paste(names(meta), collapse = " ")))
-    cat("  Data frame. Variables:", colnames(dmeta), "\n")
-
+    writeLines(sprintf("<<%s (documents: %d, metadata (corpus/indexed): %d/%d)>>",
+                       class(x)[1],
+                       length(x),
+                       length(meta(x, type = "corpus")),
+                       ncol(meta(x, type = "indexed"))))
     invisible(x)
 }
 
