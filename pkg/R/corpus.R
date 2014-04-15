@@ -195,24 +195,6 @@ function(..., recursive = FALSE)
               class = c("VCorpus", "Corpus"))
 }
 
-c.TextDocument <-
-function(..., recursive = FALSE)
-{
-    args <- list(...)
-    x <- args[[1L]]
-
-    if (length(args) == 1L)
-        return(x)
-
-    if (!all(unlist(lapply(args, inherits, class(x)))))
-        stop("not all arguments are text documents")
-
-    structure(list(content = args,
-                   meta = CorpusMeta(),
-                   dmeta = data.frame(row.names = seq_along(args))),
-              class = c("VCorpus", "Corpus"))
-}
-
 as.list.PCorpus <- as.list.VCorpus <-
 function(x, ...)
     content(x)

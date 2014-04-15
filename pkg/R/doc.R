@@ -1,3 +1,21 @@
+c.TextDocument <-
+function(..., recursive = FALSE)
+{
+    args <- list(...)
+    x <- args[[1L]]
+
+    if (length(args) == 1L)
+        return(x)
+
+    if (!all(unlist(lapply(args, inherits, class(x)))))
+        stop("not all arguments are text documents")
+
+    structure(list(content = args,
+                   meta = CorpusMeta(),
+                   dmeta = data.frame(row.names = seq_along(args))),
+              class = c("VCorpus", "Corpus"))
+}
+
 PlainTextDocument <-
 function(x = character(0),
          author = character(0),
