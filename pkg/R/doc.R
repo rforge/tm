@@ -56,7 +56,7 @@ function(x, value)
 print.PlainTextDocument <-
 function(x, ...)
 {
-    writeLines(sprintf("<<PlainTextDocument (metadata: %d)>>\n", length(x$meta)))
+    writeLines(sprintf("<<PlainTextDocument (metadata: %d)>>", length(x$meta)))
     writeLines(content(x))
     invisible(x)
 }
