@@ -96,14 +96,23 @@ readXML(spec = c(Reut21578XMLSpec,
                  list(content = list("node", "/newsitem/text"))),
         doc = PlainTextDocument())
 
+normalizeURI <-
+function(uri)
+{
+    if (identical(substr(uri, 1, 7), "file://"))
+        uri <- substr(uri, 8, nchar(uri))
+    uri
+}
+
 # readDOC needs antiword installed to be able to extract the text
 readDOC <- FunctionGenerator(function(AntiwordOptions = "") {
     stopifnot(is.character(AntiwordOptions))
 
     AntiwordOptions <- AntiwordOptions
     function(elem, language, id) {
+        uri <- normalizeURI(elem$uri)
         content <- system2("antiword",
-                           c(AntiwordOptions, shQuote(elem$uri)),
+                           c(AntiwordOptions, shQuote(normalizePath(uri))),
                            stdout = TRUE)
         PlainTextDocument(content, id = id, language = language)
     }
@@ -141,8 +150,9 @@ FunctionGenerator(function(engine = c("xpdf", "Rpoppler", "ghostscript",
         stop("invalid function for PDF extraction")
 
     function(elem, language, id) {
-        meta <- pdf_info(elem$uri)
-        content <- pdf_text(elem$uri)
+        uri <- normalizeURI(elem$uri)
+        meta <- pdf_info(uri)
+        content <- pdf_text(uri)
         PlainTextDocument(content, meta$Author, meta$CreationDate, meta$Subject,
                           meta$Title, id, meta$Creator, language)
      }

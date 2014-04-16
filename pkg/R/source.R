@@ -164,10 +164,8 @@ function(x)
 }
 getElem.URISource <-
 function(x)
-{
     list(content = readContent(x$uri[x$position], x$encoding, x$mode),
          uri = x$uri[x$position])
-}
 getElem.VectorSource <-
 function(x)
     list(content = x$content[x$position],

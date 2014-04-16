@@ -78,7 +78,7 @@ readPDF(engine = c("xpdf", "Rpoppler", "ghostscript", "Rcampdf", "custom"),
   \code{\link{getReaders}} to list available reader functions.
 }
 \examples{
-uri <- system.file(file.path("doc", "tm.pdf"), package = "tm")
+uri <- sprintf("file://\%s", system.file(file.path("doc", "tm.pdf"), package = "tm"))
 if(all(file.exists(Sys.which(c("pdfinfo", "pdftotext"))))) {
     pdf <- readPDF(control = list(text = "-layout"))(elem = list(uri = uri),
                                                      language = "en",
