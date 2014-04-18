@@ -16,7 +16,7 @@ readReut21578XMLasPlain(elem, language, id)
   \item{id}{a unique identification string for the returned text document.}
 }
 \value{
-   A \code{\link{Reuters21578Document}} for \code{readReut21578XML}, or a
+   An \code{\link{XMLDocument}} for \code{readReut21578XML}, or a
    \code{\link{PlainTextDocument}} for \code{readReut21578XMLasPlain}.
 }
 \references{

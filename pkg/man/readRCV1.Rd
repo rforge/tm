@@ -16,7 +16,7 @@ readRCV1asPlain(elem, language, id)
   \item{id}{a unique identification string for the returned text document.}
 }
 \value{
-  An \code{\link{RCV1Document}} for \code{readRCV1}, or a
+  An \code{\link{XMLDocument}} for \code{readRCV1}, or a
   \code{\link{PlainTextDocument}} for \code{readRCV1asPlain}.
 }
 \seealso{

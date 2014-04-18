@@ -4,8 +4,7 @@ importFrom("stats", "setNames")
 
 import(slam)
 
-export("as.PlainTextDocument",
-       "Corpus", # alias to VCorpus
+export("Corpus", # alias to VCorpus
        "DataframeSource",
        "DirSource",
        "Docs",
@@ -68,6 +67,7 @@ export("as.PlainTextDocument",
        "weightSMART",
        "writeCorpus",
        "XMLSource",
+       "XMLTextDocument",
        "Zipf_plot")
 
 S3method("removeNumbers", "character")
@@ -166,7 +166,10 @@ S3method("pGetElem", "VectorSource")
 
 S3method("getElem", "XMLSource")
 
+S3method("as.character", "XMLTextDocument")
+S3method("content", "XMLTextDocument")
 S3method("content<-", "XMLTextDocument")
+S3method("print", "XMLTextDocument")
 
 export("as.DocumentTermMatrix",
        "as.TermDocumentMatrix")

@@ -38,10 +38,6 @@ as.character.PlainTextDocument <-
 function(x, ...)
     content(x)
 
-as.PlainTextDocument <-
-function(x)
-    UseMethod("as.PlainTextDocument", x)
-
 content.PlainTextDocument <-
 function(x)
     x$content
@@ -85,9 +81,24 @@ function(x = list(),
               class = c("XMLTextDocument", "TextDocument"))
 }
 
+as.character.XMLTextDocument <-
+function(x, ...)
+    as.character(unlist(content(x), use.names = FALSE))
+
+content.XMLTextDocument <-
+function(x)
+    x$content
+
 `content<-.XMLTextDocument` <-
 function(x, value)
 {
     x$content <- value
     x
+}
+
+print.XMLTextDocument <-
+function(x, ...)
+{
+    writeLines(sprintf("<<XMLTextDocument (metadata: %d)>>", length(x$meta)))
+    invisible(x)
 }

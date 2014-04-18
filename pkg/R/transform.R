@@ -50,9 +50,10 @@ function(x, range = seq_along(x))
 tm_reduce <- function(x, tmFuns, ...)
     Reduce(function(f, ...) f(...), tmFuns, x, right = TRUE)
 
-getTransformations <- function()
-    c("as.PlainTextDocument", "removeNumbers", "removePunctuation",
-      "removeWords", "stemDocument", "stripWhitespace")
+getTransformations <-
+function()
+    c("removeNumbers", "removePunctuation", "removeWords", "stemDocument",
+      "stripWhitespace")
 
 # Wrapper for transformation generation
 genMap <-
