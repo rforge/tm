@@ -41,15 +41,15 @@ function(defaultreader = readPlain,
 
 # A vector where each component is interpreted as document
 VectorSource <-
-function(x, encoding = "unknown")
-    SimpleSource(encoding = encoding, length = length(x), names = names(x),
+function(x)
+    SimpleSource(length = length(x), names = names(x),
                  content = if (is.factor(x)) as.character(x) else x,
                  class = "VectorSource")
 
 # A data frame where each row is interpreted as document
 DataframeSource <-
-function(x, encoding = "unknown")
-    SimpleSource(encoding = encoding, length = nrow(x), names = row.names(x),
+function(x)
+    SimpleSource(length = nrow(x), names = row.names(x),
                  content = if (is.factor(x)) as.character(x) else x,
                  class = "DataframeSource")
 

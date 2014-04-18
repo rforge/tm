@@ -2,29 +2,39 @@
 \alias{DirSource}
 \title{Directory Source}
 \description{
-  Constructs a directory source.
+  Create a directory source.
 }
 \usage{
-DirSource(directory = ".", encoding = "", pattern = NULL,
-          recursive = FALSE, ignore.case = FALSE, mode = "text")
+DirSource(directory = ".",
+          encoding = "",
+          pattern = NULL,
+          recursive = FALSE,
+          ignore.case = FALSE,
+          mode = "text")
 }
 \arguments{
-  \item{directory}{A character vector of full path names; the default corresponds to the working directory \code{getwd()}.}
-  \item{encoding}{A character string describing the current encoding. It is
+  \item{directory}{A character vector of full path names; the default
+    corresponds to the working directory \code{getwd()}.}
+  \item{encoding}{a character string describing the current encoding. It is
     passed to \code{\link{iconv}} to convert the input to \code{"UTF-8"}.}
-  \item{pattern}{An optional regular expression. Only file names which match the regular expression will be returned.}
-  \item{recursive}{Logical. Should the listing recurse into directories?}
-  \item{ignore.case}{Logical. Should pattern-matching be case-insensitive?}
+  \item{pattern}{an optional regular expression. Only file names which match
+    the regular expression will be returned.}
+  \item{recursive}{logical. Should the listing recurse into directories?}
+  \item{ignore.case}{logical. Should pattern-matching be case-insensitive?}
+}
+\details{
+  A \emph{directory source} acquires a list of files via \code{\link{dir}} and
+  interprets each file as a document.
 }
 \value{
-  An object of class \code{DirSource} which extends the class
-  \code{Source} representing a directory. Each file in this directory is
-  considered to be a document.
+  An object inheriting from \code{DirSource}, \code{\link{SimpleSource}}, and
+  \code{\link{Source}}.
 }
-\author{Ingo Feinerer}
 \seealso{
-  \code{\link{getSources}} to list available sources.
-  \code{\link{Encoding}} and \code{\link{iconv}} on encodings in \R.
+  \code{\link{Source}} for basic information on the source infrastructure
+  employed by package \pkg{tm}.
+
+  \code{\link{Encoding}} and \code{\link{iconv}} on encodings.
 }
 \examples{
 DirSource(system.file("texts", "txt", package = "tm"))

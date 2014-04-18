@@ -9,6 +9,7 @@
 \alias{getElem.URISource}
 \alias{getElem.VectorSource}
 \alias{getElem.XMLSource}
+\alias{getSources}
 \alias{pGetElem}
 \alias{pGetElem.DataframeSource}
 \alias{pGetElem.DirSource}
@@ -17,15 +18,20 @@
 \alias{Source}
 \alias{stepNext}
 \alias{stepNext.SimpleSource}
-\title{Create and Access Sources}
+\title{Sources}
 \description{
-  Create and access sources which abstract input locations, like a
-  directory, a connection, or simply an \R vector.
+  Creating and accessing sources.
 }
 \usage{
-SimpleSource(defaultReader = readPlain, encoding = "unknown",
-             length = NA_integer_, names = NA_character_, position = 0,
-             vectorized = TRUE, \dots, class)
+SimpleSource(defaultReader = readPlain,
+             encoding = "unknown",
+             length = NA_integer_,
+             names = NA_character_,
+             position = 0,
+             vectorized = TRUE,
+             \dots,
+             class)
+getSources()
 \method{eoi}{SimpleSource}(x)
 \method{getElem}{DataframeSource}(x)
 \method{getElem}{DirSource}(x)
@@ -39,39 +45,59 @@ SimpleSource(defaultReader = readPlain, encoding = "unknown",
 \method{stepNext}{SimpleSource}(x)
 }
 \arguments{
-  \item{x}{a source.}
+  \item{x}{A \code{Source}.}
   \item{defaultReader}{a reader function (generator).}
-  \item{encoding}{a character specifying the encoding of the elements
-    delivered by the source.}
+  \item{encoding}{a character giving the encoding of the elements delivered by
+    the source.}
   \item{length}{an integer denoting the number of elements delivered by the
     source. If the length is unknown in advance it must be set to
     \code{NA_integer_}.}
   \item{names}{a character vector giving element names.}
-  \item{position}{a numeric indicating the position in the source.}
+  \item{position}{a numeric indicating the current position in the source.}
   \item{vectorized}{a logical indicating the ability for parallel element
     access.}
-  \item{class}{a character vector for extending the class attribute.}
+  \item{\dots}{tag-value pairs for storing additional information.}
+  \item{class}{a character vector giving additional classes to be used for the
+    created source.}
 }
 \details{
-  The function \code{Source} is a constructor and should be used when creating
-  custom sources. Internally a source is represented as a \code{list} with the
-  class attribute \code{Source}. Custom sources may extend the internal list
-  structure with additional named components.
+  \emph{Sources} abstract input locations, like a directory, a connection, or
+  simply an \R vector, in order to acquire content in a uniform way. In packages
+  which employ the infrastructure provided by package \pkg{tm}, such sources are
+  represented via the virtual S3 class \code{Source}: such packages then provide
+  S3 source classes extending the virtual base class (such as
+  \code{\link{DirSource}} provided by package \pkg{tm} itself).
 
-  Each source must provide implementations for the three interface functions
-  \code{eoi}, \code{getElem}, and \code{stepNext}. If \code{vectorized} is set
-  \code{pGetElem} must be implemented as well. The function \code{eoi} returns
-  \code{TRUE} if the end of input of the source is reached. \code{getElem}
-  fetches the element at the current position, whereas \code{pGetElem} retrieves
-  all elements in parallel at once. Retrieved elements must be encapsulated in a
-  list with the named components \code{content} holding the document and
-  \code{uri} pointing to the origin of the document (e.g., a file path or a
-  connection; \code{NA} if not applicable or unavailable). \code{stepNext}
-  increases the position in the source to the next element.
+  All extension classes must provide implementations for the interface functions
+  \code{eoi}, \code{getElem}, and \code{stepNext}. Individual components must be
+  accessible via \code{$}. If \code{x$vectorized} is \code{TRUE} the function
+  \code{pGetElem} must be provided as well.
+
+  The function \code{eoi} indicates end of input. \code{getElem} fetches the
+  element at the current position, whereas \code{pGetElem} retrieves all
+  elements in parallel at once. \code{stepNext} increases the position in the
+  source to acquire the next element.
+
+  The function \code{SimpleSource} provides a simple implementation and should
+  be used when creating custom sources.
+}
+\value{
+  For \code{SimpleSource()}, an object inheriting from \code{class},
+  \code{SimpleSource}, and \code{Source}.
+
+  For \code{getSources()}, a character vector with sources provided by package
+  \pkg{tm}.
+
+  For \code{eoi()}, a logical indicating if the end of input of the source is
+  reached.
+
+  For \code{getElem()} and \code{pGetElem()} a named list with the components
+  \code{content} holding the document and \code{uri} giving a uniform resource
+  identifier (e.g., a file path or \acronym{URL}; \code{NA} if not applicable or
+  unavailable).
 }
 \seealso{
-  \code{\link{getSources}} to list available sources;
-  \code{\link{readPlain}};
-  \code{\link{Encoding}}.
+  \code{\link{DataframeSource}}, \code{\link{DirSource}},
+  \code{\link{ReutersSource}}, \code{\link{URISource}}, and
+  \code{\link{VectorSource}}.
 }
-\author{Ingo Feinerer}
