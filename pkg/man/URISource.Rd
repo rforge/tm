@@ -2,26 +2,29 @@
 \alias{URISource}
 \title{Uniform Resource Identifier Source}
 \description{
-  Constructs a source which represents documents located by a uniform resource
-  identifier.
+  Create a uniform resource identifier source.
 }
 \usage{
 URISource(x, encoding = "", mode = "text")
 }
 \arguments{
-  \item{x}{A vector of Uniform Resource Identifiers.}
+  \item{x}{A character vector of uniform resource identifiers (\acronym{URI}s.}
   \item{encoding}{A character string describing the current encoding. It is
     passed to \code{\link{iconv}} to convert the input to \code{"UTF-8"}.}
 }
-\value{
-  An object of class \code{URISource} which extends the class
-  \code{Source} representing documents located by a \acronym{URI}.
+\details{
+  A \emph{uniform resource identifier source} interprets each \acronym{URI} as a
+  document.
 }
-\author{Ingo Feinerer}
+\value{
+  An object inheriting from \code{URISource}, \code{\link{SimpleSource}},
+  and \code{\link{Source}}.
+}
 \seealso{
-  \code{\link{DirSource}} for accessing a directory, and
-  \code{\link{getSources}} to list available sources.
-  \code{\link{Encoding}} and \code{\link{iconv}} on encodings in \R.
+  \code{\link{Source}} for basic information on the source infrastructure
+  employed by package \pkg{tm}.
+
+  \code{\link{Encoding}} and \code{\link{iconv}} on encodings.
 }
 \examples{
 loremipsum <- system.file("texts", "loremipsum.txt", package = "tm")

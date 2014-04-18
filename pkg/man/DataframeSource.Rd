@@ -13,6 +13,7 @@ DataframeSource(x)
 \details{
   A \emph{data frame source} interprets each row of the data frame \code{x} as a
   document. Row names are used as document names.
+}
 \value{
   An object inheriting from \code{DataframeSource}, \code{\link{SimpleSource}},
   and \code{\link{Source}}.
