@@ -26,5 +26,5 @@ DataframeSource(x, encoding = "unknown")
 docs <- data.frame(docs = c("This is a text.", "This another one."),
                    row.names = c("Text 1", "Text 2"))
 (ds <- DataframeSource(docs))
-inspect(Corpus(ds))
+inspect(VCorpus(ds))
 }

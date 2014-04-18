@@ -32,5 +32,5 @@ ReutersSource(x, encoding = "unknown")
 \examples{
 reuters21578 <- system.file("texts", "reuters-21578.xml", package = "tm")
 rs <- ReutersSource(reuters21578)
-inspect(Corpus(rs)[1:2])
+inspect(VCorpus(rs)[1:2])
 }

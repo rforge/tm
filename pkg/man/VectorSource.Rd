@@ -24,6 +24,6 @@ VectorSource(x, encoding = "unknown")
 \examples{
 docs <- c("This is a text.", "This another one.")
 (vs <- VectorSource(docs))
-inspect(Corpus(vs))
+inspect(VCorpus(vs))
 }
 \author{Ingo Feinerer}

@@ -46,7 +46,7 @@ function(x,
               class = c("PCorpus", "Corpus"))
 }
 
-VCorpus <- Corpus <-
+VCorpus <-
 function(x, readerControl = list(reader = x$defaultreader, language = "en"))
 {
     stopifnot(inherits(x, "Source"))

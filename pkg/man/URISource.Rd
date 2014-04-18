@@ -27,5 +27,5 @@ URISource(x, encoding = "", mode = "text")
 loremipsum <- system.file("texts", "loremipsum.txt", package = "tm")
 ovid <- system.file("texts", "txt", "ovid_1.txt", package = "tm")
 us <- URISource(sprintf("file://\%s", c(loremipsum, ovid)))
-inspect(Corpus(us))
+inspect(VCorpus(us))
 }

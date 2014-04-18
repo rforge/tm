@@ -4,8 +4,7 @@ importFrom("stats", "setNames")
 
 import(slam)
 
-export("Corpus", # alias to VCorpus
-       "DataframeSource",
+export("DataframeSource",
        "DirSource",
        "Docs",
        "DocumentTermMatrix",

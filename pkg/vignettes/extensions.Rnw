@@ -104,7 +104,7 @@ In case a reader expects configuration arguments we can use a function
 generator (see \code{?FunctionGenerator} for details). It allows us to process
 additional arguments, store them in an environment, return a reader function
 with the well-defined signature described above, and still able to access the
-additional arguments via lexical scoping. The corpus constructor \code{Corpus()}
+additional arguments via lexical scoping. The corpus constructor \code{VCorpus()}
 will check the function for being a function generator and if so apply it to
 yield the reader with the expected signature.
 
@@ -175,7 +175,7 @@ Finally we can apply our reader function at any place where \pkg{tm}
 expects a reader. E.g., we can construct a corpus out of the data
 frame:
 <<>>=
-(corpus <- Corpus(DataframeSource(df), readerControl = list(reader = myReader)))
+(corpus <- VCorpus(DataframeSource(df), readerControl = list(reader = myReader)))
 @
 
 As we see the information is mapped as we want to the individual attributes
@@ -297,7 +297,7 @@ Now that we have all we need to cope with our custom file format, we
 can apply the source and reader function at any place in \pkg{tm}
 where a source or reader is expected, respectively. E.g.,
 <<>>=
-corpus <- Corpus(mySource(custom.xml))
+corpus <- VCorpus(mySource(custom.xml))
 @
 constructs a corpus out of the information in our \acronym{XML}
 file:

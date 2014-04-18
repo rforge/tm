@@ -43,7 +43,7 @@ parallel. The default implementation is the so-called \class{VCorpus}
 from most \proglang{R} objects: corpora are \proglang{R} objects held
 fully in memory. We denote this as volatile since once the
 \proglang{R} object is destroyed, the whole corpus is gone. Such a
-volatile corpus can be created via the constructor \code{Corpus(x,
+volatile corpus can be created via the constructor \code{VCorpus(x,
   readerControl)}. Another implementation is the \class{PCorpus} which
 implements a \emph{Permanent Corpus} semantics, i.e., the documents
 are physically stored outside of \proglang{R} (e.g., in a database),
@@ -93,23 +93,23 @@ So e.g., plain text files in the directory \code{txt} containing Latin
 following code:
 <<Ovid,keep.source=TRUE>>=
 txt <- system.file("texts", "txt", package = "tm")
-(ovid <- Corpus(DirSource(txt, encoding = "UTF-8"),
-                readerControl = list(language = "lat")))
+(ovid <- VCorpus(DirSource(txt, encoding = "UTF-8"),
+                 readerControl = list(language = "lat")))
 @
 
 For simple examples \code{VectorSource} is quite useful, as it can
 create a corpus from character vectors, e.g.:
 <<VectorSource,keep.source=TRUE>>=
 docs <- c("This is a text.", "This another one.")
-Corpus(VectorSource(docs))
+VCorpus(VectorSource(docs))
 @
 
 Finally we create a corpus for some Reuters documents as example for
 later use:
 <<Reuters,keep.source=TRUE>>=
 reut21578 <- system.file("texts", "crude", package = "tm")
-reuters <- Corpus(DirSource(reut21578),
-                  readerControl = list(reader = readReut21578XMLasPlain))
+reuters <- VCorpus(DirSource(reut21578),
+                   readerControl = list(reader = readReut21578XMLasPlain))
 @
 
 \section*{Data Export}

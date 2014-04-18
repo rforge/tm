@@ -85,8 +85,8 @@ if(all(file.exists(Sys.which(c("pdfinfo", "pdftotext"))))) {
                                                      id = "id1")
     content(pdf)[1:13]
 }
-Corpus(URISource(uri, mode = ""),
-       readerControl = list(reader = readPDF(engine = "ghostscript")))
+VCorpus(URISource(uri, mode = ""),
+        readerControl = list(reader = readPDF(engine = "ghostscript")))
 }
 \author{Ingo Feinerer}
 \keyword{file}
