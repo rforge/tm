@@ -209,7 +209,7 @@ containing all information necessary such that the reader can
 construct a (subclass of a) \code{TextDocument} from it.
 
 The \code{XMLSource()} function can now be used to construct a custom
-\acronym{XML} source. It has four arguments:
+\acronym{XML} source. It has three arguments:
 \begin{description}
 \item[x] either a character identifying a file or a connection,
 \item[parser] a function accepting an \acronym{XML} tree (as delivered by
@@ -219,14 +219,13 @@ The \code{XMLSource()} function can now be used to construct a custom
 \item[reader] a reader function capable of turning \acronym{XML}
   elements as returned by the parser into a subclass of
   \code{TextDocument},
-\item[encoding] a character giving the encoding of \code{x}.
 \end{description}
 E.g., a custom source which can cope with our custom \acronym{XML}
 format could be:
 <<mySource,keep.source=TRUE>>=
-mySource <- function(x, encoding = "UTF-8")
+mySource <- function(x)
     XMLSource(x, function(tree) XML::xmlChildren(XML::xmlRoot(tree)),
-              myXMLReader, encoding)
+              myXMLReader)
 @
 As you notice in this example we also provide a custom reader function
 (\code{myXMLReader}). See the next section for details.

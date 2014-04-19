@@ -21,6 +21,17 @@ DirSource(directory = ".",
     the regular expression will be returned.}
   \item{recursive}{logical. Should the listing recurse into directories?}
   \item{ignore.case}{logical. Should pattern-matching be case-insensitive?}
+  \item{mode}{a character string specifying if and how files should be read in.
+    Available modes are:
+    \describe{
+      \item{\code{""}}{No read. In this case \code{\link{getElem}} and
+        \code{\link{pGetElem}} only deliver \acronym{URI}s.}
+      \item{\code{"binary"}}{Files are read in binary raw mode (via
+        \code{\link{readBin}}).}
+      \item{\code{"text"}}{Files are read as text (via
+        \code{\link{readLines}}).}
+    }
+  }
 }
 \details{
   A \emph{directory source} acquires a list of files via \code{\link{dir}} and

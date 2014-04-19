@@ -3,20 +3,18 @@
 
 getSources <-
 function()
-   c("DataframeSource", "DirSource", "ReutersSource", "URISource",
-     "VectorSource")
+   c("DataframeSource", "DirSource", "URISource", "VectorSource", "XMLSource")
 
 SimpleSource <-
-function(defaultreader = readPlain,
+function(reader = readPlain,
          encoding = "",
          length = NA_integer_,
          names = NA_character_,
          position = 0,
-         vectorized = TRUE,
          ...,
          class)
 {
-    if (!is.function(defaultreader))
+    if (!is.function(reader))
         stop("invalid default reader")
     else if (!is.character(encoding))
         warning("invalid encoding")
@@ -26,25 +24,13 @@ function(defaultreader = readPlain,
         warning("invalid element names")
     else if (!is.numeric(position))
         warning("invalid position")
-    else if (!is.logical(vectorized))
-        warning("invalid indicator for parallel element access")
-    else if (isTRUE(vectorized) && (is.na(length) || length <= 0L))
-        warning("vectorized sources must have a positive length entry")
     else if (!is.null(names) && !is.na(names) && (length != length(names)))
         warning("incorrect number of element names")
 
-    structure(list(defaultreader = defaultreader, encoding = encoding,
-                   length = length, names = names, position = position,
-                   vectorized = vectorized, ...),
+    structure(list(reader = reader, encoding = encoding, length = length,
+                   names = names, position = position, ...),
               class = unique(c(class, "SimpleSource", "Source")))
 }
-
-# A vector where each component is interpreted as document
-VectorSource <-
-function(x)
-    SimpleSource(length = length(x), names = names(x),
-                 content = if (is.factor(x)) as.character(x) else x,
-                 class = "VectorSource")
 
 # A data frame where each row is interpreted as document
 DataframeSource <-
@@ -53,7 +39,7 @@ function(x)
                  content = if (is.factor(x)) as.character(x) else x,
                  class = "DataframeSource")
 
-# A directory with files
+# A directory with files interpreted as documents
 DirSource <-
 function(directory = ".", encoding = "", pattern = NULL,
          recursive = FALSE, ignore.case = FALSE, mode = "text")
@@ -92,25 +78,22 @@ function(x, encoding = "", mode = "text")
                  class = "URISource")
 }
 
-ReutersSource <- function(x, encoding = "unknown")
-    XMLSource(x, function(tree) XML::xmlChildren(XML::xmlRoot(tree)),
-              readReut21578XML, encoding)
+# A vector where each component is interpreted as document
+VectorSource <-
+function(x)
+    SimpleSource(length = length(x), names = names(x),
+                 content = if (is.factor(x)) as.character(x) else x,
+                 class = "VectorSource")
 
-# XML
-XMLSource <- function(x, parser, reader, encoding = "unknown") {
-    tree <- XML::xmlParse(x, encoding = encoding)
+XMLSource <-
+function(x, parser, reader)
+{
+    tree <- XML::xmlParse(x)
     content <- parser(tree)
     XML::free(tree)
 
-    SimpleSource(defaultreader = reader, encoding = encoding,
-                 length = length(content), vectorized = FALSE,
-                 content = content, uri = x, class = "XMLSource")
-}
-
-stepNext <- function(x) UseMethod("stepNext", x)
-stepNext.SimpleSource <- function(x) {
-    x$position <- x$position + 1
-    x
+    SimpleSource(reader = reader, length = length(content), content = content,
+                 uri = x, class = "XMLSource")
 }
 
 # tau:::read_all_bytes
@@ -140,8 +123,7 @@ readContent <-
 function(x, encoding, mode)
 {
     if (identical(mode, "text"))
-        iconv(readLines(x, warn = FALSE),
-              from = encoding, to = "UTF-8", sub = "byte")
+        iconv(readLines(x, warn = FALSE), encoding, "UTF-8", "byte")
     else if (identical(mode, "binary"))
         read_all_bytes(x)
     else if (identical(mode, ""))
@@ -149,6 +131,13 @@ function(x, encoding, mode)
     else
         stop("invalid mode")
 }
+
+eoi <-
+function(x)
+    UseMethod("eoi", x)
+eoi.SimpleSource <-
+function(x)
+    x$length <= x$position
 
 getElem <- function(x) UseMethod("getElem", x)
 getElem.DataframeSource <-
@@ -175,6 +164,14 @@ function(x)
     list(content = XML::saveXML(x$content[[x$position]]),
          uri = x$uri)
 
+length.SimpleSource <-
+function(x)
+    x$length
+
+names.SimpleSource <-
+function(x)
+    x$names
+
 pGetElem <- function(x) UseMethod("pGetElem", x)
 pGetElem.DataframeSource <-
 function(x)
@@ -197,9 +194,19 @@ function(x)
            function(y) list(content = y,
                             uri = NULL))
 
-eoi <-
+reader <-
 function(x)
-    UseMethod("eoi", x)
-eoi.SimpleSource <-
+    UseMethod("reader", x)
+reader.SimpleSource <-
 function(x)
-    x$length <= x$position
+    x$reader
+
+stepNext <-
+function(x)
+    UseMethod("stepNext", x)
+stepNext.SimpleSource <-
+function(x)
+{
+    x$position <- x$position + 1
+    x
+}

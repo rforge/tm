@@ -5,7 +5,7 @@
   Create volatile corpora.
 }
 \usage{
-VCorpus(x, readerControl = list(reader = x$defaultreader, language = "en"))
+VCorpus(x, readerControl = list(reader = reader(x), language = "en"))
 }
 \arguments{
   \item{x}{A \code{\link{Source}} object.}

@@ -6,7 +6,7 @@
 }
 \usage{
 PCorpus(x,
-        readerControl = list(reader = x$defaultreader, language = "en"),
+        readerControl = list(reader = reader(x), language = "en"),
         dbControl = list(dbName = "", dbType = "DB1"))
 }
 \arguments{

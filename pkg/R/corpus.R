@@ -2,12 +2,12 @@
 
 PCorpus <-
 function(x,
-         readerControl = list(reader = x$defaultreader, language = "en"),
+         readerControl = list(reader = reader(x), language = "en"),
          dbControl = list(dbName = "", dbType = "DB1"))
 {
     stopifnot(inherits(x, "Source"))
 
-    readerControl <- prepareReader(readerControl, x$defaultreader)
+    readerControl <- prepareReader(readerControl, reader(x))
 
     if (is.function(readerControl$init))
         readerControl$init()
@@ -20,24 +20,23 @@ function(x,
     db <- filehash::dbInit(dbControl$dbName, dbControl$dbType)
 
     # Allocate memory in advance if length is known
-    tdl <- if (x$length > 0) vector("list", as.integer(x$length)) else list()
+    tdl <- if (length(x) > 0) vector("list", as.integer(length(x))) else list()
 
     counter <- 1
     while (!eoi(x)) {
         x <- stepNext(x)
         elem <- getElem(x)
-        id <- if (is.null(x$names) || is.na(x$names))
+        id <- if (is.null(names(x)) || is.na(names(x)))
             as.character(counter)
         else
-            x$names[counter]
+            names(x)[counter]
         doc <- readerControl$reader(elem, readerControl$language, id)
         filehash::dbInsert(db, meta(doc, "id"), doc)
-        if (x$length > 0) tdl[[counter]] <- meta(doc, "id")
-        else tdl <- c(tdl, meta(doc, "id"))
+        tdl[[counter]] <- meta(doc, "id")
         counter <- counter + 1
     }
-    if (!is.null(x$names) && !is.na(x$names))
-        names(tdl) <- x$names
+    if (!is.null(names(x)) && !is.na(names(x)))
+        names(tdl) <- names(x)
 
     structure(list(content = tdl,
                    meta = CorpusMeta(),
@@ -47,11 +46,11 @@ function(x,
 }
 
 VCorpus <-
-function(x, readerControl = list(reader = x$defaultreader, language = "en"))
+function(x, readerControl = list(reader = reader(x), language = "en"))
 {
     stopifnot(inherits(x, "Source"))
 
-    readerControl <- prepareReader(readerControl, x$defaultreader)
+    readerControl <- prepareReader(readerControl, reader(x))
 
     if (is.function(readerControl$init))
         readerControl$init()
@@ -60,35 +59,33 @@ function(x, readerControl = list(reader = x$defaultreader, language = "en"))
         on.exit(readerControl$exit())
 
     # Allocate memory in advance if length is known
-    tdl <- if (x$length > 0) vector("list", as.integer(x$length)) else list()
+    tdl <- if (length(x) > 0) vector("list", as.integer(length(x))) else list()
 
-    if (x$vectorized)
+    # Check for parallel element access
+    if (is.function(getS3method("pGetElem", class(x), TRUE)))
         tdl <- mapply(function(elem, id)
                           readerControl$reader(elem, readerControl$language, id),
                       pGetElem(x),
-                      id = if (is.null(x$names) || is.na(x$names))
-                          as.character(seq_len(x$length))
-                      else x$names,
+                      id = if (is.null(names(x)) || is.na(names(x)))
+                          as.character(seq_len(length(x)))
+                      else names(x),
                       SIMPLIFY = FALSE)
     else {
         counter <- 1
         while (!eoi(x)) {
             x <- stepNext(x)
             elem <- getElem(x)
-            id <- if (is.null(x$names) || is.na(x$names))
+            id <- if (is.null(names(x)) || is.na(names(x)))
                 as.character(counter)
             else
-                x$names[counter]
+                names(x)[counter]
             doc <- readerControl$reader(elem, readerControl$language, id)
-            if (x$length > 0)
-                tdl[[counter]] <- doc
-            else
-                tdl <- c(tdl, list(doc))
+            tdl[[counter]] <- doc
             counter <- counter + 1
         }
     }
-    if (!is.null(x$names) && !is.na(x$names))
-        names(tdl) <- x$names
+    if (!is.null(names(x)) && !is.na(names(x)))
+        names(tdl) <- names(x)
 
     structure(list(content = tdl,
                    meta = CorpusMeta(),
