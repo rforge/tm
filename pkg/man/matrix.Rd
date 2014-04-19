@@ -68,4 +68,3 @@ inspect(tdm[150:154, 1:5])
 inspect(tdm[c("price", "texas"), c("127", "144", "191", "194")])
 inspect(dtm[1:5, 150:154])
 }
-\author{Ingo Feinerer}

@@ -14,8 +14,7 @@
 }
 \details{
   The argument \code{language} is passed over to
-  \code{\link[SnowballC:wordStem]{wordStem}} as the name of the Snowball
-  stemmer.
+  \code{\link[SnowballC]{wordStem}} as the name of the Snowball stemmer.
 }
 \examples{
 data("crude")

@@ -39,4 +39,3 @@ strsplit_space_tokenizer <- function(x)
     unlist(strsplit(as.character(x), "[[:space:]]+"))
 strsplit_space_tokenizer(crude[[1]])
 }
-\author{Ingo Feinerer}
