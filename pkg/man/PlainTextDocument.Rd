@@ -19,7 +19,7 @@ PlainTextDocument(x = character(0),
 \arguments{
   \item{x}{A character giving the plain text content.}
   \item{author}{a character giving the author names.}
-  \item{datetimestamp}{an object of class \code{"POSIXlt"} giving the creation
+  \item{datetimestamp}{an object of class \code{POSIXlt} giving the creation
     date and time.}
   \item{description}{a character giving a description.}
   \item{heading}{a character giving the title or a short heading.}
@@ -32,8 +32,8 @@ PlainTextDocument(x = character(0),
     additional classes to be used for the created plain text document.}
 }
 \value{
-  An object inheriting from \code{class}, \code{"PlainTextDocument"} and
-  \code{"\link{TextDocument}"}.
+  An object inheriting from \code{class}, \code{PlainTextDocument} and
+  \code{\link{TextDocument}}.
 }
 \seealso{
   \code{\link{TextDocument}} for basic information on the text document
@@ -46,4 +46,3 @@ PlainTextDocument(x = character(0),
                           language = "en"))
 meta(ptd)
 }
-\author{Ingo Feinerer}

@@ -16,9 +16,9 @@ XMLTextDocument(x = list(),
                 \dots)
 }
 \arguments{
-  \item{x}{An \code{"\link[XML:xmlTreeParse]{XMLDocument}"}.}
+  \item{x}{An \code{\link[XML:xmlTreeParse]{XMLDocument}}.}
   \item{author}{a character giving the author names.}
-  \item{datetimestamp}{an object of class \code{"POSIXlt"} giving the creation
+  \item{datetimestamp}{an object of class \code{POSIXlt} giving the creation
     date and time.}
   \item{description}{a character giving a description.}
   \item{heading}{a character giving the title or a short heading.}
@@ -29,8 +29,8 @@ XMLTextDocument(x = list(),
   \item{\dots}{user-defined document metadata tag-value pairs.}
 }
 \value{
-  An object inheriting from \code{"XMLTextDocument"} and
-  \code{"\link{TextDocument}"}.
+  An object inheriting from \code{XMLTextDocument} and
+  \code{\link{TextDocument}}.
 }
 \seealso{
   \code{\link{TextDocument}} for basic information on the text document
@@ -45,4 +45,3 @@ xml <- system.file("exampleData", "test.xml", package = "XML")
 meta(xtd)
 as.character(xtd)
 }
-\author{Ingo Feinerer}

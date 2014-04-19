@@ -27,14 +27,14 @@ readDOC(AntiwordOptions = "")
   \describe{
     \item{\code{elem}}{a list with the named component \code{uri} which must
       hold a valid file name.}
-    \item{\code{language}}{a string giving the text's language.}
-    \item{\code{id}}{a unique identification string for the returned text
+    \item{\code{language}}{a string giving the language.}
+    \item{\code{id}}{a character giving a unique identifier for the created text
       document.}
   }
   The function returns a \code{\link{PlainTextDocument}} representing the text
-  and meta data extracted from \code{elem$uri}.
+  and metadata extracted from \code{elem$uri}.
 }
 \seealso{
-  \code{\link{getReaders}} to list available reader functions.
+  \code{\link{Reader}} for basic information on the reader infrastructure
+  employed by package \pkg{tm}.
 }
-\author{Ingo Feinerer}

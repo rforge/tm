@@ -88,25 +88,25 @@ getSources()
   be used when creating custom sources.
 }
 \value{
-  For \code{SimpleSource()}, an object inheriting from \code{class},
+  For \code{SimpleSource}, an object inheriting from \code{class},
   \code{SimpleSource}, and \code{Source}.
 
-  For \code{getSources()}, a character vector with sources provided by package
+  For \code{getSources}, a character vector with sources provided by package
   \pkg{tm}.
 
-  For \code{eoi()}, a logical indicating if the end of input of the source is
+  For \code{eoi}, a logical indicating if the end of input of the source is
   reached.
 
-  For \code{getElem()} and \code{pGetElem()} a named list with the components
+  For \code{getElem} and \code{pGetElem} a named list with the components
   \code{content} holding the document and \code{uri} giving a uniform resource
   identifier (e.g., a file path or \acronym{URL}; \code{NULL} if not applicable
   or unavailable).
 
-  For \code{length()}, an integer for the number of elements.
+  For \code{length}, an integer for the number of elements.
 
-  For \code{names()}, a character vector for the element names.
+  For \code{names}, a character vector for the element names.
 
-  For \code{reader()}, a function for the default reader.
+  For \code{reader}, a function for the default reader.
 }
 \seealso{
   \code{\link{DataframeSource}}, \code{\link{DirSource}},
