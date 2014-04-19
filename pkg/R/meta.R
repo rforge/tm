@@ -17,7 +17,7 @@ function(author, datetimestamp, description, heading, id, language, origin, ...)
 print.TextDocumentMeta <-
 function(x, ...)
 {
-    cat("Metadata:\n")
+    writeLines("Metadata:")
     cat(sprintf("  %s: %s",
                 format(names(x), justify = "left"),
                 sapply(x, as.character)),
@@ -73,50 +73,45 @@ function(x, tag, ..., value)
     x
 }
 
-# Simple Dublin Core to tm meta data mappings
+# Simple Dublin Core to tm metadata mapping
 # http://en.wikipedia.org/wiki/Dublin_core#Simple_Dublin_Core
-Dublin_Core_tm <-
-function(DCElem = c("title", "creator", "description", "date", "identifier", "language", "subject",
-         "publisher", "contributor", "type", "format", "source", "relation", "coverage", "rights"))
+Dublin_Core_tm_map <-
+list("contributor" = "contributor",
+     "coverage" = "coverage",
+     "creator" = "author",
+     "date" = "datetimestamp",
+     "description" = "description",
+     "format" = "format",
+     "identifier" = "id",
+     "language" = "language",
+     "publisher" = "publisher",
+     "relation" = "relation",
+     "rights" = "rights",
+     "source" = "source", # or better "origin"?
+     "subject" = "subject",
+     "title" = "heading",
+     "type" = "type"
+     )
+
+DublinCore <-
+function(x, tag = NULL)
 {
-    DCElem <- tolower(DCElem)
-    DCElem <- match.arg(DCElem)
-    if (identical(DCElem, "title")) return(list(tag = "heading", type = "local"))
-    if (identical(DCElem, "creator")) return(list(tag = "author", type = "local"))
-    if (identical(DCElem, "description")) return(list(tag = "description", type = "local"))
-    if (identical(DCElem, "date")) return(list(tag = "datetimestamp", type = "local"))
-    if (identical(DCElem, "identifier")) return(list(tag = "id", type = "local"))
-    if (identical(DCElem, "language")) return(list(tag = "language", type = "local"))
-    # Source -> Origin ?
+    tmm <- unlist(Dublin_Core_tm_map, use.names = FALSE)
+    dcm <- names(Dublin_Core_tm_map)
 
-    if (identical(DCElem, "subject") || identical(DCElem, "publisher") || identical(DCElem, "contributor") ||
-        identical(DCElem, "type") || identical(DCElem, "format") || identical(DCElem, "source") ||
-        identical(DCElem, "relation") || identical(DCElem, "coverage") || identical(DCElem, "rights"))
-        return(list(tag = DCElem, type = "extended"))
-
-    stop("invalid simple Dublin Core meta data element")
+    if (is.null(tag))
+        structure(lapply(tmm, function(t) meta(x, t)), names = dcm,
+                  class = "TextDocumentMeta")
+    else
+        meta(x, tmm[charmatch(tolower(tag), dcm)])
 }
 
-DublinCore <- function(x, tag = NULL) {
-    if (is.null(tag)) {
-        elements <- c("Title", "Creator", "Subject", "Description", "Publisher",
-                      "Contributor", "Date", "Type", "Format", "Identifier",
-                      "Source", "Language", "Relation", "Coverage", "Rights")
-        cat("Simple Dublin Core meta data pairs are:\n")
-        for (e in elements) {
-            DCtm <- Dublin_Core_tm(e)
-            DCvalue <- meta(x, DCtm$tag)
-            cat(sprintf("  %-11s: %s\n", e, paste(as.character(DCvalue), collapse = " ")))
-        }
-    }
-    else {
-        DCtm <- Dublin_Core_tm(tag)
-        meta(x, DCtm$tag)
-    }
-}
+`DublinCore<-` <-
+function(x, tag, value)
+{
+    tmm <- unlist(Dublin_Core_tm_map, use.names = FALSE)
+    dcm <- names(Dublin_Core_tm_map)
 
-`DublinCore<-` <- function(x, tag, value) {
-    DCtm <- Dublin_Core_tm(tag)
-    meta(x, DCtm$tag) <- value
+    meta(x, tmm[charmatch(tolower(tag), dcm)]) <- value
     x
 }
