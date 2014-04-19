@@ -29,6 +29,7 @@ DublinCore(x, tag) <- value
     all available metadata.}
   \item{type}{a character specifying the kind of corpus metadata (see
     \bold{Details}).}
+  \item{\dots}{Not used.}
   \item{value}{replacement value.}
 }
 \details{

@@ -12,12 +12,5 @@ tm_index <-
 function(x, FUN, ...)
     UseMethod("tm_index", x)
 tm_index.PCorpus <- tm_index.VCorpus <-
-function(x, FUN, ..., doclevel = TRUE)
-{
-    if (!is.null(attr(FUN, "doclevel")))
-        doclevel <- attr(FUN, "doclevel")
-    if (doclevel)
-        unlist(mclapply(content(x), FUN, ...))
-    else
-        FUN(x, ...)
-}
+function(x, FUN, ...)
+    unlist(mclapply(content(x), FUN, ...))

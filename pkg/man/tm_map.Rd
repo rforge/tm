@@ -8,31 +8,26 @@
   to corpora.
 }
 \usage{
-\method{tm_map}{PCorpus}(x, FUN, \dots, useMeta = FALSE, lazy = FALSE)
-\method{tm_map}{VCorpus}(x, FUN, \dots, useMeta = FALSE, lazy = FALSE)
+\method{tm_map}{PCorpus}(x, FUN, \dots)
+\method{tm_map}{VCorpus}(x, FUN, \dots, lazy = FALSE)
 }
 \arguments{
   \item{x}{A corpus.}
-  \item{FUN}{A transformation function returning a text document.}
-  \item{\dots}{Arguments to \code{FUN}.}
-  \item{useMeta}{Logical. Should \code{\link{DMetaData}} be passed over
-    to \code{FUN} as argument?}
-  \item{lazy}{Logical. Lazy mappings are mappings which are delayed
-    until the documents' content is accessed. Lazy mapping is useful
-    when working with large corpora but only few documents will be
-    accessed, as it avoids the computationally expensive application of
-    the mapping to all elements in the corpus.}
+  \item{FUN}{a transformation function taking a text document as input and
+    returning a text document.}
+  \item{\dots}{arguments to \code{FUN}.}
+  \item{lazy}{a logical. Lazy mappings are mappings which are delayed
+    until the content is accessed. It is useful for large corpora if only few
+    documents will be accessed. In such a case it avoids the computationally
+    expensive application of the mapping to all elements in the corpus.}
 }
 \value{
   A corpus with \code{FUN} applied to each document in \code{x}. In case
-  of lazy mappings only annotations are stored which are evaluated upon
-  access of individual documents which trigger the execution of the
-  corresponding transformation function.
+  of lazy mappings only internal flags are set. Access of individual documents
+  triggers the execution of the corresponding transformation function.
 }
 \seealso{
-  \code{\link{getTransformations}} for available transformations, and
-  \code{\link{materialize}} for manually triggering the materialization
-  of documents with pending lazy transformations.
+  \code{\link{getTransformations}} for available transformations.
 }
 \note{
 Lazy transformations change \R's standard evaluation semantics.
