@@ -118,9 +118,10 @@ function(x, i)
 .map_name_index <-
 function(x, i)
 {
-    if (is.character(i))
-        match(i, if (is.null(names(x))) meta(x, "id", "local") else names(x))
-    else
+    if (is.character(i)) {
+        n <- names(x$content)
+        match(i, if (is.null(n)) meta(x, "id", "local") else n)
+    } else
         i
 }
 
