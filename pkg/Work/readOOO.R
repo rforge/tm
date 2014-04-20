@@ -1,26 +1,28 @@
-# readOOO needs unoconv (which in turn needs OpenOffice) installed
-readOOO <- FunctionGenerator(function(unoconvOptions = "", ...) {
-    unoconvOptions <- unoconvOptions
-    function(elem, language, id) {
-        tmp <- tempfile()
-        # Unfortunately unoconv does not have an output file option and writes the output to the same directory as the input
-        # In addition conversion to stdout may corrupt the zip file (odt) if writing it out via writeLines()
-        if (!all(file.copy(elem$uri, sprintf("%s.oo", tmp))))
-            stop(sprintf("cannot copy %s", elem$uri))
-        system(paste("unoconv -f odt", sprintf("%s.oo", tmp)))
-        meta.xml <- unzip(sprintf("%s.odt", tmp), "meta.xml", exdir = dirname(tmp))[1]
+## readOOO needs unoconv installed
+## http://dag.wieers.com/home-made/unoconv/
+readOOO <-
+function(elem, language, id)
+{
+    uri <- normalizePath(tm:::normalizeURI(elem$uri))
 
-        on.exit(file.remove(sprintf("%s.oo", tmp), sprintf("%s.odt", tmp), meta.xml))
+    fodt <- system2("unoconv",
+                    c("-f fodt --stdout", shQuote(uri)),
+                    stdout = TRUE)
+    tree <- XML::xmlParse(fodt, asText = TRUE)
+    root <- XML::xmlRoot(tree)
+    author <- XML::xpathSApply(root,
+                               "/office:document/office:meta/dc:creator",
+                               XML::xmlValue)
+    datetimestamp <-
+        as.POSIXlt(XML::xpathSApply(root,
+                                    "/office:document/office:meta/dc:date",
+                                    XML::xmlValue))
+    XML::free(tree)
 
-	tree <- XML::xmlParse(meta.xml)
-        root <- XML::xmlRoot(tree)
+    content <- system2("unoconv",
+                      c("-f txt --stdout", shQuote(uri)),
+                      stdout = TRUE)
 
-        content <- system(paste("unoconv -f txt --stdout", shQuote(elem$uri)), intern = TRUE)
-        author <- XML::xpathSApply(root, "/office:document-meta/office:meta/dc:creator", XML::xmlValue)
-        datetimestamp <- as.POSIXlt(XML::xpathSApply(root, "/office:document-meta/office:meta/dc:date", XML::xmlValue))
-
-        XML::free(tree)
-
-        PlainTextDocument(content, author, datetimestamp, id = id, language = language)
-    }
-})
+    PlainTextDocument(content, author, datetimestamp, id = id,
+                      language = language)
+}

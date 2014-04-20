@@ -210,7 +210,7 @@
 2010-08-25  Ingo Feinerer  <feinerer@logic.at>
 
 	* R/corpus.R (c.Corpus): When concatenating corpora, the argument
-	\code{recursive} now determines whether existing corpus meta data
+	\code{recursive} now determines whether existing corpus metadata
 	is used.
 
 2010-08-06  Ingo Feinerer  <feinerer@logic.at>
@@ -570,7 +570,7 @@
 
 2008-06-06  Ingo Feinerer  <h0125130@wu-wien.ac.at>
 
-	* R/reader.R (readRCV1): Improved meta data extraction from
+	* R/reader.R (readRCV1): Improved metadata extraction from
 	Reuters Corpus Volume 1 documents.
 
 2008-05-25  Ingo Feinerer  <h0125130@wu-wien.ac.at>
@@ -600,7 +600,7 @@
 	* R/textdoccol.R (setAs): Added coerce method from list to
 	corpus.
 
-	* R/meta.R (meta): Improved meta data handling.
+	* R/meta.R (meta): Improved metadata handling.
 
 2008-03-21  Ingo Feinerer  <h0125130@wu-wien.ac.at>
 
@@ -619,7 +619,7 @@
 
 	* man/: Language codes should be in ISO 639-1 format.
 
-	* R/textdoccol.R (asPlain): Preserve local meta data.
+	* R/textdoccol.R (asPlain): Preserve local metadata.
 
 2008-01-31  Ingo Feinerer  <h0125130@wu-wien.ac.at>
 
@@ -642,7 +642,7 @@
 
 2008-01-22  Ingo Feinerer  <h0125130@wu-wien.ac.at>
 
-	* R/meta.R (meta): New function for consistent access to meta data
+	* R/meta.R (meta): New function for consistent access to metadata
 	of document collections, repositories, and texts.
 
 2008-01-21  Ingo Feinerer  <h0125130@wu-wien.ac.at>
@@ -679,7 +679,7 @@
 2007-12-01  Ingo Feinerer  <h0125130@wu-wien.ac.at>
 
 	* R/aobjects.R (showMeta): Added method for pretty printing a
-	text document's meta data.
+	text document's metadata.
 
 2007-11-29  Ingo Feinerer  <h0125130@wu-wien.ac.at>
 
@@ -1198,7 +1198,7 @@
 	collections (alias text document databases).
 
 	* R/aobjects.R: Adapted class structure with inheritance,
-	repositories and additional meta data. Loading files on demand is
+	repositories and additional metadata. Loading files on demand is
 	now possible.
 
 2006-07-13  Ingo Feinerer  <h0125130@wu-wien.ac.at>

@@ -34,7 +34,7 @@ Two years ago we added code for reading information in PDF files to the
 base R \pkg{tools} package, partially borrowing ideas from PDFMiner, a
 Python module for extracting information from PDF documents which
 ``focuses entirely on getting and analyzing text data'' (Debian package
-\verb|python-pdfminer|).  For some time, the meta data extraction in the
+\verb|python-pdfminer|).  For some time, the metadata extraction in the
 \pkg{tm} PDF reader used \verb|tools:::pdf_info()|.  However, it turns
 out that considerable additional effort would be needed to make even the
 basic information extraction fully functional (e.g., adding support for
@@ -63,7 +63,7 @@ We ignore commercial solutions.  The Python PDFminer module was already
 mentioned.  Calibre and Abiword can conveniently perform text
 extraction, but as far as I can see themselves use Poppler, with results
 identical to those of \verb|pdftotext|, and it seems there is no way to
-extract the meta data using either program.
+extract the metadata using either program.
 
 Ghostscript provides functionality for PostScript/PDF preview and
 printing.  The Ghostscript interpreter is employed in package
@@ -136,7 +136,7 @@ My conclusions would be as follows.
   this would need changing.
 
  \item Every engine needs to provide a function for extracting
-  information to be used for the document meta data, and a function for
+  information to be used for the document metadata, and a function for
   extracting the text to be used for the document content.  For the
   former, we need to be able to extract the Author, CreationDate,
   Subject, Title and Creator, ideally via \verb|$| subscripting with the
