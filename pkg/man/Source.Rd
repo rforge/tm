@@ -27,11 +27,11 @@
   Creating and accessing sources.
 }
 \usage{
-SimpleSource(reader = readPlain,
-             encoding = "",
+SimpleSource(encoding = "",
              length = NA_integer_,
              names = NA_character_,
              position = 0,
+             reader = readPlain,
              \dots,
              class)
 getSources()
@@ -52,7 +52,6 @@ getSources()
 }
 \arguments{
   \item{x}{A \code{Source}.}
-  \item{reader}{a reader function (generator).}
   \item{encoding}{a character giving the encoding of the elements delivered by
     the source.}
   \item{length}{an integer denoting the number of elements delivered by the
@@ -60,6 +59,7 @@ getSources()
     \code{NA_integer_}.}
   \item{names}{a character vector giving element names.}
   \item{position}{a numeric indicating the current position in the source.}
+  \item{reader}{a reader function (generator).}
   \item{\dots}{tag-value pairs for storing additional information.}
   \item{class}{a character vector giving additional classes to be used for the
     created source.}
