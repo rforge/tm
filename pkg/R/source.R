@@ -6,29 +6,29 @@ function()
    c("DataframeSource", "DirSource", "URISource", "VectorSource", "XMLSource")
 
 SimpleSource <-
-function(reader = readPlain,
-         encoding = "",
+function(encoding = "",
          length = NA_integer_,
          names = NA_character_,
          position = 0,
+         reader = readPlain,
          ...,
          class)
 {
+    if (!is.character(encoding))
+        stop("invalid encoding")
+    if (!is.integer(length))
+        stop("invalid length entry denoting the number of elements")
+    if (!is.character(names) && !is.null(names))
+        stop("invalid element names")
+    if (!is.null(names) && !is.na(names) && (length != length(names)))
+        stop("incorrect number of element names")
+    if (!is.numeric(position))
+        stop("invalid position")
     if (!is.function(reader))
         stop("invalid default reader")
-    else if (!is.character(encoding))
-        warning("invalid encoding")
-    else if (!is.integer(length))
-        warning("invalid length entry denoting the number of elements")
-    else if (!is.character(names) && !is.null(names))
-        warning("invalid element names")
-    else if (!is.numeric(position))
-        warning("invalid position")
-    else if (!is.null(names) && !is.na(names) && (length != length(names)))
-        warning("incorrect number of element names")
 
-    structure(list(reader = reader, encoding = encoding, length = length,
-                   names = names, position = position, ...),
+    structure(list(encoding = encoding, length = length, names = names,
+                   position = position, reader = reader, ...),
               class = unique(c(class, "SimpleSource", "Source")))
 }
 
@@ -74,7 +74,7 @@ function(x, encoding = "", mode = "text")
         !identical(mode, ""))
         stop(sprintf("invalid mode '%s'", mode))
 
-    SimpleSource(encoding = encoding, length = length(x), uri = x, mode = mode,
+    SimpleSource(encoding = encoding, length = length(x), mode = mode, uri = x,
                  class = "URISource")
 }
 
@@ -92,7 +92,7 @@ function(x, parser, reader)
     content <- parser(tree)
     XML::free(tree)
 
-    SimpleSource(reader = reader, length = length(content), content = content,
+    SimpleSource(length = length(content), reader = reader, content = content,
                  uri = x, class = "XMLSource")
 }
 

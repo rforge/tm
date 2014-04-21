@@ -52,7 +52,7 @@ function(x, value)
 print.PlainTextDocument <-
 function(x, ...)
 {
-    writeLines(sprintf("<<PlainTextDocument (metadata: %d)>>", length(x$meta)))
+    writeLines(sprintf("<<%s (metadata: %d)>>", class(x)[1], length(x$meta)))
     writeLines(content(x))
     invisible(x)
 }
@@ -99,6 +99,6 @@ function(x, value)
 print.XMLTextDocument <-
 function(x, ...)
 {
-    writeLines(sprintf("<<XMLTextDocument (metadata: %d)>>", length(x$meta)))
+    writeLines(sprintf("<<%s (metadata: %d)>>", class(x)[1], length(x$meta)))
     invisible(x)
 }
