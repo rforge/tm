@@ -93,6 +93,11 @@ function(x, readerControl = list(reader = reader(x), language = "en"))
               class = c("VCorpus", "Corpus"))
 }
 
+as.VCorpus <-
+function(x)
+    UseMethod("as.VCorpus")
+as.VCorpus.VCorpus <- identity
+
 `[.PCorpus` <-
 function(x, i)
 {

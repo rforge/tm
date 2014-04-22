@@ -1,14 +1,17 @@
 \name{VCorpus}
 \alias{VCorpus}
+\alias{as.VCorpus}
 \title{Volatile Corpora}
 \description{
   Create volatile corpora.
 }
 \usage{
 VCorpus(x, readerControl = list(reader = reader(x), language = "en"))
+as.VCorpus(x)
 }
 \arguments{
-  \item{x}{A \code{\link{Source}} object.}
+  \item{x}{For \code{VCorpus} a \code{\link{Source}} object, and for
+    \code{as.VCorpus} an \R object.}
   \item{readerControl}{a named list of control parameters for reading in content
     from \code{x}.
     \describe{

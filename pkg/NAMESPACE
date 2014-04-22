@@ -5,7 +5,10 @@ importFrom("utils", "getS3method")
 
 import(slam)
 
-export("DataframeSource",
+export("as.DocumentTermMatrix",
+       "as.TermDocumentMatrix",
+       "as.VCorpus",
+       "DataframeSource",
        "DirSource",
        "Docs",
        "DocumentTermMatrix",
@@ -25,6 +28,13 @@ export("DataframeSource",
        "MC_tokenizer",
        "nDocs",
        "nTerms",
+       "PCorpus",
+       "pGetElem",
+       "PlainTextDocument",
+       "read_dtm_Blei_et_al",
+       "read_dtm_MC",
+       "readDOC",
+       "reader",
        "readPlain",
        "readReut21578XML",
        "readReut21578XMLasPlain",
@@ -32,21 +42,16 @@ export("DataframeSource",
        "readRCV1asPlain",
        "readPDF",
        "readTabular",
-       "readDOC",
        "readXML",
        "removeNumbers",
        "removePunctuation",
        "removeSparseTerms",
        "removeWords",
-       "stepNext",
-       "PCorpus",
-       "pGetElem",
-       "PlainTextDocument",
-       "reader",
        "scan_tokenizer",
        "SimpleSource",
        "stemCompletion",
        "stemDocument",
+       "stepNext",
        "stopwords",
        "stripWhitespace",
        "TermDocumentMatrix",
@@ -174,9 +179,6 @@ S3method("content", "XMLTextDocument")
 S3method("content<-", "XMLTextDocument")
 S3method("print", "XMLTextDocument")
 
-export("as.DocumentTermMatrix",
-       "as.TermDocumentMatrix")
-
 S3method("as.DocumentTermMatrix", "DocumentTermMatrix")
 S3method("as.DocumentTermMatrix", "TermDocumentMatrix")
 S3method("as.DocumentTermMatrix", "default")
@@ -187,9 +189,6 @@ S3method("as.TermDocumentMatrix", "DocumentTermMatrix")
 S3method("as.TermDocumentMatrix", "default")
 S3method("as.TermDocumentMatrix", "term_frequency")
 S3method("as.TermDocumentMatrix", "textcnt")
-
-export("read_dtm_Blei_et_al")
-export("read_dtm_MC")
 
 S3method("Docs", "DocumentTermMatrix")
 S3method("Docs", "TermDocumentMatrix")
