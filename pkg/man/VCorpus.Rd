@@ -32,6 +32,9 @@ as.VCorpus(x)
   affect the corresponding \R object.
 }
 \seealso{
+  \code{\link{Corpus}} for basic information on the corpus infrastructure
+  employed by package \pkg{tm}.
+
   \code{\link{PCorpus}} provides an implementation with permanent storage
   semantics.
 }

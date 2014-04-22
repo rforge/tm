@@ -41,6 +41,9 @@ PCorpus(x,
   corresponding objects (in contrast to the default \R semantics).
 }
 \seealso{
+  \code{\link[tm]{Corpus}} for basic information on the corpus infrastructure
+  employed by package \pkg{tm}.
+
   \code{\link{VCorpus}} provides an implementation with volatile storage
   semantics.
 }
