@@ -93,11 +93,6 @@ function(x, readerControl = list(reader = reader(x), language = "en"))
               class = c("VCorpus", "Corpus"))
 }
 
-as.VCorpus <-
-function(x)
-    UseMethod("as.VCorpus")
-as.VCorpus.VCorpus <- identity
-
 `[.PCorpus` <-
 function(x, i)
 {
@@ -165,6 +160,15 @@ function(x, i, value)
     x
 }
 
+as.list.PCorpus <- as.list.VCorpus <-
+function(x, ...)
+    content(x)
+
+as.VCorpus <-
+function(x)
+    UseMethod("as.VCorpus")
+as.VCorpus.VCorpus <- identity
+
 outer_union <-
 function(x, y, ...)
 {
@@ -197,10 +201,6 @@ function(..., recursive = FALSE)
                    dmeta = Reduce(outer_union, lapply(args, meta))),
               class = c("VCorpus", "Corpus"))
 }
-
-as.list.PCorpus <- as.list.VCorpus <-
-function(x, ...)
-    content(x)
 
 content.VCorpus <-
 function(x)
