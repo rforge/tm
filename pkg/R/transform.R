@@ -42,7 +42,7 @@ function(x, range = seq_along(x))
 
        # Clean up if everything is materialized
        if (!any(x$lazy$index))
-           x$lazy <- NULL
+           x["lazy"] <- list(NULL)
     }
     x
 }
