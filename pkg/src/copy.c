@@ -1,6 +1,6 @@
-#include <R.h>
-#include <Rdefines.h>
+#include <Rinternals.h>
 
-void copyCorpus(SEXP x, SEXP y) {
+void copyCorpus(SEXP x, SEXP y)
+{
     copyVector(x, y);
 }
