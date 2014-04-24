@@ -121,7 +121,9 @@ poppler-utils pdfinfo (the dates still seem to come in PDF format,
 though).  I have not checked (yet) how CAM::PDF text extraction compares
 to Poppler text extraction.  However, it seems that CAM::PDF has
 problems handling PDF strings in UTF-16BE (e.g., run its pdfinfo on file
-\file{AlleleRetain\_User\_Guide.pdf} in package \pkg{AlleleRetain}).
+\file{AlleleRetain\_User\_Guide.pdf} in package \pkg{AlleleRetain}).  In
+any case, an interface package \pkg{Rcampdf} is now available from the
+repository at \url{http://datacube.wu.ac.at}.
 
 My conclusions would be as follows.
 \begin{enumerate}
@@ -129,11 +131,21 @@ My conclusions would be as follows.
   information and text from PDF files for possible use in the PDF reader
   in package \pkg{tm}.  We should thus provide a mechanism to select the
   desired ``engine'', both as an argument to the reader generator and as
-  an option for package \pkg{tm} (there currently seems no mechanim for
+  an option for package \pkg{tm} (there currently seems no mechanism for
   package-level options, comparable to \verb|sets::sets_options()|).
+
+  The first part is done now: \verb|readPDF()| now has formals
+  \verb|engine| and \verb|control|, allowing to select an engine and to
+  specify control options for the info and text extractors.
+
+  Afaics we still have \verb|xpdf| as the default engine, and it is not
+  possible to specify a different default (e.g., via package-level
+  options).
 
  \item Currently \verb|tm::readPDF()| hard-wires using \verb|pdftotext|:
   this would need changing.
+
+  Done now, see above.
 
  \item Every engine needs to provide a function for extracting
   information to be used for the document metadata, and a function for
@@ -142,16 +154,22 @@ My conclusions would be as follows.
   Subject, Title and Creator, ideally via \verb|$| subscripting with the
   above name literals.  The dates would need to be POSIXt objects.
 
+  Done now for all available engines.
+
  \item We now have Rpoppler and Ghostscript (`gs') engines, so it makes
   perfect sense to start working on the engine mechanism.  For both
   engines, integration into package \pkg{tm} is trivial by using
   \verb|Rpoppler::PDF_info()| and \verb|Rpoppler::PDF_text()|, and
   \verb|pdf_info_via_gs()| and \verb|pdf_text_via_gs()|, respectively.
 
+  Done now.
+
  \item The Ghostscript engine seems most portable, but is rather slow,
   and there are a few PDF files Ghostscript cannot read.  So it should
   be the fallback engine, to be used when no others were configured or
   found to be available.
+
+  This is still open.
 \end{enumerate}
 
 \end{document}
