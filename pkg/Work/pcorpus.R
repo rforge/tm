@@ -7,7 +7,7 @@ r <- PCorpus(DirSource(acq),
 print(r)
 inspect(r[2:3])
 r <- tm_map(r, stripWhitespace)
-r <- tm_map(r, genMap(tolower))
+r <- tm_map(r, content_transformer(tolower))
 r <- tm_map(r, removeWords, stopwords("english"))
 r <- tm_map(r, stemDocument)
 

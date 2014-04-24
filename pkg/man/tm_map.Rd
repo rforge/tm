@@ -14,7 +14,9 @@
 \arguments{
   \item{x}{A corpus.}
   \item{FUN}{a transformation function taking a text document as input and
-    returning a text document.}
+    returning a text document. The function \code{\link{content_transformer}}
+    can be used to create a wrapper to get and set the content of text
+    documents.}
   \item{\dots}{arguments to \code{FUN}.}
   \item{lazy}{a logical. Lazy mappings are mappings which are delayed
     until the content is accessed. It is useful for large corpora if only few
@@ -34,7 +36,11 @@ Lazy transformations change \R's standard evaluation semantics.
 }
 \examples{
 data("crude")
-tm_map(crude, stemDocument, lazy = TRUE)
+## Document access triggers the stemming function
+## (i.e., all other documents are not stemmed yet)
+tm_map(crude, stemDocument, lazy = TRUE)[[1]]
+## Use wrapper to apply character processing function
+tm_map(crude, content_transformer(tolower))
 ## Generate a custom transformation function which takes the heading as new content
 headings <- function(x)
     PlainTextDocument(meta(x, "heading"),

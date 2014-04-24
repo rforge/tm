@@ -47,7 +47,8 @@ function(x, range = seq_along(x))
     x
 }
 
-tm_reduce <- function(x, tmFuns, ...)
+tm_reduce <-
+function(x, tmFuns, ...)
     Reduce(function(f, ...) f(...), tmFuns, x, right = TRUE)
 
 getTransformations <-
@@ -55,8 +56,7 @@ function()
     c("removeNumbers", "removePunctuation", "removeWords", "stemDocument",
       "stripWhitespace")
 
-# Wrapper for transformation generation
-genMap <-
+content_transformer <-
 function(FUN)
     function(x, ...) {
         content(x) <- FUN(content(x), ...)
@@ -69,7 +69,8 @@ function(x)
 removeNumbers.character <-
 function(x)
     gsub("[[:digit:]]+", "", x)
-removeNumbers.PlainTextDocument <- genMap(removeNumbers.character)
+removeNumbers.PlainTextDocument <-
+    content_transformer(removeNumbers.character)
 
 removePunctuation <-
 function(x, preserve_intra_word_dashes = FALSE)
@@ -86,7 +87,8 @@ function(x, preserve_intra_word_dashes = FALSE)
         gsub("\1", "-", x, fixed = TRUE)
     }
 }
-removePunctuation.PlainTextDocument <- genMap(removePunctuation.character)
+removePunctuation.PlainTextDocument <-
+    content_transformer(removePunctuation.character)
 
 removeWords <-
 function(x, words)
@@ -96,7 +98,8 @@ removeWords.character <-
 function(x, words)
     gsub(sprintf("(*UCP)\\b(%s)\\b", paste(words, collapse = "|")), "", x,
          perl = TRUE)
-removeWords.PlainTextDocument <- genMap(removeWords.character)
+removeWords.PlainTextDocument <-
+    content_transformer(removeWords.character)
 
 stemDocument <-
 function(x, language = "english")
@@ -121,4 +124,5 @@ function(x)
 stripWhitespace.character <-
 function(x)
     gsub("[[:space:]]+", " ", x)
-stripWhitespace.PlainTextDocument <- genMap(stripWhitespace.character)
+stripWhitespace.PlainTextDocument <-
+    content_transformer(stripWhitespace.character)

@@ -152,14 +152,14 @@ reuters <- tm_map(reuters, stripWhitespace)
 \subsection*{Convert to Lower Case}
 Conversion to lower case by:
 <<>>=
-reuters <- tm_map(reuters, genMap(tolower))
+reuters <- tm_map(reuters, content_transformer(tolower))
 @
-As you see you can use arbitrary character processing functions as
-transformations as long as the function returns a text document. In this case we
-use \code{genMap()} which provides a convenience wrapper to access and set the
-content of a document. Consequently most text manipulation functions from base
-\proglang{R} can directly be used with this wrapper. This is true for
-\code{tolower} as used here but also e.g.\ for \code{gsub} which comes quite
+We can use arbitrary character processing functions as transformations as long
+as the function returns a text document. In this case we use
+\code{content\_transformer()} which provides a convenience wrapper to access and
+set the content of a document. Consequently most text manipulation functions
+from base \proglang{R} can directly be used with this wrapper. This works for
+\code{tolower()} as used here but also e.g.\ for \code{gsub()} which comes quite
 handy for a broad range of text manipulation tasks.
 
 \subsection*{Remove Stopwords}
