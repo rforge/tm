@@ -42,8 +42,8 @@ Each source must provide implementations for following interface functions:
 \end{description}
 Retrieved elements must be encapsulated in a list with the named components
 \code{content} holding the document and \code{uri} pointing to the origin of
-the document (e.g., a file path or a \acronym{URL}; \code{NA} if not applicable or
-unavailable).
+the document (e.g., a file path or a \acronym{URL}; \code{NULL} if not
+applicable or unavailable).
 
 Custom sources are required to inherit from the virtual base class
 \code{Source} and typically do so by extending the functionality provided by the

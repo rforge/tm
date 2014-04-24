@@ -19,8 +19,8 @@ as.VCorpus(x)
         format delivered by \code{x}.}
       \item{\code{language}}{a character giving the language (preferably as
         \acronym{IETF} language tags). The default language is assumed to be
-        English (\code{"en"}). Use \code{NA} to avoid internal assumptions
-        (e.g., when the language is unknown or is deliberately not set).}
+        English (\code{"en"}). Use \code{NA_character_} to avoid internal
+        assumptions (e.g., when the language is unknown).}
     }
   }
 }

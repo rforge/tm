@@ -19,14 +19,12 @@ function(x,
         stop("error in creating database")
     db <- filehash::dbInit(dbControl$dbName, dbControl$dbType)
 
-    # Allocate memory in advance if length is known
-    tdl <- if (length(x) > 0) vector("list", as.integer(length(x))) else list()
-
+    tdl <- vector("list", length(x))
     counter <- 1
     while (!eoi(x)) {
         x <- stepNext(x)
         elem <- getElem(x)
-        id <- if (is.null(names(x)) || is.na(names(x)))
+        id <- if (is.null(names(x)))
             as.character(counter)
         else
             names(x)[counter]
@@ -35,7 +33,7 @@ function(x,
         tdl[[counter]] <- meta(doc, "id")
         counter <- counter + 1
     }
-    if (!is.null(names(x)) && !is.na(names(x)))
+    if (!is.null(names(x)))
         names(tdl) <- names(x)
 
     structure(list(content = tdl,
@@ -58,15 +56,13 @@ function(x, readerControl = list(reader = reader(x), language = "en"))
     if (is.function(readerControl$exit))
         on.exit(readerControl$exit())
 
-    # Allocate memory in advance if length is known
-    tdl <- if (length(x) > 0) vector("list", as.integer(length(x))) else list()
-
+    tdl <- vector("list", length(x))
     # Check for parallel element access
     if (is.function(getS3method("pGetElem", class(x), TRUE)))
         tdl <- mapply(function(elem, id)
                           readerControl$reader(elem, readerControl$language, id),
                       pGetElem(x),
-                      id = if (is.null(names(x)) || is.na(names(x)))
+                      id = if (is.null(names(x)))
                           as.character(seq_len(length(x)))
                       else names(x),
                       SIMPLIFY = FALSE)
@@ -75,7 +71,7 @@ function(x, readerControl = list(reader = reader(x), language = "en"))
         while (!eoi(x)) {
             x <- stepNext(x)
             elem <- getElem(x)
-            id <- if (is.null(names(x)) || is.na(names(x)))
+            id <- if (is.null(names(x)))
                 as.character(counter)
             else
                 names(x)[counter]
@@ -84,7 +80,7 @@ function(x, readerControl = list(reader = reader(x), language = "en"))
             counter <- counter + 1
         }
     }
-    if (!is.null(names(x)) && !is.na(names(x)))
+    if (!is.null(names(x)))
         names(tdl) <- names(x)
 
     structure(list(content = tdl,

@@ -7,8 +7,8 @@ function()
 
 SimpleSource <-
 function(encoding = "",
-         length = NA_integer_,
-         names = NA_character_,
+         length = 0,
+         names = NULL,
          position = 0,
          reader = readPlain,
          ...,
@@ -16,11 +16,11 @@ function(encoding = "",
 {
     if (!is.character(encoding))
         stop("invalid encoding")
-    if (!is.integer(length))
+    if (!is.numeric(length) || (length < 0))
         stop("invalid length entry denoting the number of elements")
     if (!is.character(names) && !is.null(names))
         stop("invalid element names")
-    if (!is.null(names) && !is.na(names) && (length != length(names)))
+    if (!is.null(names) && (length != length(names)))
         stop("incorrect number of element names")
     if (!is.numeric(position))
         stop("invalid position")

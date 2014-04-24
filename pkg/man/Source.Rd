@@ -28,8 +28,8 @@
 }
 \usage{
 SimpleSource(encoding = "",
-             length = NA_integer_,
-             names = NA_character_,
+             length = 0,
+             names = NULL,
              position = 0,
              reader = readPlain,
              \dots,
@@ -54,9 +54,8 @@ getSources()
   \item{x}{A \code{Source}.}
   \item{encoding}{a character giving the encoding of the elements delivered by
     the source.}
-  \item{length}{an integer denoting the number of elements delivered by the
-    source. If the length is unknown in advance it must be set to
-    \code{NA_integer_}.}
+  \item{length}{a non-negative integer denoting the number of elements delivered
+    by the source. If the length is unknown in advance set it to \code{0}.}
   \item{names}{a character vector giving element names.}
   \item{position}{a numeric indicating the current position in the source.}
   \item{reader}{a reader function (generator).}
@@ -97,10 +96,10 @@ getSources()
   For \code{eoi}, a logical indicating if the end of input of the source is
   reached.
 
-  For \code{getElem} and \code{pGetElem} a named list with the components
-  \code{content} holding the document and \code{uri} giving a uniform resource
-  identifier (e.g., a file path or \acronym{URL}; \code{NULL} if not applicable
-  or unavailable).
+  For \code{getElem} a named list with the components \code{content} holding the
+  document and \code{uri} giving a uniform resource identifier (e.g., a file
+  path or \acronym{URL}; \code{NULL} if not applicable or unavailable). For
+  \code{pGetElem} a list of such named lists.
 
   For \code{length}, an integer for the number of elements.
 
