@@ -15,3 +15,4 @@ SystemRequirements: Antiword (http://www.winfield.demon.nl/) for reading MS Word
 Description: A framework for text mining applications within R.
 License: GPL-3
 URL: http://tm.r-forge.r-project.org/
+Additional_repositories: http://datacube.wu.ac.at
