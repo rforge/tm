@@ -9,7 +9,7 @@
 stopwords(kind = "en")
 }
 \arguments{
-  \item{kind}{A \code{character} identifying the desired stopword list.}
+  \item{kind}{A character string identifying the desired stopword list.}
 }
 \details{
   Available stopword lists are:

@@ -10,7 +10,7 @@ URISource(x, encoding = "", mode = "text")
 \arguments{
   \item{x}{A character vector of uniform resource identifiers (\acronym{URI}s.}
   \item{encoding}{A character string describing the current encoding. It is
-    passed to \code{\link{iconv}} to convert the input to \code{"UTF-8"}.}
+    passed to \code{\link{iconv}} to convert the input to UTF-8.}
   \item{mode}{a character string specifying if and how \acronym{URI}s should be
     read in. Available modes are:
     \describe{

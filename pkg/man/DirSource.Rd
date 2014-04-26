@@ -16,7 +16,7 @@ DirSource(directory = ".",
   \item{directory}{A character vector of full path names; the default
     corresponds to the working directory \code{getwd()}.}
   \item{encoding}{a character string describing the current encoding. It is
-    passed to \code{\link{iconv}} to convert the input to \code{"UTF-8"}.}
+    passed to \code{\link{iconv}} to convert the input to UTF-8.}
   \item{pattern}{an optional regular expression. Only file names which match
     the regular expression will be returned.}
   \item{recursive}{logical. Should the listing recurse into directories?}
