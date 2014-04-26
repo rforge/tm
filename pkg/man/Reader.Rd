@@ -27,7 +27,7 @@ getReaders()
   items).
 
   In case a reader expects configuration arguments we can use a function
-  generator. A function generator is indicated by inherting from class
+  generator. A function generator is indicated by inheriting from class
   \code{FunctionGenerator} and \code{function}. It allows us to process
   additional arguments, store them in an environment, return a reader function
   with the well-defined signature described above, and still be able to access
