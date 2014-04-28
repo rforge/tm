@@ -30,4 +30,7 @@
 \seealso{
   \code{\link{VCorpus}}, and \code{\link{PCorpus}} for the corpora classes
   provided by package \pkg{tm}.
+
+  \code{\link[tm.plugin.dc]{DCorpus}} for a distributed corpus class provided by
+  package \pkg{tm.plugin.dc}.
 }
