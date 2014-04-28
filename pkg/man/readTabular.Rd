@@ -24,7 +24,7 @@ readTabular(mapping)
   via lexical scoping.
 }
 \value{
-  A \code{function} with the signature \code{elem, language, id}:
+  A \code{function} with the following formals:
   \describe{
     \item{\code{elem}}{a named list with the component \code{content} which must
       hold the document to be read in.}

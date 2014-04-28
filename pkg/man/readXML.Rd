@@ -41,7 +41,7 @@ readXML(spec, doc)
   via lexical scoping.
 }
 \value{
-  A function with the signature \code{elem, language, id}:
+  A function with the following formals:
   \describe{
     \item{\code{elem}}{a named list with the component \code{content} which
       must hold the document to be read in.}
@@ -62,15 +62,15 @@ readXML(spec, doc)
 }
 \examples{
 readGmane <-
-readXML(spec = list(Author = list("node", "/item/creator"),
-                    Content = list("node", "/item/description"),
-                    DateTimeStamp = list("function", function(node)
+readXML(spec = list(author = list("node", "/item/creator"),
+                    content = list("node", "/item/description"),
+                    datetimestamp = list("function", function(node)
                     strptime(sapply(XML::getNodeSet(node, "/item/date"), XML::xmlValue),
                              format = "\%Y-\%m-\%dT\%H:\%M:\%S",
                              tz = "GMT")),
-                    Description = list("unevaluated", ""),
-                    Heading = list("node", "/item/title"),
-                    ID = list("node", "/item/link"),
-                    Origin = list("unevaluated", "Gmane Mailing List Archive")),
+                    description = list("unevaluated", ""),
+                    heading = list("node", "/item/title"),
+                    id = list("node", "/item/link"),
+                    origin = list("unevaluated", "Gmane Mailing List Archive")),
                     doc = PlainTextDocument())
 }

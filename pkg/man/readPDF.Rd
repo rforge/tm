@@ -63,7 +63,7 @@ readPDF(engine = c("xpdf", "Rpoppler", "ghostscript", "Rcampdf", "custom"),
   }
 }
 \value{
-  A \code{function} with the signature \code{elem, language, id}:
+  A \code{function} with the following formals:
   \describe{
     \item{\code{elem}}{a named list with the component \code{uri} which must
       hold a valid file name.}

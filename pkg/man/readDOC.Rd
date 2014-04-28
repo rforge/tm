@@ -23,7 +23,7 @@ readDOC(AntiwordOptions = "")
   text, and is available from \url{http://www.winfield.demon.nl/}.
 }
 \value{
-  A \code{function} with the signature \code{elem, language, id}:
+  A \code{function} with the following formals:
   \describe{
     \item{\code{elem}}{a list with the named component \code{uri} which must
       hold a valid file name.}
