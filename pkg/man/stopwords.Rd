@@ -14,13 +14,15 @@ stopwords(kind = "en")
 \details{
   Available stopword lists are:
   \describe{
+    \item{\code{catalan}}{Catalan stopwords (obtained from
+      \url{http://latel.upf.edu/morgana/altres/pub/ca_stop.htm}),}
+    \item{\code{romanian}}{Romanian stopwords (extracted from
+      \url{http://snowball.tartarus.org/otherapps/romanian/romanian1.tgz}),}
     \item{\code{SMART}}{English stopwords from the SMART information
       retrieval system (obtained from
       \url{http://jmlr.csail.mit.edu/papers/volume5/lewis04a/a11-smart-stop-list/english.stop})
       (which coincides with the stopword list used by the MC toolkit
       (\url{http://www.cs.utexas.edu/users/dml/software/mc/})),}
-    \item{\code{catalan}}{Catalan stopwords (obtained from
-      \url{http://latel.upf.edu/morgana/altres/pub/ca_stop.htm}), and}
   }
   and a set of stopword lists from the Snowball stemmer project in different
   languages (obtained from

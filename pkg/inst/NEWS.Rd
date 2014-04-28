@@ -3,25 +3,26 @@
 \section{Changes in tm version 0.6}{
   \subsection{SIGNIFICANT USER-VISIBLE CHANGES}{
     \itemize{
+      \item \code{DirSource()} and \code{URISource()} now use the argument
+        \code{encoding} for conversion via \code{iconv()} to \code{"UTF-8"}.
+      \item \code{termFreq()} now uses \code{words()} as the default tokenizer.
       \item Text documents now provide the functions \code{content()} and
         \code{as.character()} to access the (possibly raw) document content and
         the natural language text in a suitable (not necessarily structured)
         form.
-      \item \code{termFreq()} now uses \code{words()} as the default tokenizer.
-      \item \code{DirSource()} and \code{URISource()} now use the argument
-        \code{encoding} for conversion via \code{iconv()} to \code{"UTF-8"}.
     }
   }
   \subsection{NEW FEATURES}{
     \itemize{
-      \item Integration with package \pkg{NLP}.
-      \item \code{words.PlainTextDocument()} delivers word tokens in the
-        document.
       \item \code{DirSource()} and \code{URISource()} now have a \code{mode}
         argument specifying how elements should be read (no read, binary, text).
       \item Improved high-level documentation on corpora (\code{?Corpus}), text
         documents (\code{?TextDocument}), sources (\code{?Source}), and readers
         (\code{?Reader}).
+      \item Integration with package \pkg{NLP}.
+      \item Romanian stopwords. Suggested by Cristian Chirita.
+      \item \code{words.PlainTextDocument()} delivers word tokens in the
+        document.
     }
   }
   \subsection{BUG FIXES}{
