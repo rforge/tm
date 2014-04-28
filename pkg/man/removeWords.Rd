@@ -21,6 +21,8 @@
 \seealso{
   \code{\link{getTransformations}} to list available transformation (mapping)
   functions.
+
+  \code{\link[tau]{remove_stopwords}} provided by package \pkg{tau}.
 }
 \examples{
 data("crude")

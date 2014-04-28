@@ -29,7 +29,13 @@ scan_tokenizer(x)
   }
 }
 \seealso{
-  \code{\link{getTokenizers}}
+  \code{\link{getTokenizers}} to list tokenizers provided by package \pkg{tm}.
+
+  \code{\link[NLP]{Regexp_Tokenizer}} for tokenizers using regular expressions
+    provided by package \pkg{NLP}.
+
+  \code{\link[tau]{tokenize}} for a simple regular expression based tokenizer
+    provided by package \pkg{tau}.
 }
 \examples{
 data("crude")
