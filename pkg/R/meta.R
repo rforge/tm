@@ -1,17 +1,22 @@
 # Author: Ingo Feinerer
 
 TextDocumentMeta <-
-function(author, datetimestamp, description, heading, id, language, origin, ...)
+function(author, datetimestamp, description, heading, id, language, origin, ...,
+         meta = NULL)
 {
-    structure(list(author = as.person(author),
-                   datetimestamp = as.POSIXlt(datetimestamp, tz = "GMT"),
-                   description = as.character(description),
-                   heading = as.character(heading),
-                   id = as.character(id),
-                   language = as.character(language),
-                   origin = as.character(origin),
-                   ...),
-              class = "TextDocumentMeta")
+    if (is.null(meta))
+        meta <- list(author = as.person(author),
+                     datetimestamp = as.POSIXlt(datetimestamp, tz = "GMT"),
+                     description = as.character(description),
+                     heading = as.character(heading),
+                     id = as.character(id),
+                     language = as.character(language),
+                     origin = as.character(origin),
+                     ...)
+
+    stopifnot(is.list(meta))
+
+    structure(meta, class = "TextDocumentMeta")
 }
 
 print.TextDocumentMeta <-
@@ -26,8 +31,15 @@ function(x, ...)
 }
 
 CorpusMeta <-
-function(...)
-    structure(list(...), class = "CorpusMeta")
+function(..., meta = NULL)
+{
+    if (is.null(meta))
+        meta <- list(...)
+
+    stopifnot(is.list(meta))
+
+    structure(meta, class = "CorpusMeta")
+}
 
 meta.VCorpus <- meta.PCorpus <-
 function(x, tag = NULL, type = c("indexed", "corpus", "local"), ...)

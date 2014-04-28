@@ -192,9 +192,8 @@ function(..., recursive = FALSE)
         stop("not all arguments are of the same corpus type")
 
     structure(list(content = do.call("c", lapply(args, content)),
-                   meta = structure(do.call("c",
-                     lapply(args, function(a) meta(a, type = "corpus"))),
-                                    class = "CorpusMeta"),
+                   meta = CorpusMeta(meta = do.call("c",
+                     lapply(args, function(a) meta(a, type = "corpus")))),
                    dmeta = Reduce(outer_union, lapply(args, meta))),
               class = c("VCorpus", "Corpus"))
 }

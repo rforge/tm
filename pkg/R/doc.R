@@ -26,11 +26,13 @@ function(x = character(0),
          origin = character(0),
          language = character(0),
          ...,
+         meta = NULL,
          class = NULL)
 {
     structure(list(content = as.character(x),
                    meta = TextDocumentMeta(author, datetimestamp, description,
-                                           heading, id, language, origin, ...)),
+                                           heading, id, language, origin, ...,
+                                           meta)),
               class = unique(c(class, "PlainTextDocument", "TextDocument")))
 }
 
@@ -73,11 +75,13 @@ function(x = list(),
          id = character(0),
          origin = character(0),
          language = character(0),
-         ...)
+         ...,
+         meta = NULL)
 {
     structure(list(content = x,
                    meta = TextDocumentMeta(author, datetimestamp, description,
-                                           heading, id, language, origin, ...)),
+                                           heading, id, language, origin, ...,
+                                           meta)),
               class = c("XMLTextDocument", "TextDocument"))
 }
 

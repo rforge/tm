@@ -14,6 +14,7 @@ PlainTextDocument(x = character(0),
                   origin = character(0),
                   language = character(0),
                   \dots,
+                  meta = NULL,
                   class = NULL)
 }
 \arguments{
@@ -28,6 +29,8 @@ PlainTextDocument(x = character(0),
   \item{language}{a character giving the language (preferably as \acronym{IETF}
     language tags).}
   \item{\dots}{user-defined document metadata tag-value pairs.}
+  \item{meta}{a named list or \code{NULL} (default) giving all metadata. If set
+    all other metadata arguments are ignored.}
   \item{class}{a character vector or \code{NULL} (default) giving
     additional classes to be used for the created plain text document.}
 }
