@@ -3,8 +3,6 @@
 \section{Changes in tm version 0.6}{
   \subsection{SIGNIFICANT USER-VISIBLE CHANGES}{
     \itemize{
-      \item The shortcut \code{Corpus()} (aliased to \code{VCorpus()}) has been
-        removed (as \code{Corpus} is a virtual S3 class).
       \item Text documents now provide the functions \code{content()} and
         \code{as.character()} to access the (possibly raw) document content and
         the natural language text in a suitable (not necessarily structured)

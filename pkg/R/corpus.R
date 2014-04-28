@@ -43,6 +43,7 @@ function(x,
               class = c("PCorpus", "Corpus"))
 }
 
+Corpus <-
 VCorpus <-
 function(x, readerControl = list(reader = reader(x), language = "en"))
 {
