@@ -106,10 +106,16 @@ function(x, language = "english")
     UseMethod("stemDocument", x)
 stemDocument.character <-
 function(x, language = "english")
-    SnowballC::wordStem(x, language)
+    SnowballC::wordStem(x, as.character(language))
 stemDocument.PlainTextDocument <-
 function(x, language = meta(x, "language"))
 {
+    language <- as.character(language)
+    if (identical(language, "") ||
+        identical(language, character(0)) ||
+        is.na(language))
+        language <- "english"
+
     s <- unlist(lapply(content(x),
       function(x) paste(stemDocument.character(unlist(strsplit(x, "[[:blank:]]")),
                                                language),

@@ -48,7 +48,7 @@ local({
     function(code) {
         code <- as.character(code)
 
-        if (identical(code, "") || identical(code, character(0)))
+        if (identical(code, "") || identical(code, character(0)) || is.na(code))
             return("porter")
 
         names[charmatch(gsub("-.*", "", code), codes)]
