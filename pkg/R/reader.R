@@ -101,8 +101,10 @@ function(spec, doc)
         for (n in setdiff(names(spec), "content"))
             meta(doc, n) <- .xml_content(tree, spec[[n]])
         XML::free(tree)
-        if (!is.na(language))
-            meta(doc, "language") <- language
+        if (!length(meta(doc, "id")))
+            meta(doc, "id") <- as.character(id)
+        if (!length(meta(doc, "language")))
+            meta(doc, "language") <- as.character(language)
         doc
     }
 }, class = c("FunctionGenerator", "function"))

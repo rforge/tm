@@ -32,7 +32,7 @@ function(x = character(0),
     structure(list(content = as.character(x),
                    meta = TextDocumentMeta(author, datetimestamp, description,
                                            heading, id, language, origin, ...,
-                                           meta)),
+                                           meta = meta)),
               class = unique(c(class, "PlainTextDocument", "TextDocument")))
 }
 
@@ -81,7 +81,7 @@ function(x = list(),
     structure(list(content = x,
                    meta = TextDocumentMeta(author, datetimestamp, description,
                                            heading, id, language, origin, ...,
-                                           meta)),
+                                           meta = meta)),
               class = c("XMLTextDocument", "TextDocument"))
 }
 
