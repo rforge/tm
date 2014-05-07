@@ -10,6 +10,9 @@
         \code{as.character()} to access the (possibly raw) document content and
         the natural language text in a suitable (not necessarily structured)
         form.
+      \item The internal representation of corpora, sources, and text documents
+        changed. Saved objects created with older \pkg{tm} versions are
+        incompatible and need to be rebuilt.
     }
   }
   \subsection{NEW FEATURES}{
