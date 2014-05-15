@@ -1,4 +1,5 @@
 \name{Reader}
+\alias{FunctionGenerator}
 \alias{Reader}
 \alias{getReaders}
 \title{Readers}
