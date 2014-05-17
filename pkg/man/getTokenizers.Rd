@@ -1,14 +1,14 @@
 \name{getTokenizers}
 \alias{getTokenizers}
-\title{List Available Tokenizers}
+\title{Tokenizers}
 \description{
-  List available tokenizers.
+  Predefined tokenizers.
 }
 \usage{
 getTokenizers()
 }
 \value{
-  A character vector with available tokenizers.
+  A character vector with tokenizers provided by package \pkg{tm}.
 }
 \seealso{
   \code{\link{MC_tokenizer}} and \code{\link{scan_tokenizer}}.
