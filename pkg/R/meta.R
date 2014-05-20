@@ -5,7 +5,7 @@ function(author, datetimestamp, description, heading, id, language, origin, ...,
          meta = NULL)
 {
     if (is.null(meta))
-        meta <- list(author = as.person(author),
+        meta <- list(author = author,
                      datetimestamp = as.POSIXlt(datetimestamp, tz = "GMT"),
                      description = as.character(description),
                      heading = as.character(heading),
