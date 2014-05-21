@@ -202,10 +202,6 @@ function(x)
     filehash::dbMultiFetch(db, unlist(x$content))
 }
 
-length.PCorpus <- length.VCorpus <-
-function(x)
-    length(x$content)
-
 inspect <-
 function(x)
     UseMethod("inspect", x)
@@ -217,6 +213,14 @@ function(x)
     print(noquote(content(x)))
     invisible(x)
 }
+
+length.PCorpus <- length.VCorpus <-
+function(x)
+    length(x$content)
+
+names.PCorpus <- names.VCorpus <-
+function(x)
+    as.character(meta(x, "id", "local"))
 
 print.PCorpus <- print.VCorpus <-
 function(x, ...)
