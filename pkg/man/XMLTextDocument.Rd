@@ -18,9 +18,10 @@ XMLTextDocument(x = list(),
 }
 \arguments{
   \item{x}{An \code{\link[XML:xmlTreeParse]{XMLDocument}}.}
-  \item{author}{a character giving the author names.}
-  \item{datetimestamp}{an object of class \code{POSIXlt} giving the creation
-    date and time.}
+  \item{author}{a character or an object of class \code{\link{person}} giving
+    the author names.}
+  \item{datetimestamp}{an object of class \code{\link{POSIXlt}} giving the
+    creation date and time.}
   \item{description}{a character giving a description.}
   \item{heading}{a character giving the title or a short heading.}
   \item{id}{a character giving a unique identifier.}

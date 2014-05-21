@@ -11,7 +11,6 @@
 \alias{getElem.XMLSource}
 \alias{getSources}
 \alias{length.SimpleSource}
-\alias{names.SimpleSource}
 \alias{pGetElem}
 \alias{pGetElem.DataframeSource}
 \alias{pGetElem.DirSource}
@@ -29,7 +28,6 @@
 \usage{
 SimpleSource(encoding = "",
              length = 0,
-             names = NULL,
              position = 0,
              reader = readPlain,
              \dots,
@@ -42,7 +40,6 @@ getSources()
 \method{getElem}{VectorSource}(x)
 \method{getElem}{XMLSource}(x)
 \method{length}{SimpleSource}(x)
-\method{names}{SimpleSource}(x)
 \method{pGetElem}{DataframeSource}(x)
 \method{pGetElem}{DirSource}(x)
 \method{pGetElem}{URISource}(x)
@@ -56,7 +53,6 @@ getSources()
     the source.}
   \item{length}{a non-negative integer denoting the number of elements delivered
     by the source. If the length is unknown in advance set it to \code{0}.}
-  \item{names}{a character vector giving element names.}
   \item{position}{a numeric indicating the current position in the source.}
   \item{reader}{a reader function (generator).}
   \item{\dots}{tag-value pairs for storing additional information.}
@@ -72,19 +68,19 @@ getSources()
   \code{\link{DirSource}} provided by package \pkg{tm} itself).
 
   All extension classes must provide implementations for the functions
-  \code{eoi}, \code{getElem}, \code{length}, \code{names}, \code{reader}, and
-  \code{stepNext}. For parallel element access the function \code{pGetElem}
-  must be provided as well.
+  \code{eoi}, \code{getElem}, \code{length}, \code{reader}, and \code{stepNext}.
+  For parallel element access the function \code{pGetElem} must be provided as
+  well.
 
   The function \code{eoi} indicates end of input. \code{getElem} fetches the
   element at the current position, whereas \code{pGetElem} retrieves all
   elements in parallel at once. The function \code{length} gives the number of
-  elements. \code{names} gives names for the elements. \code{reader} returns a
-  default reader for processing elements. \code{stepNext} increases the position
-  in the source to acquire the next element.
+  elements. \code{reader} returns a default reader for processing elements.
+  \code{stepNext} increases the position in the source to acquire the next
+  element.
 
-  The function \code{SimpleSource} provides a simple implementation and should
-  be used when creating custom sources.
+  The function \code{SimpleSource} provides a simple reference implementation
+  and can be used when creating custom sources.
 }
 \value{
   For \code{SimpleSource}, an object inheriting from \code{class},
@@ -102,8 +98,6 @@ getSources()
   \code{pGetElem} a list of such named lists.
 
   For \code{length}, an integer for the number of elements.
-
-  For \code{names}, a character vector for the element names.
 
   For \code{reader}, a function for the default reader.
 }

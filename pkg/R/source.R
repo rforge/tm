@@ -8,7 +8,6 @@ function()
 SimpleSource <-
 function(encoding = "",
          length = 0,
-         names = NULL,
          position = 0,
          reader = readPlain,
          ...,
@@ -18,16 +17,12 @@ function(encoding = "",
         stop("invalid encoding")
     if (!is.numeric(length) || (length < 0))
         stop("invalid length entry denoting the number of elements")
-    if (!is.character(names) && !is.null(names))
-        stop("invalid element names")
-    if (!is.null(names) && (length != length(names)))
-        stop("incorrect number of element names")
     if (!is.numeric(position))
         stop("invalid position")
     if (!is.function(reader))
         stop("invalid default reader")
 
-    structure(list(encoding = encoding, length = length, names = names,
+    structure(list(encoding = encoding, length = length,
                    position = position, reader = reader, ...),
               class = unique(c(class, "SimpleSource", "Source")))
 }
@@ -35,7 +30,7 @@ function(encoding = "",
 # A data frame where each row is interpreted as document
 DataframeSource <-
 function(x)
-    SimpleSource(length = nrow(x), names = row.names(x),
+    SimpleSource(length = nrow(x),
                  content = if (is.factor(x)) as.character(x) else x,
                  class = "DataframeSource")
 
@@ -61,8 +56,7 @@ function(directory = ".", encoding = "", pattern = NULL,
              paste(d[is.na(isfile)], collapse = " "))
 
     SimpleSource(encoding = encoding, length = sum(isfile),
-                 names = basename(d[isfile]), mode = mode,
-                 filelist = d[isfile], class = "DirSource")
+                 mode = mode, filelist = d[isfile], class = "DirSource")
 }
 
 # Documents identified by a Uniform Resource Identifier
@@ -81,7 +75,7 @@ function(x, encoding = "", mode = "text")
 # A vector where each component is interpreted as document
 VectorSource <-
 function(x)
-    SimpleSource(length = length(x), names = names(x),
+    SimpleSource(length = length(x),
                  content = if (is.factor(x)) as.character(x) else x,
                  class = "VectorSource")
 
@@ -139,7 +133,9 @@ eoi.SimpleSource <-
 function(x)
     x$length <= x$position
 
-getElem <- function(x) UseMethod("getElem", x)
+getElem <-
+function(x)
+    UseMethod("getElem", x)
 getElem.DataframeSource <-
 function(x)
     list(content = x$content[x$position, ],
@@ -168,11 +164,9 @@ length.SimpleSource <-
 function(x)
     x$length
 
-names.SimpleSource <-
+pGetElem <-
 function(x)
-    x$names
-
-pGetElem <- function(x) UseMethod("pGetElem", x)
+    UseMethod("pGetElem", x)
 pGetElem.DataframeSource <-
 function(x)
     lapply(seq_len(x$length),

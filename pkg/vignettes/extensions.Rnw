@@ -35,7 +35,6 @@ Each source must provide implementations for following interface functions:
 \item[eoi()] returns \code{TRUE} if the end of input of the source is reached,
 \item[getElem()] fetches the element at the current position,
 \item[length()] gives the number of elements,
-\item[names()] gives names for the elements,
 \item[reader()] returns a default reader for processing elements,
 \item[pGetElem()] (optional) retrieves all elements in parallel at once, and
 \item[stepNext()] increases the position in the source to the next element.
@@ -53,7 +52,7 @@ E.g., a simple source which accepts an \proglang{R} vector as input could be
 defined as
 <<keep.source=TRUE>>=
 VecSource <- function(x)
-    SimpleSource(length = length(x), names = names(x), content = as.character(x),
+    SimpleSource(length = length(x), content = as.character(x),
                  class = "VecSource")
 @
 which overrides a few defaults (see \code{?SimpleSource} for defaults) and

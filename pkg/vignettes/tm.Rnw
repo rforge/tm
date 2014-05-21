@@ -129,8 +129,9 @@ content of text documents is displayed with \code{inspect()}.
 inspect(ovid[1:2])
 @
 Individual documents can be accessed via \code{[[}, either via the
-position in the corpus, or via their name.
+position in the corpus, or via their identifier.
 <<keep.source=TRUE>>=
+meta(ovid[[2]], "id")
 identical(ovid[[2]], ovid[["ovid_2.txt"]])
 @
 

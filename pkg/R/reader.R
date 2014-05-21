@@ -13,14 +13,6 @@ function()
     c("readDOC", "readPDF", "readPlain", "readRCV1", "readRCV1asPlain",
       "readReut21578XML", "readReut21578XMLasPlain", "readTabular", "readXML")
 
-normalizeURI <-
-function(uri)
-{
-    if (identical(substr(uri, 1, 7), "file://"))
-        uri <- substr(uri, 8, nchar(uri))
-    uri
-}
-
 prepareReader <-
 function(readerControl, reader = NULL, ...)
 {
@@ -33,6 +25,15 @@ function(readerControl, reader = NULL, ...)
     readerControl
 }
 
+processURI <-
+function(uri)
+{
+    uri <- as.character(uri)
+    if (identical(substr(uri, 1, 7), "file://"))
+        uri <- substr(uri, 8, nchar(uri))
+    uri
+}
+
 # readDOC needs antiword installed to be able to extract the text
 readDOC <- structure(
 function(AntiwordOptions = "")
@@ -41,11 +42,11 @@ function(AntiwordOptions = "")
 
     AntiwordOptions <- AntiwordOptions
     function(elem, language, id) {
-        uri <- normalizeURI(elem$uri)
+        uri <- processURI(elem$uri)
         content <- system2("antiword",
                            c(AntiwordOptions, shQuote(normalizePath(uri))),
                            stdout = TRUE)
-        PlainTextDocument(content, id = id, language = language)
+        PlainTextDocument(content, id = basename(elem$uri), language = language)
     }
 }, class = c("FunctionGenerator", "function"))
 
@@ -80,17 +81,20 @@ function(engine = c("xpdf", "Rpoppler", "ghostscript", "Rcampdf", "custom"),
         stop("invalid function for PDF extraction")
 
     function(elem, language, id) {
-        uri <- normalizeURI(elem$uri)
+        uri <- processURI(elem$uri)
         meta <- pdf_info(uri)
         content <- pdf_text(uri)
         PlainTextDocument(content, meta$Author, meta$CreationDate, meta$Subject,
-                          meta$Title, id, meta$Creator, language)
+                          meta$Title, basename(elem$uri), meta$Creator, language)
      }
 }, class = c("FunctionGenerator", "function"))
 
 readPlain <-
-function(elem, language, id)
+function(elem, language, id) {
+    if (!is.null(elem$uri))
+        id <- basename(elem$uri)
     PlainTextDocument(elem$content, id = id, language = language)
+}
 
 readXML <- structure(
 function(spec, doc)
@@ -108,6 +112,8 @@ function(spec, doc)
         for (n in setdiff(names(spec), "content"))
             meta(doc, n) <- .xml_content(tree, spec[[n]])
         XML::free(tree)
+        if (!is.null(elem$uri))
+            id <- basename(elem$uri)
         if (!length(meta(doc, "id")))
             meta(doc, "id") <- as.character(id)
         if (!length(meta(doc, "language")))

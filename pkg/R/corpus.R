@@ -24,17 +24,13 @@ function(x,
     while (!eoi(x)) {
         x <- stepNext(x)
         elem <- getElem(x)
-        id <- if (is.null(names(x)))
-            as.character(counter)
-        else
-            names(x)[counter]
-        doc <- readerControl$reader(elem, readerControl$language, id)
+        doc <- readerControl$reader(elem,
+                                    readerControl$language,
+                                    as.character(counter))
         filehash::dbInsert(db, meta(doc, "id"), doc)
         tdl[[counter]] <- meta(doc, "id")
         counter <- counter + 1
     }
-    if (!is.null(names(x)))
-        names(tdl) <- names(x)
 
     structure(list(content = tdl,
                    meta = CorpusMeta(),
@@ -63,26 +59,20 @@ function(x, readerControl = list(reader = reader(x), language = "en"))
         tdl <- mapply(function(elem, id)
                           readerControl$reader(elem, readerControl$language, id),
                       pGetElem(x),
-                      id = if (is.null(names(x)))
-                          as.character(seq_len(length(x)))
-                      else names(x),
+                      id = as.character(seq_along(x)),
                       SIMPLIFY = FALSE)
     else {
         counter <- 1
         while (!eoi(x)) {
             x <- stepNext(x)
             elem <- getElem(x)
-            id <- if (is.null(names(x)))
-                as.character(counter)
-            else
-                names(x)[counter]
-            doc <- readerControl$reader(elem, readerControl$language, id)
+            doc <- readerControl$reader(elem,
+                                        readerControl$language,
+                                        as.character(counter))
             tdl[[counter]] <- doc
             counter <- counter + 1
         }
     }
-    if (!is.null(names(x)))
-        names(tdl) <- names(x)
 
     structure(list(content = tdl,
                    meta = CorpusMeta(),
@@ -115,10 +105,9 @@ function(x, i)
 .map_name_index <-
 function(x, i)
 {
-    if (is.character(i)) {
-        n <- names(x$content)
-        match(i, if (is.null(n)) meta(x, "id", "local") else n)
-    } else
+    if (is.character(i))
+        match(i, meta(x, "id", "local"))
+    else
         i
 }
 
@@ -217,17 +206,6 @@ length.PCorpus <- length.VCorpus <-
 function(x)
     length(x$content)
 
-print.PCorpus <- print.VCorpus <-
-function(x, ...)
-{
-    writeLines(sprintf("<<%s (documents: %d, metadata (corpus/indexed): %d/%d)>>",
-                       class(x)[1],
-                       length(x),
-                       length(meta(x, type = "corpus")),
-                       ncol(meta(x, type = "indexed"))))
-    invisible(x)
-}
-
 inspect <-
 function(x)
     UseMethod("inspect", x)
@@ -237,6 +215,17 @@ function(x)
     print(x)
     cat("\n")
     print(noquote(content(x)))
+    invisible(x)
+}
+
+print.PCorpus <- print.VCorpus <-
+function(x, ...)
+{
+    writeLines(sprintf("<<%s (documents: %d, metadata (corpus/indexed): %d/%d)>>",
+                       class(x)[1],
+                       length(x),
+                       length(meta(x, type = "corpus")),
+                       ncol(meta(x, type = "indexed"))))
     invisible(x)
 }
 

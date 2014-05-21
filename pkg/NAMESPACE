@@ -130,7 +130,6 @@ S3method("words", "PlainTextDocument")
 
 S3method("eoi", "SimpleSource")
 S3method("length", "SimpleSource")
-S3method("names", "SimpleSource")
 S3method("reader", "SimpleSource")
 S3method("stepNext", "SimpleSource")
 
