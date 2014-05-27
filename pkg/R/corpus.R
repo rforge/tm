@@ -222,6 +222,13 @@ names.PCorpus <- names.VCorpus <-
 function(x)
     as.character(meta(x, "id", "local"))
 
+`names<-.PCorpus` <- `names<-.VCorpus` <-
+function(x, value)
+{
+    meta(x, "id", "local") <- as.character(value)
+    x
+}
+
 print.PCorpus <- print.VCorpus <-
 function(x, ...)
 {
