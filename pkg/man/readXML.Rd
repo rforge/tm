@@ -3,17 +3,17 @@
 \title{Read In an XML Document}
 \description{
   Return a function which reads in an \acronym{XML} document. The structure of
-  the \acronym{XML} document can be described with a specification.
+  the \acronym{XML} document is described with a specification.
 }
 \usage{
 readXML(spec, doc)
 }
 \arguments{
-  \item{spec}{A named list of lists each containing two
-    components. The constructed reader will map each list
-    entry to an attribute or metadatum corresponding to the named list
-    entry. Valid names include \code{content} to access the document's
-    content, and character strings which are mapped to metadata entries.
+  \item{spec}{A named list of lists each containing two components. The
+    constructed reader will map each list entry to the content or metadatum of
+    the text document as specified by the named list entry. Valid names include
+    \code{content} to access the document's content, and character strings which
+    are mapped to metadata entries.
 
     Each list entry must consist of two components: the first must be a string
     describing the type of the second argument, and the second is the

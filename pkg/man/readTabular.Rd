@@ -11,11 +11,11 @@
 readTabular(mapping)
 }
 \arguments{
-  \item{mapping}{A named \code{list} of characters. The
+  \item{mapping}{A named list of characters. The
     constructed reader will map each character entry to the content or
     metadatum of the text document as specified by the named list
     entry. Valid names include \code{content} to access the document's
-    content, and character strings which are mapped metadata entries.}
+    content, and character strings which are mapped to metadata entries.}
 }
 \details{
   Formally this function is a function generator, i.e., it returns a
@@ -47,8 +47,8 @@ df <- data.frame(contents = c("content 1", "content 2", "content 3"),
                  authors  = c("author 1" , "author 2" , "author 3" ),
                  topics   = c("topic 1"  , "topic 2"  , "topic 3"  ),
                  stringsAsFactors = FALSE)
-m <- list(Content = "contents", Heading = "title",
-          Author = "authors", Topic = "topics")
+m <- list(content = "contents", heading = "title",
+          author = "authors", topic = "topics")
 myReader <- readTabular(mapping = m)
 ds <- DataframeSource(df)
 elem <- getElem(stepNext(ds))

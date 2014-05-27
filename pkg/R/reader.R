@@ -175,11 +175,13 @@ function(mapping)
 {
     mapping <- mapping
     function(elem, language, id) {
-        doc <- PlainTextDocument(
-            as.character(elem$content[, mapping[["content"]]]),
-            id = id, language = language)
-        for (n in setdiff(names(mapping), "content"))
-            meta(doc, n) <- elem$content[, mapping[[n]]]
-        doc
+        meta <- lapply(mapping[setdiff(names(mapping), "content")],
+                       function(m) elem$content[, m])
+        if (is.null(meta$id))
+            meta$id <- as.character(id)
+        if (is.null(meta$language))
+            meta$language <- as.character(language)
+        PlainTextDocument(as.character(elem$content[, mapping$content]),
+                          meta = meta)
     }
 }, class = c("FunctionGenerator", "function"))
