@@ -85,7 +85,7 @@ function(engine = c("xpdf", "Rpoppler", "ghostscript", "Rcampdf", "custom"),
         meta <- pdf_info(uri)
         content <- pdf_text(uri)
         PlainTextDocument(content, meta$Author, meta$CreationDate, meta$Subject,
-                          meta$Title, basename(elem$uri), meta$Creator, language)
+                          meta$Title, basename(elem$uri), language, meta$Creator)
      }
 }, class = c("FunctionGenerator", "function"))
 
