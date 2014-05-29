@@ -51,7 +51,10 @@ readXML(spec, doc)
   }
   The function returns \code{doc} augmented by the parsed information
   as described by \code{spec} out of the \acronym{XML} file in
-  \code{elem$content}.
+  \code{elem$content}. The arguments \code{language} and \code{id} are used as
+  fallback: \code{language} if no corresponding metadata entry is found in
+  \code{elem$content}, and \code{id} if no corresponding metadata entry is found
+  in \code{elem$content} and if \code{elem$uri} is null.
 }
 \seealso{
   \code{\link{Reader}} for basic information on the reader infrastructure

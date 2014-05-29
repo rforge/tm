@@ -13,12 +13,12 @@ readRCV1asPlain(elem, language, id)
   \item{elem}{a named list with the component \code{content} which must hold
     the document to be read in.}
   \item{language}{a string giving the language.}
-  \item{id}{a character giving a unique identifier for the created text
-    document.}
+  \item{id}{Not used.}
 }
 \value{
   An \code{\link{XMLTextDocument}} for \code{readRCV1}, or a
-  \code{\link{PlainTextDocument}} for \code{readRCV1asPlain}.
+  \code{\link{PlainTextDocument}} for \code{readRCV1asPlain}, representing the
+  text and metadata extracted from \code{elem$content}.
 }
 \seealso{
   \code{\link{Reader}} for basic information on the reader infrastructure

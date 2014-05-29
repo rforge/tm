@@ -28,8 +28,7 @@ readDOC(AntiwordOptions = "")
     \item{\code{elem}}{a list with the named component \code{uri} which must
       hold a valid file name.}
     \item{\code{language}}{a string giving the language.}
-    \item{\code{id}}{a character giving a unique identifier for the created text
-      document.}
+    \item{\code{id}}{Not used.}
   }
   The function returns a \code{\link{PlainTextDocument}} representing the text
   and metadata extracted from \code{elem$uri}.

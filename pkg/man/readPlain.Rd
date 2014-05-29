@@ -16,7 +16,8 @@ readPlain(elem, language, id)
     document.}
 }
 \value{
-  A \code{\link{PlainTextDocument}} representing \code{elem$content}.
+  A \code{\link{PlainTextDocument}} representing \code{elem$content}. The
+  argument \code{id} is used as fallback if \code{elem$uri} is null.
 }
 \seealso{
   \code{\link{Reader}} for basic information on the reader infrastructure

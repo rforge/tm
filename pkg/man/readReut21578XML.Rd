@@ -13,12 +13,12 @@ readReut21578XMLasPlain(elem, language, id)
   \item{elem}{a named list with the component \code{content} which must hold
     the document to be read in.}
   \item{language}{a string giving the language.}
-  \item{id}{a character giving a unique identifier for the created text
-    document.}
+  \item{id}{Not used.}
 }
 \value{
    An \code{\link{XMLTextDocument}} for \code{readReut21578XML}, or a
-   \code{\link{PlainTextDocument}} for \code{readReut21578XMLasPlain}.
+   \code{\link{PlainTextDocument}} for \code{readReut21578XMLasPlain},
+   representing the text and metadata extracted from \code{elem$content}.
 }
 \references{
   Lewis, David (1997) \emph{Reuters-21578 Text Categorization Collection Distribution 1.0}.

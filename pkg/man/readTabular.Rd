@@ -33,7 +33,9 @@ readTabular(mapping)
       text document.}
   }
   The function returns a \code{\link{PlainTextDocument}} representing the text
-  and metadata extracted from \code{elem$content}.
+  and metadata extracted from \code{elem$content}. The arguments \code{language}
+  and \code{id} are used as fallback if no corresponding metadata entries are
+  found in \code{elem$content}.
 }
 \seealso{
   \code{\link{Reader}} for basic information on the reader infrastructure
