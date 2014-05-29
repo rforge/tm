@@ -9,12 +9,6 @@ function(x,
 
     readerControl <- prepareReader(readerControl, reader(x))
 
-    if (is.function(readerControl$init))
-        readerControl$init()
-
-    if (is.function(readerControl$exit))
-        on.exit(readerControl$exit())
-
     if (!filehash::dbCreate(dbControl$dbName, dbControl$dbType))
         stop("error in creating database")
     db <- filehash::dbInit(dbControl$dbName, dbControl$dbType)
@@ -46,12 +40,6 @@ function(x, readerControl = list(reader = reader(x), language = "en"))
     stopifnot(inherits(x, "Source"))
 
     readerControl <- prepareReader(readerControl, reader(x))
-
-    if (is.function(readerControl$init))
-        readerControl$init()
-
-    if (is.function(readerControl$exit))
-        on.exit(readerControl$exit())
 
     tdl <- vector("list", length(x))
     # Check for parallel element access
