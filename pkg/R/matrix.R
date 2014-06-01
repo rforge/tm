@@ -56,8 +56,8 @@ function(x, control = list())
 
     v <- unlist(tflist)
     i <- names(v)
-    allTerms <-
-        sort(unique(if (is.null(control$dictionary)) i else control$dictionary))
+    allTerms <- sort(unique(as.character(if (is.null(control$dictionary)) i
+                                         else control$dictionary)))
     i <- match(i, allTerms)
     j <- rep(seq_along(x), sapply(tflist, length))
     docs <- as.character(meta(x, "id", "local"))
@@ -254,10 +254,8 @@ function(x, ...)
                        class(x)[1], format[1L], nrow(x), format[2L], ncol(x)))
     writeLines(sprintf("Non-/sparse entries: %d/%.0f",
                 length(x$v), prod(dim(x)) - length(x$v)))
-    sparsity <- if (identical(prod(dim(x)), 0L))
-        100
-    else
-        round((1 - length(x$v)/prod(dim(x))) * 100)
+    sparsity <- if (!prod(dim(x))) 100
+        else round((1 - length(x$v)/prod(dim(x))) * 100)
     writeLines(sprintf("Sparsity           : %s%%", sparsity))
     writeLines(sprintf("Maximal term length: %s",
                        max(nchar(Terms(x), type = "chars"), 0)))
