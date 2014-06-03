@@ -64,7 +64,7 @@ dtm <- DocumentTermMatrix(crude,
                                          weightTfIdf(x, normalize =
                                                      FALSE),
                                          stopwords = TRUE))
-inspect(tdm[150:154, 1:5])
+inspect(tdm[202:205, 1:5])
 inspect(tdm[c("price", "texas"), c("127", "144", "191", "194")])
-inspect(dtm[1:5, 150:154])
+inspect(dtm[1:5, 273:276])
 }
