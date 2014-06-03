@@ -60,11 +60,7 @@ function(x, ...)
 }
 
 words.PlainTextDocument <-
-function(x, ...)
-{
-    w <- MC_tokenizer(x)
-    w[nzchar(w)]
-}
+    scan_tokenizer
 
 XMLTextDocument <-
 function(x = list(),
