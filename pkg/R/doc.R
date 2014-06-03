@@ -60,7 +60,8 @@ function(x, ...)
 }
 
 words.PlainTextDocument <-
-    scan_tokenizer
+function(x, ...)
+    scan_tokenizer(x)
 
 XMLTextDocument <-
 function(x = list(),
