@@ -22,7 +22,9 @@ PlainTextDocument(x = character(0),
   \item{author}{a character or an object of class \code{\link{person}} giving
     the author names.}
   \item{datetimestamp}{an object of class \code{\link{POSIXt}} or a character
-    in \acronym{ISO} 8601 format giving the creation date and time.}
+    string giving the creation date/time information. If a character string,
+    exactly one of the \acronym{ISO} 8601 formats defined by
+    \url{http://www.w3.org/TR/NOTE-datetime} should be used.}
   \item{description}{a character giving a description.}
   \item{heading}{a character giving the title or a short heading.}
   \item{id}{a character giving a unique identifier.}
@@ -42,10 +44,6 @@ PlainTextDocument(x = character(0),
 \seealso{
   \code{\link{TextDocument}} for basic information on the text document
   infrastructure employed by package \pkg{tm}.
-}
-\references{
-  \acronym{ISO} 8601 Date and Time Formats.
-  \url{http://www.w3.org/TR/NOTE-datetime}
 }
 \examples{
 (ptd <- PlainTextDocument("A simple plain text document",
