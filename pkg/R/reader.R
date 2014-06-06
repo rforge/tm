@@ -181,7 +181,6 @@ function(mapping)
             meta$id <- as.character(id)
         if (is.null(meta$language))
             meta$language <- as.character(language)
-        PlainTextDocument(as.character(elem$content[, mapping$content]),
-                          meta = meta)
+        PlainTextDocument(elem$content[, mapping$content], meta = meta)
     }
 }, class = c("FunctionGenerator", "function"))

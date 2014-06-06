@@ -30,9 +30,7 @@ function(encoding = "",
 # A data frame where each row is interpreted as document
 DataframeSource <-
 function(x)
-    SimpleSource(length = nrow(x),
-                 content = if (is.factor(x)) as.character(x) else x,
-                 class = "DataframeSource")
+    SimpleSource(length = nrow(x), content = x, class = "DataframeSource")
 
 # A directory with files interpreted as documents
 DirSource <-
@@ -75,9 +73,7 @@ function(x, encoding = "", mode = "text")
 # A vector where each component is interpreted as document
 VectorSource <-
 function(x)
-    SimpleSource(length = length(x),
-                 content = if (is.factor(x)) as.character(x) else x,
-                 class = "VectorSource")
+    SimpleSource(length = length(x), content = x, class = "VectorSource")
 
 XMLSource <-
 function(x, parser, reader)

@@ -5,16 +5,25 @@ function(author, datetimestamp, description, heading, id, language, origin, ...,
          meta = NULL)
 {
     if (is.null(meta))
-        meta <- list(author = author,
-                     datetimestamp = datetimestamp,
-                     description = as.character(description),
-                     heading = as.character(heading),
-                     id = as.character(id),
-                     language = as.character(language),
-                     origin = as.character(origin),
-                     ...)
+        meta <- list(author = author, datetimestamp = datetimestamp,
+                     description = description, heading = heading, id = id,
+                     language = language, origin = origin, ...)
 
     stopifnot(is.list(meta))
+    if (!is.null(meta$author) && !inherits(meta$author, "person"))
+        meta$author <- as.character(meta$author)
+    if (!is.null(meta$datetimestamp) && !inherits(meta$datetimestamp, "POSIXt"))
+        meta$datetimestamp <- as.character(meta$datetimestamp)
+    if (!is.null(meta$description))
+       meta$description <- as.character(meta$description)
+    if (!is.null(meta$heading))
+       meta$heading <- as.character(meta$heading)
+    if (!is.null(meta$id))
+       meta$id <- as.character(meta$id)
+    if (!is.null(meta$language))
+       meta$language <- as.character(meta$language)
+    if (!is.null(meta$origin))
+       meta$origin <- as.character(meta$origin)
 
     structure(meta, class = "TextDocumentMeta")
 }
