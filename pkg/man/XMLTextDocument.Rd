@@ -28,7 +28,7 @@ XMLTextDocument(x = list(),
   \item{heading}{a character giving the title or a short heading.}
   \item{id}{a character giving a unique identifier.}
   \item{language}{a character giving the language (preferably as \acronym{IETF}
-    language tags).}
+    language tags, see \link[NLP]{language} in package \pkg{NLP}).}
   \item{origin}{a character giving information on the source and origin.}
   \item{\dots}{user-defined document metadata tag-value pairs.}
   \item{meta}{a named list or \code{NULL} (default) giving all metadata. If set

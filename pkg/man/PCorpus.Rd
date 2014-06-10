@@ -17,8 +17,9 @@ PCorpus(x,
       \item{\code{reader}}{a function capable of reading in and processing the
         format delivered by \code{x}.}
       \item{\code{language}}{a character giving the language (preferably as
-        \acronym{IETF} language tags). The default language is assumed to be
-        English (\code{"en"}).}
+        \acronym{IETF} language tags, see \link[NLP]{language} in
+	package \pkg{NLP}).
+	The default language is assumed to be English (\code{"en"}).}
     }
   }
   \item{dbControl}{a named list of control parameters for the underlying
