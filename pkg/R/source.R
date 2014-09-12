@@ -122,6 +122,10 @@ function(x, encoding, mode)
         stop("invalid mode")
 }
 
+open.SimpleSource <-
+close.SimpleSource <-
+identity
+
 eoi <-
 function(x)
     UseMethod("eoi", x)

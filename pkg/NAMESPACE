@@ -130,8 +130,10 @@ S3method("stripWhitespace", "PlainTextDocument")
 S3method("tm_term_score", "PlainTextDocument")
 S3method("words", "PlainTextDocument")
 
+S3method("close", "SimpleSource")
 S3method("eoi", "SimpleSource")
 S3method("length", "SimpleSource")
+S3method("open", "SimpleSource")
 S3method("reader", "SimpleSource")
 S3method("stepNext", "SimpleSource")
 

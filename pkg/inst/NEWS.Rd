@@ -1,6 +1,13 @@
 \name{NEWS}
 \title{News for Package 'tm'}
 \encoding{UTF-8}
+\section{Changes in tm version 0.6-1}{
+  \subsection{NEW FEATURES}{
+    \itemize{
+      \item Sources now provide \code{open()} and \code{close()}.
+    }
+  }
+}
 \section{Changes in tm version 0.6}{
   \subsection{SIGNIFICANT USER-VISIBLE CHANGES}{
     \itemize{

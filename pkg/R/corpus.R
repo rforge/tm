@@ -13,6 +13,7 @@ function(x,
         stop("error in creating database")
     db <- filehash::dbInit(dbControl$dbName, dbControl$dbType)
 
+    x <- open(x)
     tdl <- vector("list", length(x))
     counter <- 1
     while (!eoi(x)) {
@@ -25,6 +26,7 @@ function(x,
         tdl[[counter]] <- meta(doc, "id")
         counter <- counter + 1
     }
+    x <- close(x)
 
     structure(list(content = tdl,
                    meta = CorpusMeta(),
@@ -41,6 +43,7 @@ function(x, readerControl = list(reader = reader(x), language = "en"))
 
     readerControl <- prepareReader(readerControl, reader(x))
 
+    x <- open(x)
     tdl <- vector("list", length(x))
     # Check for parallel element access
     if (is.function(getS3method("pGetElem", class(x), TRUE)))
@@ -61,6 +64,7 @@ function(x, readerControl = list(reader = reader(x), language = "en"))
             counter <- counter + 1
         }
     }
+    x <- close(x)
 
     structure(list(content = tdl,
                    meta = CorpusMeta(),
