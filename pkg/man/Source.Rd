@@ -35,7 +35,7 @@ SimpleSource(encoding = "",
              \dots,
              class)
 getSources()
-\method{close}{SimpleSource}(x)
+\method{close}{SimpleSource}(con, \dots)
 \method{eoi}{SimpleSource}(x)
 \method{getElem}{DataframeSource}(x)
 \method{getElem}{DirSource}(x)
@@ -43,7 +43,7 @@ getSources()
 \method{getElem}{VectorSource}(x)
 \method{getElem}{XMLSource}(x)
 \method{length}{SimpleSource}(x)
-\method{open}{SimpleSource}(x)
+\method{open}{SimpleSource}(con, \dots)
 \method{pGetElem}{DataframeSource}(x)
 \method{pGetElem}{DirSource}(x)
 \method{pGetElem}{URISource}(x)
@@ -53,13 +53,15 @@ getSources()
 }
 \arguments{
   \item{x}{A \code{Source}.}
+  \item{con}{A \code{Source}.}
   \item{encoding}{a character giving the encoding of the elements delivered by
     the source.}
   \item{length}{a non-negative integer denoting the number of elements delivered
     by the source. If the length is unknown in advance set it to \code{0}.}
   \item{position}{a numeric indicating the current position in the source.}
   \item{reader}{a reader function (generator).}
-  \item{\dots}{tag-value pairs for storing additional information.}
+  \item{\dots}{For \code{SimpleSource} tag-value pairs for storing additional
+    information; not used otherwise.}
   \item{class}{a character vector giving additional classes to be used for the
     created source.}
 }

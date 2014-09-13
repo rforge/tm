@@ -124,7 +124,8 @@ function(x, encoding, mode)
 
 open.SimpleSource <-
 close.SimpleSource <-
-identity
+function(con, ...)
+    con
 
 eoi <-
 function(x)
