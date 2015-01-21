@@ -159,7 +159,7 @@ Reut21578XMLSpec <-
          cgisplit = list("attribute", "/REUTERS/@CGISPLIT"),
          oldid = list("attribute", "/REUTERS/@OLDID"),
          origin = list("unevaluated", "Reuters-21578 XML"),
-         topics = list("node", "/REUTERS/TOPICS/D"),
+         topics_cat = list("node", "/REUTERS/TOPICS/D"),
          places = list("node", "/REUTERS/PLACES/D"),
          people = list("node", "/REUTERS/PEOPLE/D"),
          orgs = list("node", "/REUTERS/ORGS/D"),
