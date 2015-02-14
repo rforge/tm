@@ -35,7 +35,7 @@ function(uri)
 }
 
 # readDOC needs antiword installed to be able to extract the text
-readDOC <- structure(
+readDOC <-
 function(AntiwordOptions = "")
 {
     stopifnot(is.character(AntiwordOptions))
@@ -48,9 +48,10 @@ function(AntiwordOptions = "")
                            stdout = TRUE)
         PlainTextDocument(content, id = basename(elem$uri), language = language)
     }
-}, class = c("FunctionGenerator", "function"))
+}
+class(readDoc) <- c("FunctionGenerator", "function")
 
-readPDF <- structure(
+readPDF <-
 function(engine = c("xpdf", "Rpoppler", "ghostscript", "Rcampdf", "custom"),
          control = list(info = NULL, text = NULL))
 {
@@ -87,7 +88,8 @@ function(engine = c("xpdf", "Rpoppler", "ghostscript", "Rcampdf", "custom"),
         PlainTextDocument(content, meta$Author, meta$CreationDate, meta$Subject,
                           meta$Title, basename(elem$uri), language, meta$Creator)
      }
-}, class = c("FunctionGenerator", "function"))
+}
+class(readPDF) <- c("FunctionGenerator", "function")
 
 readPlain <-
 function(elem, language, id) {
@@ -96,7 +98,7 @@ function(elem, language, id) {
     PlainTextDocument(elem$content, id = id, language = language)
 }
 
-readXML <- structure(
+readXML <-
 function(spec, doc)
 {
     stopifnot(is.list(spec), inherits(doc, "TextDocument"))
@@ -120,7 +122,8 @@ function(spec, doc)
             meta(doc, "language") <- as.character(language)
         doc
     }
-}, class = c("FunctionGenerator", "function"))
+}
+class(readXML) <- c("FunctionGenerator", "function")
 
 RCV1Spec <-
     list(author = list("unevaluated", ""),
@@ -170,7 +173,7 @@ readXML(spec = c(Reut21578XMLSpec,
                  list(content = list("node", "/REUTERS/TEXT/BODY"))),
         doc = PlainTextDocument())
 
-readTabular <- structure(
+readTabular <-
 function(mapping)
 {
     mapping <- mapping
@@ -183,4 +186,5 @@ function(mapping)
             meta$language <- as.character(language)
         PlainTextDocument(elem$content[, mapping$content], meta = meta)
     }
-}, class = c("FunctionGenerator", "function"))
+}
+class(readTabular) <- c("FunctionGenerator", "function")
