@@ -10,10 +10,11 @@ function(..., recursive = FALSE)
     if (!all(unlist(lapply(args, inherits, class(x)))))
         stop("not all arguments are text documents")
 
-    structure(list(content = args,
-                   meta = CorpusMeta(),
-                   dmeta = data.frame(row.names = seq_along(args))),
-              class = c("VCorpus", "Corpus"))
+    v <- list(content = args,
+              meta = CorpusMeta(),
+              dmeta = data.frame(row.names = seq_along(args)))
+    class(v) <- c("VCorpus", "Corpus")
+    v
 }
 
 PlainTextDocument <-
@@ -29,11 +30,12 @@ function(x = character(0),
          meta = NULL,
          class = NULL)
 {
-    structure(list(content = as.character(x),
-                   meta = TextDocumentMeta(author, datetimestamp, description,
-                                           heading, id, language, origin, ...,
-                                           meta = meta)),
-              class = unique(c(class, "PlainTextDocument", "TextDocument")))
+    p <- list(content = as.character(x),
+              meta = TextDocumentMeta(author, datetimestamp, description,
+                                      heading, id, language, origin, ...,
+                                      meta = meta))
+    class(p) <- unique(c(class, "PlainTextDocument", "TextDocument"))
+    p
 }
 
 as.character.PlainTextDocument <-
@@ -75,11 +77,12 @@ function(x = list(),
          ...,
          meta = NULL)
 {
-    structure(list(content = x,
-                   meta = TextDocumentMeta(author, datetimestamp, description,
-                                           heading, id, language, origin, ...,
-                                           meta = meta)),
-              class = c("XMLTextDocument", "TextDocument"))
+    d <- list(content = x,
+              meta = TextDocumentMeta(author, datetimestamp, description,
+                                      heading, id, language, origin, ...,
+                                      meta = meta))
+    class(d) <- c("XMLTextDocument", "TextDocument")
+    d
 }
 
 as.character.XMLTextDocument <-

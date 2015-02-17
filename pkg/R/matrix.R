@@ -238,9 +238,9 @@ function(doc, control = list())
     tab <- tab[(nc >= lb) & (nc <= ub)]
 
     ## Return named integer
-    structure(as.integer(tab),
-              names = names(tab),
-              class = c("term_frequency", "integer"))
+    storage.mode(tab) <- "integer"
+    class(tab) <- c("term_frequency", class(tab))
+    tab
 }
 
 print.TermDocumentMatrix <-

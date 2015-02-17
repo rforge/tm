@@ -28,11 +28,12 @@ function(x,
     }
     x <- close(x)
 
-    structure(list(content = tdl,
-                   meta = CorpusMeta(),
-                   dmeta = data.frame(row.names = seq_along(tdl)),
-                   dbcontrol = dbControl),
-              class = c("PCorpus", "Corpus"))
+    p <- list(content = tdl,
+              meta = CorpusMeta(),
+              dmeta = data.frame(row.names = seq_along(tdl)),
+              dbcontrol = dbControl)
+    class(p) <- c("PCorpus", "Corpus")
+    p
 }
 
 Corpus <-
@@ -66,10 +67,11 @@ function(x, readerControl = list(reader = reader(x), language = "en"))
     }
     x <- close(x)
 
-    structure(list(content = tdl,
-                   meta = CorpusMeta(),
-                   dmeta = data.frame(row.names = seq_along(tdl))),
-              class = c("VCorpus", "Corpus"))
+    v <- list(content = tdl,
+              meta = CorpusMeta(),
+              dmeta = data.frame(row.names = seq_along(tdl)))
+    class(v) <- c("VCorpus", "Corpus")
+    v
 }
 
 `[.PCorpus` <-
@@ -172,11 +174,12 @@ function(..., recursive = FALSE)
     if (!all(unlist(lapply(args, inherits, class(x)))))
         stop("not all arguments are of the same corpus type")
 
-    structure(list(content = do.call("c", lapply(args, content)),
-                   meta = CorpusMeta(meta = do.call("c",
-                     lapply(args, function(a) meta(a, type = "corpus")))),
-                   dmeta = Reduce(outer_union, lapply(args, meta))),
-              class = c("VCorpus", "Corpus"))
+    v <- list(content = do.call("c", lapply(args, content)),
+              meta = CorpusMeta(meta = do.call("c",
+                lapply(args, function(a) meta(a, type = "corpus")))),
+              dmeta = Reduce(outer_union, lapply(args, meta)))
+    class(v) <- c("VCorpus", "Corpus")
+    v
 }
 
 content.VCorpus <-

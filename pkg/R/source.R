@@ -22,9 +22,10 @@ function(encoding = "",
     if (!is.function(reader))
         stop("invalid default reader")
 
-    structure(list(encoding = encoding, length = length,
-                   position = position, reader = reader, ...),
-              class = unique(c(class, "SimpleSource", "Source")))
+    s <- list(encoding = encoding, length = length,
+              position = position, reader = reader, ...)
+    class(s) <- unique(c(class, "SimpleSource", "Source"))
+    s
 }
 
 # A data frame where each row is interpreted as document
