@@ -40,7 +40,6 @@ function(AntiwordOptions = "")
 {
     stopifnot(is.character(AntiwordOptions))
 
-    AntiwordOptions <- AntiwordOptions
     function(elem, language, id) {
         uri <- processURI(elem$uri)
         content <- system2("antiword",
@@ -49,7 +48,7 @@ function(AntiwordOptions = "")
         PlainTextDocument(content, id = basename(elem$uri), language = language)
     }
 }
-class(readDoc) <- c("FunctionGenerator", "function")
+class(readDOC) <- c("FunctionGenerator", "function")
 
 readPDF <-
 function(engine = c("xpdf", "Rpoppler", "ghostscript", "Rcampdf", "custom"),
@@ -58,7 +57,6 @@ function(engine = c("xpdf", "Rpoppler", "ghostscript", "Rcampdf", "custom"),
     stopifnot(is.character(engine), is.list(control))
 
     engine <- match.arg(engine)
-    control <- control
 
     pdf_info <-
         switch(engine,
@@ -103,8 +101,6 @@ function(spec, doc)
 {
     stopifnot(is.list(spec), inherits(doc, "TextDocument"))
 
-    spec <- spec
-    doc <- doc
     function(elem, language, id) {
         tree <- XML::xmlParse(elem$content, asText = TRUE)
         content(doc) <- if ("content" %in% names(spec))
@@ -176,7 +172,7 @@ readXML(spec = c(Reut21578XMLSpec,
 readTabular <-
 function(mapping)
 {
-    mapping <- mapping
+    stopifnot(is.list(mapping))
     function(elem, language, id) {
         meta <- lapply(mapping[setdiff(names(mapping), "content")],
                        function(m) elem$content[, m])
