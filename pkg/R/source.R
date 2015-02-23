@@ -3,7 +3,8 @@
 
 getSources <-
 function()
-   c("DataframeSource", "DirSource", "URISource", "VectorSource", "XMLSource")
+   c("DataframeSource", "DirSource", "URISource", "VectorSource", "XMLSource",
+     "ZipSource")
 
 SimpleSource <-
 function(encoding = "",
@@ -87,6 +88,26 @@ function(x, parser, reader)
                  uri = x, class = "XMLSource")
 }
 
+# A ZIP file with its compressed files interpreted as documents
+ZipSource <-
+function(zipfile, pattern = NULL, recursive = FALSE, ignore.case = FALSE,
+         mode = "text")
+{
+    if (!identical(mode, "text") &&
+        !identical(mode, "binary") &&
+        !identical(mode, ""))
+        stop(sprintf("invalid mode '%s'", mode))
+
+    SimpleSource(exdir = NULL,
+                 files = NULL,
+                 mode = mode,
+                 pattern = pattern,
+                 recursive = recursive,
+                 ignore.case = ignore.case,
+                 zipfile = zipfile,
+                 class = "ZipSource")
+}
+
 # tau:::read_all_bytes
 read_all_bytes <-
 function(con, chunksize = 2 ^ 16)
@@ -127,6 +148,50 @@ open.SimpleSource <-
 close.SimpleSource <-
 function(con, ...)
     con
+open.ZipSource <-
+function(x)
+{
+    exdir <- tempfile("ZipSource")
+    dir.create(exdir, mode = "0700")
+
+    destfile <- x$zipfile
+
+    if (!file.exists(destfile)) {
+        destfile <- tempfile()
+        download.file(x$zipfile, destfile)
+        on.exit(file.remove(destfile))
+    }
+
+    files <- unzip(destfile, list = TRUE)
+    ## Directories have length 0
+    files <- files[files$Length > 0, "Name"]
+    ## Idea: Subdirectories contain file separators
+    if (!x$recursive)
+        files <- files[!grepl(.Platform$file.sep, files, fixed = TRUE)]
+    ## Idea: pattern and ignore.case refer to the file name (like basename)
+    ## Cf. also ?dir
+    if (!is.null(x$pattern))
+        files <- files[grepl(x$pattern, files, ignore.case = x$ignore.case)]
+
+    unzip(destfile, files, exdir = exdir)
+
+    x$exdir <- exdir
+    x$files <- files
+    x$length <- length(files)
+    x
+}
+
+close.ZipSource <-
+function(x)
+{
+    if (!is.null(x$exdir)) {
+        unlink(x$exdir, recursive = TRUE)
+        x$exdir <- NULL
+        x$files <- NULL
+        x$length <- 0
+    }
+    x
+}
 
 eoi <-
 function(x)
@@ -147,7 +212,7 @@ function(x)
 {
     filename <- x$filelist[x$position]
     list(content = readContent(filename, x$encoding, x$mode),
-         uri = sprintf("file://%s", filename))
+         uri = paste0("file://", filename))
 }
 getElem.URISource <-
 function(x)
@@ -161,6 +226,14 @@ getElem.XMLSource <-
 function(x)
     list(content = XML::saveXML(x$content[[x$position]]),
          uri = x$uri)
+getElem.ZipSource <-
+function(x)
+{
+       path <- file.path(x$exdir, x$files[x$position])
+       list(content = readContent(path, x$encoding, x$mode),
+            uri = paste0("file://", path))
+}
+
 
 length.SimpleSource <-
 function(x)
@@ -178,7 +251,7 @@ pGetElem.DirSource <-
 function(x)
     lapply(x$filelist,
            function(f) list(content = readContent(f, x$encoding, x$mode),
-                            uri = sprintf("file://%s", f)))
+                            uri = paste0("file://", f)))
 pGetElem.URISource <-
 function(x)
     lapply(x$uri,
@@ -189,6 +262,11 @@ function(x)
     lapply(x$content,
            function(y) list(content = y,
                             uri = NULL))
+pGetElem.ZipSource <-
+function(x)
+    lapply(file.path(x$exdir, x$files),
+           function(f) list(content = readContent(f, x$encoding, x$mode),
+                            uri = paste0("file://", f))
 
 reader <-
 function(x)
