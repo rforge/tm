@@ -11,7 +11,8 @@ function(x)
 getReaders <-
 function()
     c("readDOC", "readPDF", "readPlain", "readRCV1", "readRCV1asPlain",
-      "readReut21578XML", "readReut21578XMLasPlain", "readTabular", "readXML")
+      "readReut21578XML", "readReut21578XMLasPlain", "readTabular",
+      "readTagged", "readXML")
 
 prepareReader <-
 function(readerControl, reader = NULL, ...)
@@ -184,3 +185,24 @@ function(mapping)
     }
 }
 class(readTabular) <- c("FunctionGenerator", "function")
+
+readTagged <-
+function(...)
+{
+    args <- list(...)
+    function(elem, language, id) {
+        if (!is.null(elem$content)) {
+            con <- textConnection(elem$content)
+            on.exit(close(con))
+        } else
+            con <- elem$uri
+
+        if (!is.null(elem$uri))
+            id <- basename(elem$uri)
+
+        a <- c(list(con = con, meta = list(id = id, language = language)), args)
+
+        do.call(NLP::TaggedTextDocument, a)
+    }
+}
+class(readTagged) <- c("FunctionGenerator", "function")
