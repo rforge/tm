@@ -149,8 +149,9 @@ close.SimpleSource <-
 function(con, ...)
     con
 open.ZipSource <-
-function(x)
+function(con, ...)
 {
+    x <- con
     exdir <- tempfile("ZipSource")
     dir.create(exdir, mode = "0700")
 
@@ -182,8 +183,9 @@ function(x)
 }
 
 close.ZipSource <-
-function(x)
+function(con, ...)
 {
+    x <- con
     if (!is.null(x$exdir)) {
         unlink(x$exdir, recursive = TRUE)
         x$exdir <- NULL
@@ -266,7 +268,7 @@ pGetElem.ZipSource <-
 function(x)
     lapply(file.path(x$exdir, x$files),
            function(f) list(content = readContent(f, x$encoding, x$mode),
-                            uri = paste0("file://", f))
+                            uri = paste0("file://", f)))
 
 reader <-
 function(x)

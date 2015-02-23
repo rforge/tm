@@ -5,7 +5,7 @@
   Return a function which reads in a text document containing POS-tagged words.
 }
 \usage{
-readTabular(\dots)
+readTagged(\dots)
 }
 \arguments{
   \item{\dots}{Arguments passed to \code{\link[NLP]{TaggedTextDocument}}.}

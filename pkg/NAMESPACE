@@ -76,7 +76,8 @@ export("as.DocumentTermMatrix",
        "writeCorpus",
        "XMLSource",
        "XMLTextDocument",
-       "Zipf_plot")
+       "Zipf_plot",
+       "ZipSource")
 
 S3method("removeNumbers", "character")
 S3method("removePunctuation", "character")
@@ -187,6 +188,11 @@ S3method("as.character", "XMLTextDocument")
 S3method("content", "XMLTextDocument")
 S3method("content<-", "XMLTextDocument")
 S3method("print", "XMLTextDocument")
+
+S3method("close", "ZipSource")
+S3method("getElem", "ZipSource")
+S3method("open", "ZipSource")
+S3method("pGetElem", "ZipSource")
 
 S3method("as.DocumentTermMatrix", "DocumentTermMatrix")
 S3method("as.DocumentTermMatrix", "TermDocumentMatrix")
