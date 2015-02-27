@@ -67,11 +67,7 @@ function(x, readerControl = list(reader = reader(x), language = "en"))
     }
     x <- close(x)
 
-    v <- list(content = tdl,
-              meta = CorpusMeta(),
-              dmeta = data.frame(row.names = seq_along(tdl)))
-    class(v) <- c("VCorpus", "Corpus")
-    v
+    as.VCorpus(tdl)
 }
 
 `[.PCorpus` <-
@@ -148,6 +144,15 @@ as.VCorpus <-
 function(x)
     UseMethod("as.VCorpus")
 as.VCorpus.VCorpus <- identity
+as.VCorpus.list <-
+function(x)
+{
+    v <- list(content = x,
+              meta = CorpusMeta(),
+              dmeta = data.frame(row.names = seq_along(x)))
+    class(v) <- c("VCorpus", "Corpus")
+    v
+}
 
 outer_union <-
 function(x, y, ...)

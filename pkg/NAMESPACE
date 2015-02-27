@@ -101,6 +101,8 @@ S3method("print", "DocumentTermMatrix")
 S3method("t", "DocumentTermMatrix")
 S3method("tm_term_score", "DocumentTermMatrix")
 
+S3method("as.VCorpus", "list")
+
 S3method("tm_term_score", "term_frequency")
 
 S3method("[", "PCorpus")
