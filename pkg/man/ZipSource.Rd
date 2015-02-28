@@ -14,7 +14,7 @@ ZipSource(zipfile,
 \arguments{
   \item{zipfile}{A character string with the full path name of a ZIP file.}
   \item{pattern}{an optional regular expression. Only file names in the ZIP
-    filewhich match the regular expression will be returned.}
+    file which match the regular expression will be returned.}
   \item{recursive}{logical. Should the listing recurse into directories?}
   \item{ignore.case}{logical. Should pattern-matching be case-insensitive?}
   \item{mode}{a character string specifying if and how files should be read in.
