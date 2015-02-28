@@ -138,7 +138,7 @@ function(x, i, value)
 
 as.list.PCorpus <- as.list.VCorpus <-
 function(x, ...)
-    content(x)
+    setNames(content(x), as.character(lapply(content(x), meta, "id")))
 
 as.VCorpus <-
 function(x)
