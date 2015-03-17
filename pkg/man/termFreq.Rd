@@ -8,15 +8,15 @@
 termFreq(doc, control = list())
 }
 \arguments{
-  \item{doc}{An object inheriting from \code{TextDocument}.}
+  \item{doc}{An object inheriting from \code{\link{TextDocument}}.}
   \item{control}{A list of control options which override default
     settings.
 
     First, following two options are processed.
     \describe{
-      \item{\code{tokenize}}{A function tokenizing documents into single
-	tokens or a string matching one of the predefined tokenization
-	functions:
+      \item{\code{tokenize}}{A function tokenizing a \code{\link{TextDocument}}
+	into single tokens or a string matching one of the predefined
+	tokenization functions:
 	\describe{
 	  \item{\code{"MC"}}{for \code{\link{MC_tokenizer}}, or}
 	  \item{\code{"scan"}}{for \code{\link{scan_tokenizer}}, or}
