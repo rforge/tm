@@ -82,24 +82,23 @@
 	</li>
 	<li>
 	  <a name="Bigrams"></a>
-	  <cite>Can I use <a href="http://en.wikipedia.org/wiki/Bigram">bigram</a>s
+	  <cite>Can I use <a href="https://en.wikipedia.org/wiki/Bigram">bigram</a>s
 	    instead of single tokens in a term-document matrix?</cite>
 	  <p>
-	    Yes. <a href="http://cran.r-project.org/package=RWeka">RWeka</a>
-	    provides a tokenizer for
-	    arbitrary <a href="http://en.wikipedia.org/wiki/N-gram">n-gram</a>s
-	    which can be directly passed on to the term-document
-	    matrix constructor. E.g.:
+	    Yes. Package <a href="http://cran.r-project.org/package=NLP">NLP</a>
+	    provides functionality to compute
+	    <a href="https://en.wikipedia.org/wiki/N-gram">n-gram</a>s
+	    which can be used to construct a corresponding tokenizer. E.g.:
 	  </p>
-<pre><code>  library("RWeka")
-  library("tm")
-
+<pre><code>  library("tm")
   data("crude")
 
-  BigramTokenizer &lt;- function(x) NGramTokenizer(x, Weka_control(min = 2, max = 2))
-  tdm &lt;- TermDocumentMatrix(crude, control = list(tokenize = BigramTokenizer))
+  BigramTokenizer &lt;-
+  function(x)
+    unlist(lapply(ngrams(words(x), 2), paste, collapse = " "), use.names = FALSE)
 
-  inspect(tdm[340:345,1:10])</code></pre>
+  tdm &lt;- TermDocumentMatrix(crude, control = list(tokenize = BigramTokenizer))
+  inspect(removeSparseTerms(tdm[, 1:10], 0.7))</code></pre>
 	</li>
 	<li>
 	  <a name="TermDocumentMatrixPlot"></a>
