@@ -53,6 +53,20 @@ function(x, value)
     x
 }
 
+meta.PlainTextDocument <-
+function(x, tag = NULL, ...)
+    if (is.null(tag)) x$meta else x$meta[[tag]]
+
+`meta<-.PlainTextDocument` <-
+function(x, tag = NULL, ..., value)
+{
+    if(is.null(tag))
+        x$meta <- value
+    else
+        x$meta[[tag]] <- value
+    x
+}
+
 print.PlainTextDocument <-
 function(x, ...)
 {
@@ -99,6 +113,10 @@ function(x, value)
     x$content <- value
     x
 }
+
+meta.XMLTextDocument <- meta.PlainTextDocument
+
+`meta<-.XMLTextDocument` <- `meta<-.PlainTextDocument`
 
 print.XMLTextDocument <-
 function(x, ...)

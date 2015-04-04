@@ -70,9 +70,6 @@ function(x, tag = NULL, type = c("indexed", "corpus", "local"), ...)
     else
         stop("invalid type")
 }
-meta.TextDocument <-
-function(x, tag = NULL, ...)
-    if (is.null(tag)) x$meta else x$meta[[tag]]
 
 `meta<-.VCorpus` <- `meta<-.PCorpus` <-
 function(x, tag, type = c("indexed", "corpus", "local"), ..., value)
@@ -87,12 +84,6 @@ function(x, tag, type = c("indexed", "corpus", "local"), ..., value)
             meta(x[[i]], tag) <- value[i]
     } else
         stop("invalid type")
-    x
-}
-`meta<-.TextDocument` <-
-function(x, tag, ..., value)
-{
-    x$meta[[tag]] <- value
     x
 }
 
