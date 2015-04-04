@@ -7,6 +7,12 @@
       \item Sources now provide \code{open()} and \code{close()}.
     }
   }
+  \subsection{BUG FIXES}{
+    \itemize{
+      \item The function \code{removeWords()} now correctly processes words
+        being truncations of others. Reported by Александр Труфанов.
+    }
+  }
 }
 \section{Changes in tm version 0.6}{
   \subsection{SIGNIFICANT USER-VISIBLE CHANGES}{
