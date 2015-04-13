@@ -74,8 +74,8 @@
 	    Ensure that all your datasets and documents are encoded
 	    in <a href="http://en.wikipedia.org/wiki/UTF-8">UTF-8</a>. If
 	    you still have problems
-	    <code>tm_map(yourCorpus, function(x) iconv(enc2utf8(x),
-            sub = "byte"))</code> will replace non-convertible bytes
+	    <code>tm_map(yourCorpus, content_transformer(function(x) iconv(enc2utf8(x),
+            sub = "byte")))</code> will replace non-convertible bytes
             in <code>yourCorpus</code> with strings showing their hex
             codes.
 	  </p>
