@@ -229,15 +229,14 @@ function(x, value)
     x
 }
 
-print.PCorpus <- print.VCorpus <-
+format.PCorpus <- format.VCorpus <-
 function(x, ...)
 {
-    writeLines(sprintf("<<%s (documents: %d, metadata (corpus/indexed): %d/%d)>>",
-                       class(x)[1],
-                       length(x),
-                       length(meta(x, type = "corpus")),
-                       ncol(meta(x, type = "indexed"))))
-    invisible(x)
+    c(sprintf("<<%s>>", class(x)[1L]),
+      sprintf("Metadata:  corpus specific: %d, document level (indexed): %d",
+              length(meta(x, type = "corpus")),
+              ncol(meta(x, type = "indexed"))),
+      sprintf("Content:  documents: %d", length(x)))
 }
 
 writeCorpus <-

@@ -17,6 +17,11 @@ function(..., recursive = FALSE)
     v
 }
 
+.format_TextDocument <-
+function(x, ...)
+    c(sprintf("<<%s>>", class(x)[1L]),
+      sprintf("Metadata:  %d", length(meta(x))))
+
 PlainTextDocument <-
 function(x = character(0),
          author = character(0),
@@ -53,6 +58,19 @@ function(x, value)
     x
 }
 
+format.PlainTextDocument <-
+function(x, ...)
+    c(.format_TextDocument(x), sprintf("Content:  chars: %d", nchar(x$content)))
+
+inspect.PlainTextDocument <-
+function(x)
+{
+    print(x)
+    cat("\n")
+    writeLines(content(x))
+    invisible(x)
+}
+
 meta.PlainTextDocument <-
 function(x, tag = NULL, ...)
     if (is.null(tag)) x$meta else x$meta[[tag]]
@@ -65,14 +83,6 @@ function(x, tag = NULL, ..., value)
     else
         x$meta[[tag]] <- value
     x
-}
-
-print.PlainTextDocument <-
-function(x, ...)
-{
-    writeLines(sprintf("<<%s (metadata: %d)>>", class(x)[1], length(x$meta)))
-    writeLines(content(x))
-    invisible(x)
 }
 
 words.PlainTextDocument <-
@@ -114,13 +124,8 @@ function(x, value)
     x
 }
 
+format.XMLTextDocument <- format.PlainTextDocument
+
 meta.XMLTextDocument <- meta.PlainTextDocument
 
 `meta<-.XMLTextDocument` <- `meta<-.PlainTextDocument`
-
-print.XMLTextDocument <-
-function(x, ...)
-{
-    writeLines(sprintf("<<%s (metadata: %d)>>", class(x)[1], length(x$meta)))
-    invisible(x)
-}
