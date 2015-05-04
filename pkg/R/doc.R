@@ -62,15 +62,6 @@ format.PlainTextDocument <-
 function(x, ...)
     c(.format_TextDocument(x), sprintf("Content:  chars: %d", nchar(x$content)))
 
-inspect.PlainTextDocument <-
-function(x)
-{
-    print(x)
-    cat("\n")
-    writeLines(content(x))
-    invisible(x)
-}
-
 meta.PlainTextDocument <-
 function(x, tag = NULL, ...)
     if (is.null(tag)) x$meta else x$meta[[tag]]
