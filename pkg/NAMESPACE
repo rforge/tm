@@ -1,4 +1,4 @@
-importFrom("NLP", "Token_Tokenizer", "content", "content<-", "meta", "meta<-", "words")
+importFrom("NLP", "content", "content<-", "meta", "meta<-", "words")
 importFrom("parallel", "mclapply")
 importFrom("stats", "setNames")
 importFrom("utils", "getS3method")

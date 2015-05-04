@@ -164,6 +164,8 @@ function(doc, control = list())
         .tokenize <- MC_tokenizer
     else if (identical(.tokenize, "scan"))
         .tokenize <- scan_tokenizer
+    else if (NLP::is.Span_Tokenizer(.tokenize))
+        .tokenize <- NLP::as.Token_Tokenizer(.tokenize)
     if (is.function(.tokenize))
         txt <- .tokenize(doc)
     else
