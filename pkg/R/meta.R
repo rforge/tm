@@ -32,7 +32,6 @@ function(author, datetimestamp, description, heading, id, language, origin, ...,
 print.TextDocumentMeta <-
 function(x, ...)
 {
-    writeLines("Metadata:")
     cat(sprintf("  %s: %s",
                 format(names(x), justify = "left"),
                 sapply(x, as.character)),
