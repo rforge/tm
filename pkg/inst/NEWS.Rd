@@ -4,7 +4,13 @@
 \section{Changes in tm version 0.6-1}{
   \subsection{NEW FEATURES}{
     \itemize{
+      \item \code{ZipSource()} for processing ZIP files.
       \item Sources now provide \code{open()} and \code{close()}.
+      \item \code{termFreq()} now accepts \code{Span_Tokenizer} and
+        \code{Token_Tokenizer} (both from package \pkg{NLP}) objects as
+        tokenizers.
+      \item \code{readTagged()}, a reader for text documents containing
+        POS-tagged words.
     }
   }
   \subsection{BUG FIXES}{
