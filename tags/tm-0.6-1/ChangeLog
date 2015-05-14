@@ -1,0 +1,1328 @@
+2014-04-20  Ingo Feinerer <feinerer@logic.at>
+
+	* ChangeLog: Not maintained as a separate file anymore. Please consult
+	the tm Subversion log messages (available at
+	https://r-forge.r-project.org/scm/viewvc.php/pkg/?root=tm) instead.
+
+2014-02-25  Ingo Feinerer <feinerer@logic.at>
+
+	* NAMESPACE: Export pGetElem.URISource.
+
+2014-02-23  Ingo Feinerer <feinerer@logic.at>
+
+	* R/complete.R (stemCompletion.PlainTextDocument): Avoid spurious
+	duplicate results. Reported by Seong-Hyeon Kim.
+
+2014-01-28  Ingo Feinerer <feinerer@logic.at>
+
+	* R/utils.R (map_IETF_Snowball): Process three letter codes.
+
+2014-01-07  Ingo Feinerer <feinerer@logic.at>
+
+	* DESCRIPTION (Version): Prepare for CRAN New Year release.
+
+2014-01-05  Ingo Feinerer <feinerer@logic.at>
+
+	* R/matrix.R (findAssocs): Allow multiple and non-existing terms.
+	Suggested by Christian Buchta.
+
+	* R/source.R (is.Source): New check for valid source.
+
+2013-12-28  Ingo Feinerer <feinerer@logic.at>
+
+	* R/matrix.R (findAssocs): Make corlimit inclusive.
+
+2013-09-27  Ingo Feinerer <feinerer@logic.at>
+
+	* R/source.R: Allow multiple URIs for URISource.
+
+2013-09-19  Ingo Feinerer <feinerer@logic.at>
+
+	* R/source.R (Source): New Source constructor.
+
+2013-08-26  Ingo Feinerer <feinerer@logic.at>
+
+	* R/source.R (DirSource): Report non-existent or non-readable files.
+	Suggested by Ajinkya Kale and Milan Bouchet-Valat.
+
+2013-08-19  Ingo Feinerer <feinerer@logic.at>
+
+	* R/corpus.R (setOldClass): Do not register VCorpus as S4 class
+	anymore.
+
+	* R/doc.R (setOldClass): Do not register PlainTextDocument as S4 class
+	anymore.
+
+2013-08-09  Ingo Feinerer <feinerer@logic.at>
+
+	* DESCRIPTION (License): Changed to GPL-3.
+
+2013-07-25  Ingo Feinerer <feinerer@logic.at>
+
+	* R/complete.R (stemCompletion): Report NA instead of error when no
+	completion can be found by the prevalent heuristic. Suggested by Hugh
+	Devlin.
+
+2013-07-10  Ingo Feinerer <feinerer@logic.at>
+
+	* R/reader.R (readPDF): Use tm:::pdfinfo() (which needs the pdfinfo
+	command line tool) instead of tools:::pdf_info().
+
+2013-04-11  Ingo Feinerer <feinerer@logic.at>
+
+	* R/transform.R (removeWords): Use PCRE UCP to use Unicode properties
+	to determine character types.
+
+2012-12-14  Ingo Feinerer <feinerer@logic.at>
+
+	* R/matrix.R (TermDocumentMatrix): Ensure dimnames of type character
+	when generating a simple_triplet_matrix. Reported by Arho Suominen. 
+
+2012-12-10  Ingo Feinerer <feinerer@logic.at>
+
+	* man/tm_reduce.Rd: Document right to left folding order. Adapt
+	example as well. Suggested by Mark Rosenstein.
+
+2012-12-04  Ingo Feinerer <feinerer@logic.at>
+
+	* R/filter.R (sFilter): Avoid attach() and simplify.
+
+2012-11-02  Ingo Feinerer <feinerer@logic.at>
+
+	* R/doc.R (.TextDocument): Use casts to ensure data types and to avoid
+	removal of attributes.
+
+2012-10-03 Ingo Feinerer  <feinerer@logic.at>
+
+	* R/weight.R (weightTfIdf, weightSMART): Gracefully handle empty
+	columns and rows (avoids blow-up due to NaN values). Suggested by Jaap
+	Frölich.
+
+2012-07-27 Ingo Feinerer  <feinerer@logic.at>
+
+	* R/transform.R (removeWords): Allow longer stopword lists.
+
+2012-01-31  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/reader.R (readXML): Readers can now set the document language
+	themselves.
+
+2012-01-14  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/source.R (XMLSource, getElem.XMLSource): Simplifications as
+	proposed by Milan Bouchet-Valat.
+
+2012-01-11  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/matrix.R (termFreq): Fix processing of user provided
+	stopwords. Reported by Bettina Grün.
+
+2011-12-23  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/matrix.R (termFreq): Fix invalid handling of
+	control$wordLengths[1]. Reported by Steven C. Bagley.
+
+2011-12-17  Ingo Feinerer  <feinerer@logic.at>
+
+	* DESCRIPTION (Version): Prepare for CRAN Christmas release.
+
+2011-12-12  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/utils.R (map_IETF_Snowball): Map empty input to "porter".
+
+2011-12-07  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/transform.R (removePunctuation): Add option to preserve
+	intra-word dashes.
+
+2011-12-06  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/matrix.R (termFreq): Allow reordering of control option
+	processing.
+
+2011-11-17  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/reader.R (readPDF): Use tools:::pdf_info() instead of external
+	pdfinfo tool.
+
+	* inst/stopwords/SMART.dat: Add SMART information retrieval system
+	stopwords (which are also used by the MC toolkit).
+
+	* R/matrix (termFreq): Allow local option \code{bounds$local} to
+	restrict how often a term may appear in each document (generalizes
+	\code{minDocFreq}). Similarly the local option \code{wordLenghts}
+	for word length bounds (generalizes \code{minWordLength}).
+
+	* R/matrix.R (TermDocumentMatrix.VCorpus): New global option
+	\code{bounds$global} for restricting how often a term is allowed
+	to appear in different documents.
+
+	* R/matrix.R (TermDocumentMatrix.VCorpus): Distinguish between
+	local options delegated internally to termFreq() and global
+	options which are processed by the term-document matrix
+	constructor itself.
+
+2011-11-15  Ingo Feinerer  <feinerer@logic.at>
+
+	* man/getTokenizers.Rd: Document getTokenizers().
+
+	* man/tokenizer.Rd: Document MC_tokenizer() and scan_tokenizer().
+
+2011-11-04  Ingo Feinerer  <feinerer@logic.at>
+
+	* man/matrix.Rd: Document as.TermDocumentMatrix.term_frequency.
+
+	* man/combine.Rd: Document c.term_frequency().
+
+2011-10-11  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/meta.R (`meta<-.Corpus`): Assume that the replacement value
+	can be accessed via '[' and not '[['.
+
+2011-08-24  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/stopwords.R (stopwords): Raise an error if no stopwords are
+	available for requested language. Suggested by Derek M Jones.
+
+2011-05-27  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/weight.R (weightSMART): Implement Cosine and pivoted unique
+	normalization.
+
+2011-02-17  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/transform.R (stemDocument.PlainTextDocument): Use language
+	argument.
+
+2011-02-04  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/source.R: Store strings and connections instead of unevaluated
+	calls.
+
+2010-11-26  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/corpus.R (Corpus): Allow init and exit hooks for readers.
+
+2010-10-22  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/matrix.R (.TermDocumentMatrix): Make Weighting an attribute
+	(instead of a list element).
+
+2010-10-16  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/corpus.R (`[[.VCorpus`, `[[.PCorpus'): Access individual
+	documents by names (fallback to IDs if names are not set).
+
+2010-08-25  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/corpus.R (c.Corpus): When concatenating corpora, the argument
+	\code{recursive} now determines whether existing corpus metadata
+	is used.
+
+2010-08-06  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/transform.R: Removed convert_UTF_8(). Use enc2utf8() instead.
+
+2010-06-17  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/matrix.R (TermDocumentMatrix): If a dictionary is given do not
+	remove terms not occurring in the corpus anymore.
+
+2010-06-02  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/plot.R (Zipf_plot, Heaps_plot): Plotting functions for Zipf's
+	and Heaps' law.
+
+2010-05-18  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/corpus.R (Corpus, PCorpus): Use element names as IDs if
+	provided by a source.
+
+2010-04-09  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/source.R (.Source): Provide document names.
+
+2010-04-07  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/meta.R (`content_or_meta`): Utility function.
+
+2010-03-19  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/reader.R (readReut21578XML, readReut21578XMLasPlain): Extract
+	TOPICS, LEWISSPLIT, CGISPLIT, and OLDID meta tags.
+
+2010-03-03  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/weight.R (weightTfIdf): Added normalization option.
+
+	* man/tm_tag_score.Rd: Add General Inquirer example for sentiment
+	analysis.
+
+2010-02-25  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/score.R (tm_tag_score): Compute a score from the number of
+	tags matching in a document.
+
+2010-02-18  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/complete.R (stemCompletion): New completion heuristics.
+
+2010-02-17  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/plot.R (plot.TermDocumentMatrix): Memory improvements.
+
+2010-02-06  Ingo Feinerer  <feinerer@logic.at>
+
+	* DESCRIPTION (Depends): Depend on R (>= 2.10.0) to ensure that
+	setOldClass(c(..., "list")) works.
+
+2010-01-22  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/transform.R (stemDocument.character): In case input is a
+	simple character just delegate to the default Snowball stemmer.
+
+2010-01-15  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/reader.R (readReut21578XML, readRCV1): Extract more meta
+	data.
+
+2010-01-12  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/doc.R (`Content<-`): Be careful with names attribute.
+
+2010-01-07  Stefan Theussl  <stefan.theussl@wu.ac.at>
+
+	* R/source.R (DirSource): Improved implementation especially when
+	handling many (> 1M) files.
+
+2009-12-22  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/source.R (getElem.URISource): Use encoding argument.
+
+2009-12-11  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/doc.R (setOldClass): Register S3 document classes to be
+	recognized by S4 methods.
+
+2009-11-25  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/matrix.R (termFreq): Add option to remove punctuation
+	characters.
+
+2009-11-19  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/matrix.R (c.TermDocumentMatrix): Added combine method for
+	merging multiple term-document matrices.
+
+2009-11-17  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/corpus.R (setOldClass): Register S3 corpus classes to be
+	recognized by S4 methods.
+
+	* man/plot.Rd: Use \dontrun{} in \examples{} section in the hope
+	that CRAN Mac OS X builds do not fail any longer.
+
+2009-11-15  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/matrix.R (tokenize): Use scan(..., what = "character") instead
+	of RWeka:AlphabeticTokenizer() as default.
+
+2009-11-14  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/transform.R (removeWords.PlainTextDocument): Fix bug which
+	caused words at the beginning or the end of a line not to be removed. Do
+	not delete whitespace anymore.
+
+2009-11-12  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/source.R (DirSource): Default to working directory if no path
+	is specified.
+
+2009-11-11  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/source.R (DirSource): Stop on empty directories.
+
+2009-11-07  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/matrix.R (TermDocumentMatrix): Avoid prefixes originating from
+	named documents.
+
+2009-10-21  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/transform.R (removeWords): Improve regular expressions.
+
+2009-10-19  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/meta.R (DublinCore): Allow lower case tags.
+
+2009-10-09  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/source.R (GmaneSource, ReutersSource): Use xmlChildren(x)
+	instead of x$children.
+
+2009-09-15  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/preprocess.R (preprocessReut21578XML): Fix generated file names.
+
+2009-09-06  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/: Use S3 instead of S4 class system.
+
+2009-08-11  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/reader.R (readMail): Moved to tm.plugin.mail package.
+
+2009-07-04  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/reader.R (readNewsgroup): Rename to readMail as newsgroup
+	postings are basically e-mails with some extra headers.
+
+2009-07-03  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/transform.R: Move convertMboxEml, removeCitation,
+	removeMultipart, and removeSignature to the tm.plugin.mail package
+	since they are mainly utility functions (for handling e-mails) and
+	not very framework specific.
+
+2009-06-28  Ingo Feinerer  <feinerer@logic.at>
+
+	* man/: Fix documentation.
+
+2009-06-26  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/reader.R (readReut21578XMLasPlain): New reader which returns a
+	plain text document instead of an XML document for texts of the
+	Reuters-21578 dataset.
+
+	* R/sparse.R: Removed since the slam package is now available on
+	CRAN.
+
+	* DESCRIPTION (Depends): Add slam package.
+
+2009-06-17  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/transform.R (stemDoc): Fix character(0) handling.
+
+2009-06-12  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/doc.R (show): Pretty print.
+
+2009-05-27  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/matrix.R (print.TermDocumentMatrix): Handle empty matrices
+	gracefully.
+
+2009-05-13  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/corpus.R: Make corpus virtual. Implement corpus with standard
+	and permanent storage semantics.
+
+	* DESCRIPTION: New major release. A *lot* of improvements.
+
+2009-05-04   Ingo Feinerer <feinerer@logic.at>
+
+	* NAMESPACE: Export some simple_triplet_matrix functions.
+
+2009-04-28   Ingo Feinerer <feinerer@logic.at>
+
+	* R/weight.R: Adapt tf-idf to new matrix format.
+
+2009-04-27  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/matrix.R: Create two distinct classes for term-document and
+	document-term matrices.
+
+2009-04-26  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/termdocmatrix.R: No longer use Matrix package. This reduces
+	package start-up time significantly.
+
+2009-04-11  Ingo Feinerer  <feinerer@logic.at>
+
+	* inst/doc/tm.Rnw: Fix code/documentation mismatch.
+
+2009-04-04  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/transform.R (tmReduce): Combine multiple maps into one
+	transformation.
+
+2009-04-03  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/weight.R: Remove weightLogical since it does not return a
+	dgCMatrix.
+
+	* R/termdocmatrix.R: Removed TermDocMatrix. Use DocumentTermMatrix
+	or TermDocumentMatrix instead.
+
+2009-03-28  Ingo Feinerer  <feinerer@logic.at>
+
+	* inst/doc/extensions.Rnw: Finished vignette.
+
+2009-03-27  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/termdocmatrix.R: Start to work on new TermDocumentMatrix and
+	DocumentTermMatrix representations.
+
+2009-03-23  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/reader.R (readXML): New reader for arbitrary XML files.
+
+2009-03-22  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/source.R (CSVSource): Defunct (use DataframeSource instead).
+	(XMLSource): New XMLSource class for arbitrary XML files.
+	(Source): New slot Vectorized.
+
+2009-03-21  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/reader.R (readTabular): Experimental reader for tabular data
+	structures which can be customized via user-defined mappings.
+
+	* R/reader.R: Always use UTC time zone.
+
+	* R/AAA.R (.onLoad): No longer try to start a MPI cluster.
+
+2009-03-20  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/reader.R (readDOC): Options can be passed over to antiword.
+
+	* R/reader.R (readPDF): Options can be passed over to pdfinfo and
+	pdftotext.
+
+2009-03-10  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/source.R (DirSource): Add pattern and ignore.case arguments
+	which are internally passed over to list.files().
+
+2009-03-02  Ingo Feinerer  <feinerer@logic.at>
+
+	* inst/doc/tm.Rnw: Suppress pointless loading message.
+
+2009-01-29  Ingo Feinerer  <feinerer@logic.at>
+
+	* DESCRIPTION: Speed up package loading (via moving packages not
+	strictly necessary for normal operation to Suggests instead of
+	Depends).
+
+2009-01-08  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/reader.R (readNewsgroup): The date format is now configurable.
+
+2008-12-20  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/preprocess.R (convertMboxEml): Fix off-by-one error.
+
+2008-12-16  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/termdocmatrix.R (TermDocMatrix): Sort row indices.
+
+2008-12-06  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/source.R (DataframeSource): New source class for data frames.
+
+	* R/source.R: Fixed non-standard call evaluation.
+
+2008-11-29  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/source.R (URISource): New source class for a single document.
+
+2008-11-27  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/source.R: Refactoring.
+
+2008-11-25  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/AAA.R (.onLoad, .Last): Use tryCatch() to handle misconfigured
+	Rmpi installations more gracefully.
+
+2008-11-08  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/source.R (Source): Add Length slot.
+
+2008-11-06  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/AAA.R: Unify duplicated .onLoad function.
+
+2008-11-03  Ingo Feinerer  <feinerer@logic.at>
+
+	* DESCRIPTION (Suggests): Added Rmpi.
+
+2008-11-02  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/source.R (getElem): Fix 'no visible binding' warning.
+
+	* man/WeightFunction.Rd: Fix signature.
+
+2008-08-03  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/weight.R: Introduce name abbreviations for weighting functions.
+
+2008-07-24  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/AAA.R (.onLoad, .Last): Start and stop MPI cluster.
+
+	* R/cluster.R: Provide convenience functions for using a MPI
+	cluster.
+
+	* R/termdocmatrix.R (TermDocMatrix): Use MPI cluster if
+	available.
+
+	* R/textdoccol.R (tmIndex, tmFilter, tmMap): Use MPI cluster if
+	available.
+
+2008-07-17  Ingo Feinerer  <feinerer@logic.at>
+
+	* R/textdoccol.R (lapply): Removed debug print out.
+
+2008-06-06  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/reader.R (readRCV1): Improved metadata extraction from
+	Reuters Corpus Volume 1 documents.
+
+2008-05-25  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/transform.R: Ensure that all mappings preserve multiline
+	structures.
+
+2008-05-24  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/filter.R: Every filter has now an attribute indicating whether
+	it sould be applied to document level (doclevel).
+
+	* R/textdoccol.R (tmFilter): Set searchFullText as new default
+	filter.
+
+2008-04-23  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/transform.R (replacePatterns): Replaced removeWords by
+	replacePatterns. Suggested by Christian Buchta.
+
+	* R/textdoccol.R (inspect): Improved formatting.
+
+2008-04-19  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* inst/CITATION: Updated JSS article information.
+
+	* R/textdoccol.R (setAs): Added coerce method from list to
+	corpus.
+
+	* R/meta.R (meta): Improved metadata handling.
+
+2008-03-21  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R (materialize, tmMap): Improvements suggested by
+	Christian Buchta.
+
+	* inst/CITATION: Added template to include JSS article reference.
+
+2008-03-12  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R (tmMap): Introduced lazy mapping.
+
+	* R/source.R: Added VectorSource.
+
+2008-02-23  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* man/: Language codes should be in ISO 639-1 format.
+
+	* R/textdoccol.R (asPlain): Preserve local metadata.
+
+2008-01-31  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R (writeCorpus): Function for writing a corpus
+	containing plain text documents to disk.
+
+2008-01-30  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/termdocmatrix.R (TermDocMatrix): Ensure that dimnames are
+	always set correctly.
+
+	* R/textdoccol.R: Set load = TRUE as default for load on demand
+	since in most cases this is the wanted behaviour.
+
+2008-01-24  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Renamed TextDocCol to Corpus, and Corpus to Content.
+
+	* DESCRIPTION: Updated Version to 0.3 due to core name changes.
+
+2008-01-22  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/meta.R (meta): New function for consistent access to metadata
+	of document collections, repositories, and texts.
+
+2008-01-21  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Better support for encodings.
+
+2008-01-13  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R (TextDocCol): Fixed bug regarding default reader
+	selection when no reader argument is given.
+
+2008-01-05  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/source.R (CSVSource): Now uses read.csv instead of scan
+	internally.
+
+2008-01-02  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/reader.R (getReaders): Returns available reader functions.
+
+	* R/termdocmatrix.R (TermDocMatrix): Set new modular constructor
+	as default.
+
+2007-12-02  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/stopwords.R (stopwords): Shortened code, removed codetools
+	variable warnings.
+
+	* man/: Documentation for showMeta, added an example for tmMap.
+
+	* inst/doc/tm.Rnw: Updated vignette, comments on MS word reader,
+	some minor typos fixed.
+
+2007-12-01  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/aobjects.R (showMeta): Added method for pretty printing a
+	text document's metadata.
+
+2007-11-29  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R (TextDocCol): Better handling of empty
+	arguments.
+
+	* NAMESPACE: Exported readDOC.
+
+	* man/completeStems.Rd: Added an example.
+
+2007-11-18  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/stopwords.R (stopwords): Look up .dat files at every
+	call. Allows users to modify stopword .dat files interactively.
+
+2007-11-06  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/termdocmatrix.R (termFreq): Correct processing of empty
+	documents.
+
+2007-10-27  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* man/: Updated documentation.
+
+2007-10-21  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/complete.R (completeStems): Completes (heuristically) word
+	stems.
+
+	* R/termdocmatrix.R (TermDocMatrix2): New modular
+	constructor.
+
+	* NAMESPACE: Exported termFreq.
+
+2007-10-16  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/reader.R (readDOC): Added MS Word reader (using antiword).
+
+2007-10-14  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/weight.R: Weighting functions for TermDocMatrix.
+
+2007-10-13  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/termdocmatrix.R (dimnames, colnames, rownames): Wrapper
+	functions for accessing dimension, column, and row names.
+
+	* R/plot.R (plot.TermDocMatrix): Plot correlations between terms.
+
+2007-09-11  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* man/removePunctuation.Rd: Added documentation. Function also exported to NAMESPACE.
+
+2007-08-28  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/fungen.R: Use S4 class for function generators instead of S3 attributes.
+
+2007-07-29  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/reader.R (readPDF): Removed manual checks for pdftotext and
+	pdfinfo. The system call gives a warning anyway.
+
+2007-07-28  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R (asPlain): Conversion from
+	StructuredTextDocuments to PlainTextDocuments.
+
+2007-07-21  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/termdocmatrix.R: Added convenience methods ("[", nrow, ncol)
+	for accessing term-document matrices.
+
+	* inst/doc/tm.Rnw: readPDF is only called if pdftotext and pdfinfo
+	are installed.
+
+2007-07-17  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/termdocmatrix.R (TermDocMatrix): Improved efficiency. Kudos to
+	Christian Buchta.
+
+2007-07-15  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* inst/doc/tm.Rnw: Update vignette (readPDF, readHTML, preprocessReut21578XML).
+
+2007-07-14  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/reader.R (readHTML): Added very simple HTML reader to obtain StructuredTextDocuments.
+
+	* R/reader.R (readPDF): Added PDF reader.
+
+2007-07-13  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* DESCRIPTION: Moved proxy from Depends to Imports to avoid name clashes.
+
+	* inst/stopwords/english.dat: Added the term "yes" to stopwords.
+
+	* R/termdocmatrix.R (dim): dim function for TermDocMatrix.
+
+	* R/preprocess.R (convertMboxEml): Accepts gzipped mboxes.
+
+2007-07-11  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/distmeasure.R (dissimilarity): Replaced dists call from
+	package cba by new dist call from package proxy.
+
+2007-07-10  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* inst/doc/tm.Rnw: Described removeSparseTerms and Dictionary.
+
+2007-06-21  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/termdocmatrix.R: require() uses the quietly option to suppress
+	loading messages.
+
+2007-06-12  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/dictionary.R: Added dictionary support.
+
+2007-06-07  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/aobjects.R: Added classes for Reuters21578 XML and RCV1
+	documents. This simplifies some functions, e.g., asPlain.
+
+2007-06-06  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* inst/doc/tm.Rnw: Fixed some typos in vignette.
+
+2007-06-03  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R (replaceWords): Added method to replace a set of
+	words by a single word. Useful for synonyms.
+
+2007-05-22  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* man/TermDocMatrix.Rd: Fixed documentation on Data slot.
+
+2007-05-19  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/termdocmatrix.R (textvector): Small fix for dealing with empty
+	vectors. Thanks to Ariel Maguyon for his error report.
+	(removeSparseTerms): New function to remove columns from a
+	term-document matrix exceeding a sparse factor.
+
+2007-05-15  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* man/tmUpdate.Rd: Corrected documentation on readerControl parameter.
+
+2007-05-11  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* man/sFilter.Rd: Corrected documentation on statement format (use
+	'==' instead of '=').
+
+2007-05-08  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/aobjects.R (StructuredTextDocument): Inherits from
+	TextDocument.
+
+2007-05-04  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/termdocmatrix.R (findFreqTerms): Perform efficient computation
+	on sparse matrices as proposed by Martin Maechler.
+
+2007-04-27  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R: Removed \code{dbDisconnect} calls since last
+	\pkg{filehash} version makes them deprecated.
+
+2007-04-22  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/termdocmatrix.R (textvector): Stemming is now performed before
+	erasing stopwords.
+	(weightMatrix): Adapted to handle sparse matrices.
+	(TermDocMatrix): Sparse matrix is now efficiently built by
+	direct stepwise insertion of row values into it.
+
+2007-04-21  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* DESCRIPTION: Replaced \pkg{filehashSQLite} with \pkg{filehash}
+	due to ongoing problems. For our purposes the latter is as useful
+	as the replaced package.
+
+2007-04-20  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* man/TextDocCol.Rd: Replaced \code{readPlain} with \code{object@DefaultReader}.
+
+	* man/TermDocMatrix.Rd: Remove deprecated \code{language} argument.
+
+2007-04-15  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/resolve.R (resolveISOCode): Added ISO 639-1 codes for
+	languages with available stopwords.
+
+2007-04-14  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* inst/doc/tm.Rnw: Minor corrections in the vignette.
+
+2007-04-11  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* DESCRIPTION: Update to version 0.2, since a lot of new features
+	have been integrated.
+
+	* inst/stopwords: Updated existing stopwords and added stopwords
+	for various other languages.
+
+2007-04-10  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* man/: Updated documentation.
+
+	* Work/testDb.R: Script to test database stuff.
+
+	* R/: Fixed various database related bugs. Seems to be rather
+	useable now, i.e., consider as alpha status for now.
+
+2007-04-08  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Fixed some bugs related to database support.
+
+2007-04-07  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* man/: Added a lot of examples to the manuals.
+
+2007-04-05  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* man/: Updated parts of the documentation.
+
+	* R/textdoccol.R (asPlain): Added conversion from newsgroup
+	documents to plain text documents.
+
+2007-04-01  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R: Finished experimental database support. Not yet
+	intensively tested.
+
+	* R/source.R: Now each source has a default reader.
+
+	* R/reader.R: \code{FunctionGenerator} is now an attribute, not a
+	class anymore.
+
+	* R/plaintextdoc.R: Custom show method for plain text documents.
+
+	* R/aobjects.R: Added a class for structured text documents.
+
+	* R/reader.R: Replaced remaining \code{parser} occurrences with
+	\code{reader}.
+
+	* R/textdoccol.R (summary): Indent tags. 
+
+	* R/textdoccol.R (removePunctuation): Transform method to remove
+	punctuation marks.
+
+2007-03-21  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R (sFilter): Simplified sFilter significantly by
+	using prescindMeta().
+
+2007-03-18  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R: Improved database support.
+
+2007-03-16  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/termdocmatrix.R (TermDocMatrix): Uses sparse matrices.
+
+	* R/resolve.R (resolveISOcode): Extracts the language from a ISO
+	language code.
+
+	* R/textdoccol.R (TextDocCol): Refactored several parser arguments
+	into parserControl argument.
+
+	* R/aobjects.R (TextDocument): Introduced the "Language" slot.
+
+2007-03-14  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* Work/tmDataSetup.R: The datasets acq and crude can now be
+	created on the fly.
+
+	* R/stopwords.R: Introduced a function returning the stopwords for
+	a given language (English, German and French at the moment)
+
+	* R/textdoccol.R (stemDoc): Stemming uses Rstem if available,
+	otherwise falls back to Snowball package.
+
+2007-01-30  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* man/dissimilarity-methods.Rd: Make clear that any method offered
+	by "dists" from package "cba" can be used.
+
+2007-01-22  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* inst/doc/tm.Rnw: Fixed quotes-appearing-as-boxes-bug according
+	to Kurt's latex suggestion. Removed points and underscores in
+	variable names for consistent naming.
+
+	* DESCRIPTION: Update to version 0.1-2.
+
+	* man/TextRepository.Rd: Fixed bug in documentation.
+
+2007-01-12  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* DESCRIPTION: Update to version 0.1-1.
+
+2007-01-09  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R (stemDoc): Use Rstem::wordStem instead of
+	wordStem.
+
+2007-01-06  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Changes due to Kurt's review.
+
+2006-12-31  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Implemented improvements based upon comments by David
+	Meyer.
+
+2006-12-17  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* inst/doc/: Rewrote vignette.
+
+	* man/: Improved documentation.
+
+2006-12-16  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* man/: Updated documentation.
+
+	* DESCRIPTION: Changed package name to "tm". Updated version to
+	0.1 for first CRAN release.
+
+	* inst/texts/gmane.comp.lang.r.general.mbox: mbox Gmane R mailing
+	list archive example.
+
+	* inst/texts/gmane.comp.lang.r.gr.rdf: RSS Gmane R mailing list
+	archive example.
+
+	* R/preprocess.R (convert_mbox_eml): A simple e-mail converter
+	from (several mails per box) mbox format to (single mail per file)
+	eml format.
+
+2006-12-08  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* data/crude.rda: Rebuilt.
+
+	* data/acq.rda: Rebuilt.
+
+	* R/reader.R: Factored out reader and parser methods from
+	textdoccol.R.
+
+	* R/source.R: Factored out Source methods from aobjects.R and
+	textdoccol.R.
+	(GmaneRSource): Encapsulates Gmane R mailing list archive RSS
+	feeds.
+
+	* R/textdoccol.R (DirSource): Added support for recursive
+	traversal of directories.
+
+2006-12-07  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R ([[): Loads the document corpus automatically
+	into memory upon access.
+	(tm_transform, tm_filter): Removed several checks whether the
+	document is already loaded ([[ ensures this now).
+	(gmane_r_reader): Reader for RSS feeds as provided by the Gmane R
+	mailing list archive.
+
+2006-12-06  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/aobjects.R (TextDocument): Is now a virtual class.
+	(Source): Is now a virtual class.
+
+2006-12-05  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R (c): Support for an arbitrary number of document
+	collections.
+
+2006-11-26  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textrepo.R: Updated TextRepository (constructor), append_elem,
+	append_meta and remove_meta.
+
+	* R/textdoccol.R: Removed modify_metadata method.
+
+	* R/textrepo.R: Removed modify_metadata method.
+
+	* R/textdoccol.R (remove_meta): Supports removal of document
+	collection metadata and document (= in data frame) metadata.
+
+2006-11-23  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R (append_doc): Bug fix for handling empty metadata.
+
+	* data/crude.rda: Rebuilt.
+
+	* data/acq.rda: Rebuilt.
+
+	* inst/doc/textmin.Rnw: Updated vignette to reflect code changes.
+
+	* R/textdoccol.R ([): Bug fix for subsetting a document
+	collection's data frame.
+
+2006-11-22  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R: Bug fixes in s_filter. Added full query support
+	to s_filter.
+
+	* R/textdoccol.R: Local text documents' metadata can now be copied
+	to a document collection's data frame with prescind_meta.
+
+2006-11-21  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Text documents' slot metadata is now accessible in s_filter.
+
+	* R/: Rewrote s_filter function (has still some restrictions).
+
+2006-11-20  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Various fixes in handling metadata.
+
+	* R/: Added update mechanism for text document collections.
+
+2006-11-19  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Merging of document collections now creates a binary tree
+	for reconstructing merged document collections.
+
+	* R/: Redesign of metadata for document collections.
+
+2006-11-07  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Messages now use \code{ngettext}.
+
+2006-11-03  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Added functions for modifying and removing metadata.
+
+2006-11-01  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* man/: Updated some documentation.
+
+	* R/: Corrected some connection issues.
+
+	* inst/doc: Worked on the vignette.
+
+2006-10-31  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* inst/: Added texts and started vignette.
+
+	* R/: Final changes based upon David's comments.
+
+2006-10-29  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* NAMESPACE: Corrected exports (generic methods need exportMethods
+	directives!).
+
+2006-10-26  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Modified the TextDocCol constructur and various parsers. It
+	is now modular and supports various file formats via plugins (see
+	the new "Source" class).
+
+2006-10-24  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* man/: Revised documentation after previous code changes.
+
+2006-10-23  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Remaining changes as discussed with David.
+
+2006-10-22  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Some changes as suggested by David. The rest will follow
+	within the next days.
+
+2006-09-26  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* man/: Finished documentation.
+
+2006-09-25  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* man/: Wrote some documentation.
+
+2006-09-24  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Further syntactic sugar in form of additional assignment and
+	accessor methods.
+
+2006-09-13  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Syntactic sugar in form of "length", "show" and "summary"
+	operators.
+
+2006-08-24  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Diverse updates. Mainly on default operators ("[" or "c")
+	and dissimilarities.
+
+2006-08-12  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Added similarity functions.
+
+	* data/: Added english stopwords.
+
+2006-08-07  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* data/: Examples compiled for new features
+
+	* R/: Changes due to new structure.
+
+	* NAMESPACE: Corrected namespace to reflect new structure.
+
+	* R/termdocmatrix.R: Adapted for new naming scheme.
+
+2006-08-06  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R: Adapted code for new class structure. Wrote
+	several transform and filter functions operating on text document
+	collections (alias text document databases).
+
+	* R/aobjects.R: Adapted class structure with inheritance,
+	repositories and additional metadata. Loading files on demand is
+	now possible.
+
+2006-07-13  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Some cosmetic cleanups.
+
+	* inst/: Removed vignette on clustering. That and much more is now
+	described in the JSS paper on text mining. Based upon that
+	article an elaborated vignette will be incorporated in the future.
+
+2006-07-01  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/: Updated generic S4 methods to comply with signature changes
+	in newer versions of R (> 2.3)
+
+2006-03-12  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* ext/R/importRIS.R: Automatic RIS import is now possible.
+
+2006-02-14  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R: Added RIS HTML input format.
+
+2006-01-21  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R: Removed bug that caused invalid text document
+	collections when handling many input files.
+
+2006-01-11  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R: Restructured and extended file import
+	mechanism.
+
+	* inst/doc/clustering.Rnw: Adapted vignette for use with
+	ReutNews.rda
+
+	* man/ReutNews.Rd: Documentation for ReutNews.rda
+
+	* data/ReutNews.rda: A tiny Reuters21578 example data set.
+
+2005-12-22  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* inst/doc/clustering.Rnw: Wrote a small vignette to present the
+	clustering facilities of this package.
+
+2005-12-15  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/aobjects.R: Changed package document structure to avoid class
+	dependency problems.
+
+2005-12-06  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	*  Wrote a script for the ModLewis Split for the Reuters-21578 XML
+	data set.
+
+	*  Finished documentation and reordered directory structure. Now "R
+	CMD check textmin" works without errors.
+
+2005-12-04  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* src/: Various splits can now be easily created for the
+	Reuters21578 data set.
+
+2005-12-03  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	*  Updated documentation
+
+2005-11-30  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	*  Wrote R documentation for some classes and methods.
+
+2005-11-19  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R: Constructor of textdoccol allows import of CSV
+	files. See the questionnaire data/Umfrage.csv for such an example.
+	We are now able to import files in Reuters-21578 XML format.
+
+	*  Changed class interfaces in various files. Weighting of the text
+	matrix is now possible.
+
+2005-11-08  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R: One can build term-document matrices if
+	nessecary (with buildTDM(...)) and fill the field tdm from a text
+	document collection with it.
+
+	* R/textmatrix.R: Wrote S4 class for term-document matrices.
+
+2005-11-06  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R: We now can read in a whole XML file with several
+	news items.
+
+2005-11-05  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textdoccol.R: Set up an S4 class for a collection of text
+	documents. A first attempt to read in XML input (like the RCV1
+	set) was made.
+
+	* R/textdocument.R: Set up an S4 class for text documents. Wrote
+	some accessor functions.
+
+	* data/newsitem.xml: Added this XML file for testing purposes. It
+	contains a single news item from the Reuters Corpus Volume 1
+	(RCV1) XML set.
+
+2005-10-07  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textmatrix.R (textmatrix): Removed the transpose of the original
+	textmatrix as k-means clustering provided by R (kmeans) now works on
+	this textmatrix. The result is a k-means text clustering with a
+	similarity measure based upon word frequences.
+
+2005-10-05  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	* R/textmatrix.R: Adapted the preprocessing code from the R
+	package "lsa" written by Fridolin Wild to build a document text matrix.
+
+2005-10-02  Ingo Feinerer  <h0125130@wu-wien.ac.at>
+
+	*  Set up the R Text Mining Package infrastructure.
