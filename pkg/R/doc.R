@@ -60,7 +60,7 @@ function(x, value)
 
 format.PlainTextDocument <-
 function(x, ...)
-    c(.format_TextDocument(x), sprintf("Content:  chars: %d", nchar(x$content)))
+    c(.format_TextDocument(x), sprintf("Content:  chars: %d", sum(nchar(x$content))))
 
 meta.PlainTextDocument <-
 function(x, tag = NULL, ...)
