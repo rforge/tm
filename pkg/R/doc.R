@@ -115,7 +115,7 @@ function(x, value)
     x
 }
 
-format.XMLTextDocument <- format.PlainTextDocument
+format.XMLTextDocument <- .format_TextDocument
 
 meta.XMLTextDocument <- meta.PlainTextDocument
 
