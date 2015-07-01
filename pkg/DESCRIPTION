@@ -1,17 +1,17 @@
 Package: tm
 Title: Text Mining Package
-Version: 0.6-1
-Date: 2015-06-09
+Version: 0.6-1.1
+Date: 2015-07-01
 Authors@R: c(person("Ingo", "Feinerer", role = c("aut", "cre"),
                     email = "feinerer@logic.at"),
              person("Kurt", "Hornik", role = "aut"),
              person("Artifex Software, Inc.", role = c("ctb", "cph"),
                     comment = "pdf_info.ps taken from GPL Ghostscript"))
 Depends: R (>= 3.1.0), NLP (>= 0.1-6.2)
-Imports: parallel, slam (>= 0.1-31), stats, tools, utils
+Imports: parallel, slam (>= 0.1-31), stats, tools, utils, graphics
 Suggests: filehash, methods, Rcampdf, Rgraphviz, Rpoppler, SnowballC, tm.lexicon.GeneralInquirer, XML
-SystemRequirements: Antiword (http://www.winfield.demon.nl/) for reading MS Word files,
-  pdfinfo and pdftotext from Poppler (http://poppler.freedesktop.org/) for reading PDF
+SystemRequirements: Antiword (<http://www.winfield.demon.nl/>) for reading MS Word files,
+  pdfinfo and pdftotext from Poppler (<http://poppler.freedesktop.org/>) for reading PDF
 Description: A framework for text mining applications within R.
 License: GPL-3
 URL: http://tm.r-forge.r-project.org/
