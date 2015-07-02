@@ -444,7 +444,7 @@ function(x, terms, corlimit)
            if (!length(t))
                names(t) <- NULL
            t
-           }, i, corlimit)
+           }, i, corlimit, SIMPLIFY = FALSE)
 }
 
 removeSparseTerms <-
