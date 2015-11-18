@@ -244,7 +244,9 @@ A common approach in text mining is to create a term-document matrix
 from a corpus. In the \pkg{tm} package the classes
 \class{TermDocumentMatrix} and \class{DocumentTermMatrix} (depending
 on whether you want terms as rows and documents as columns, or vice
-versa) employ sparse matrices for corpora.
+versa) employ sparse matrices for corpora. Inspecting a term-document matrix
+displays a sample, whereas \code{as.matrix()} yields the full matrix in
+dense format (which can be very memory consuming for large matrices).
 <<>>=
 dtm <- DocumentTermMatrix(reuters)
 inspect(dtm[5:10, 740:743])

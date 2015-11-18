@@ -271,8 +271,8 @@ inspect.DocumentTermMatrix <-
 function(x)
 {
     print(x)
-    cat("\n")
-    print(as.matrix(x))
+    cat("Sample             :\n")
+    print(as.matrix(sample.TermDocumentMatrix(x)))
 }
 
 `[.TermDocumentMatrix` <-
@@ -457,6 +457,20 @@ function(x, sparse)
     t <- table(m$i) > m$ncol * (1 - sparse)
     termIndex <- as.numeric(names(t[t]))
     if (inherits(x, "DocumentTermMatrix")) x[, termIndex] else x[termIndex,]
+}
+
+sample.TermDocumentMatrix <-
+function(x, size = 10)
+{
+    stopifnot(inherits(x, c("DocumentTermMatrix", "TermDocumentMatrix")),
+              is.numeric(size), size >= 0)
+
+    m <- if (inherits(x, "DocumentTermMatrix")) t(x) else x
+    terms <- sort(names(sort(slam::row_sums(m), decreasing = TRUE)
+                        [0:min(size, nTerms(m))]))
+    docs <- sort(names(sort(slam::col_sums(m), decreasing = TRUE)
+                       [0:min(size, nDocs(m))]))
+    if (inherits(x, "DocumentTermMatrix")) x[docs, terms] else x[terms, docs]
 }
 
 CategorizedDocumentTermMatrix <-

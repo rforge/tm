@@ -1,6 +1,21 @@
 \name{NEWS}
 \title{News for Package 'tm'}
 \encoding{UTF-8}
+\section{Changes in tm version 0.6-3}{
+  \subsection{SIGNIFICANT USER-VISIBLE CHANGES}{
+    \itemize{
+      \item \code{inspect.TermDocumentMatrix()} now displays a sample instead
+        of the full matrix. The full dense representation is available via
+        \code{as.matrix()}.
+    }
+  }
+  \subsection{NEW FEATURES}{
+    \itemize{
+      \item \code{inspect()} on text documents as a shorthand for
+        \code{writeLines(as.character())}.
+    }
+  }
+}
 \section{Changes in tm version 0.6-2}{
   \subsection{BUG FIXES}{
     \itemize{
