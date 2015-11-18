@@ -135,9 +135,9 @@ meta(ovid[[2]], "id")
 identical(ovid[[2]], ovid[["ovid_2.txt"]])
 @
 A character representation of a document is available via
-\code{as.character()}:
+\code{as.character()} which is also used when inspecting a document:
 <<keep.source=TRUE>>=
-writeLines(as.character(ovid[[2]]))
+inspect(ovid[[2]])
 lapply(ovid[1:2], as.character)
 @
 

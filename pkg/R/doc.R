@@ -22,6 +22,15 @@ function(x, ...)
     c(sprintf("<<%s>>", class(x)[1L]),
       sprintf("Metadata:  %d", length(meta(x))))
 
+inspect.TextDocument <-
+function(x)
+{
+    print(x)
+    cat("\n")
+    writeLines(as.character(x))
+    invisible(x)
+}
+
 PlainTextDocument <-
 function(x = character(0),
          author = character(0),

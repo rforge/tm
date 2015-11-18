@@ -159,6 +159,7 @@ S3method("tm_term_score", "TermDocumentMatrix")
 S3method("c", "term_frequency")
 
 S3method("c", "TextDocument")
+S3method("inspect", "TextDocument")
 
 S3method("print", "TextDocumentMeta")
 
