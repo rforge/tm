@@ -85,6 +85,7 @@ function(x, tag = NULL, ..., value)
     x
 }
 
+words.character <-
 words.PlainTextDocument <-
 function(x, ...)
     scan_tokenizer(x)

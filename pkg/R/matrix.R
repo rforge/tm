@@ -46,6 +46,7 @@ function(x, control = list())
     UseMethod("TermDocumentMatrix", x)
 
 TermDocumentMatrix.PCorpus <-
+TermDocumentMatrix.SimpleCorpus <-
 TermDocumentMatrix.VCorpus <-
 function(x, control = list())
 {
@@ -154,7 +155,8 @@ function(x)
 termFreq <-
 function(doc, control = list())
 {
-    stopifnot(inherits(doc, "TextDocument"), is.list(control))
+    stopifnot(inherits(doc, "TextDocument") || is.character(doc),
+              is.list(control))
 
     ## Tokenize the corpus
     .tokenize <- control$tokenize
@@ -192,17 +194,23 @@ function(doc, control = list())
     if (isTRUE(.removeNumbers))
         .removeNumbers <- removeNumbers
 
+    .language <- control$language
+    if (inherits(doc, "TextDocument"))
+        .language <- meta(doc, "language")
+    if (is.null(.language))
+        .language <- "en"
+
     ## Stopword filtering
     .stopwords <- control$stopwords
     if (isTRUE(.stopwords))
-        .stopwords <- function(x) x[is.na(match(x, stopwords(meta(doc, "language"))))] 
+        .stopwords <- function(x) x[is.na(match(x, stopwords(.language)))]
     else if (is.character(.stopwords))
         .stopwords <- function(x) x[is.na(match(x, control$stopwords))]
 
     ## Stemming
     .stemming <- control$stemming
     if (isTRUE(.stemming))
-        .stemming <- function(x) stemDocument(x, meta(doc, "language"))
+        .stemming <- function(x) stemDocument(x, .language)
 
     ## Default order for options which support reordering
     or <- c("removePunctuation", "removeNumbers", "stopwords", "stemming")

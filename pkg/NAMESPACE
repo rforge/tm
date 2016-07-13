@@ -52,6 +52,7 @@ export("as.DocumentTermMatrix",
        "removeSparseTerms",
        "removeWords",
        "scan_tokenizer",
+       "SimpleCorpus",
        "SimpleSource",
        "stemCompletion",
        "stemDocument",
@@ -85,6 +86,7 @@ S3method("removePunctuation", "character")
 S3method("removeWords", "character")
 S3method("stemDocument", "character")
 S3method("stripWhitespace", "character")
+S3method("words", "character")
 
 S3method("getElem", "DataframeSource")
 S3method("pGetElem", "DataframeSource")
@@ -138,6 +140,22 @@ S3method("stemDocument", "PlainTextDocument")
 S3method("stripWhitespace", "PlainTextDocument")
 S3method("tm_term_score", "PlainTextDocument")
 S3method("words", "PlainTextDocument")
+
+S3method("[", "SimpleCorpus")
+S3method("[[", "SimpleCorpus")
+S3method("as.list", "SimpleCorpus")
+S3method("content", "SimpleCorpus")
+S3method("format", "SimpleCorpus")
+S3method("inspect", "SimpleCorpus")
+S3method("length", "SimpleCorpus")
+S3method("meta", "SimpleCorpus")
+S3method("meta<-", "SimpleCorpus")
+S3method("names", "SimpleCorpus")
+S3method("print", "SimpleCorpus", .print_via_format)
+S3method("TermDocumentMatrix", "SimpleCorpus")
+S3method("tm_filter", "SimpleCorpus")
+S3method("tm_index", "SimpleCorpus")
+S3method("tm_map", "SimpleCorpus")
 
 S3method("close", "SimpleSource")
 S3method("eoi", "SimpleSource")

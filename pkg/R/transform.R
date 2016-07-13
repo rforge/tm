@@ -18,6 +18,12 @@ function(x, FUN, ..., lazy = FALSE)
         x$content <- mclapply(content(x), FUN, ...)
     x
 }
+tm_map.SimpleCorpus <-
+function(x, FUN, ...)
+{
+    x$content <- FUN(content(x))
+    x
+}
 tm_map.PCorpus <-
 function(x, FUN, ...)
 {

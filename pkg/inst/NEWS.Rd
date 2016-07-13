@@ -1,7 +1,7 @@
 \name{NEWS}
 \title{News for Package 'tm'}
 \encoding{UTF-8}
-\section{Changes in tm version 0.6-3}{
+\section{Changes in tm version 0.7}{
   \subsection{SIGNIFICANT USER-VISIBLE CHANGES}{
     \itemize{
       \item \code{inspect.TermDocumentMatrix()} now displays a sample instead
@@ -11,6 +11,13 @@
   }
   \subsection{NEW FEATURES}{
     \itemize{
+      \item \code{SimpleCorpus} provides a corpus which is optimized for the
+        most common usage scenario: importing plain texts from files in a
+        directory or directly from a vector in R, preprocessing and transforming
+        the texts, and finally exporting them to a term-document matrix. The aim
+        is to boost performance and minimize memory pressure. It loads all
+        documents into memory, and is designed for medium-sized to large data
+        sets.
       \item \code{inspect()} on text documents as a shorthand for
         \code{writeLines(as.character())}.
     }

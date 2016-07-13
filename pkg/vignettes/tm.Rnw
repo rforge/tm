@@ -293,6 +293,29 @@ inspect(DocumentTermMatrix(reuters,
                            list(dictionary = c("prices", "crude", "oil"))))
 @
 
+\section*{Performance}
+Often you do not need all the generality, modularity and full range of features
+offered by \pkg{tm} as this sometimes comes at the price of performance.
+
+\class{SimpleCorpus} provides a corpus which is optimized for the most common
+usage scenario: importing plain texts from files in a directory or directly
+from a vector in R, preprocessing and transforming the texts, and finally
+exporting them to a term-document matrix. The aim is to boost performance and
+minimize memory pressure. It loads all documents into memory, and is designed
+for medium-sized to large data sets.
+
+However, it operates only under the following contraints:
+\begin{itemize}
+  \item only \code{DirSource} and \code{VectorSource} are supported,
+  \item no custom readers, i.e., each document is read in and stored as plain
+    text (as a string, i.e., a character vector of length one),
+  \item transformations applied via \code{tm\_map} must be able to
+    process strings and return strings,
+  \item no lazy transformations in \code{tm\_map},
+  \item no meta data for individual documents (i.e., no \code{"local"} in
+    \code{meta()}).
+\end{itemize}
+
 \bibliographystyle{abbrvnat}
 \bibliography{references}
 
