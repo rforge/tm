@@ -13,8 +13,8 @@ SimpleCorpus(x, control = list(language = "en"))
     \describe{
       \item{\code{language}}{a character giving the language (preferably as
         \acronym{IETF} language tags, see \link[NLP]{language} in
-	package \pkg{NLP}).
-	The default language is assumed to be English (\code{"en"}).}
+        package \pkg{NLP}).
+        The default language is assumed to be English (\code{"en"}).}
     }
   }
 }
@@ -51,5 +51,5 @@ SimpleCorpus(x, control = list(language = "en"))
 \examples{
 txt <- system.file("texts", "txt", package = "tm")
 (ovid <- SimpleCorpus(DirSource(txt, encoding = "UTF-8"),
-		      control = list(language = "lat")))
+                      control = list(language = "lat")))
 }

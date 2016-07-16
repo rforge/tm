@@ -113,7 +113,13 @@ function(x, language = "english")
     UseMethod("stemDocument", x)
 stemDocument.character <-
 function(x, language = "english")
-    SnowballC::wordStem(x, as.character(language))
+{
+    s <- unlist(lapply(x, function(line)
+                              paste(SnowballC::wordStem(words(line),
+                                                        as.character(language)),
+                                    collapse = " ")))
+    if (is.character(s)) s else ""
+}
 stemDocument.PlainTextDocument <-
 function(x, language = meta(x, "language"))
 {
@@ -123,12 +129,7 @@ function(x, language = meta(x, "language"))
         is.na(language))
         language <- "english"
 
-    s <- unlist(lapply(content(x),
-      function(x) paste(stemDocument.character(unlist(strsplit(x, "[[:blank:]]")),
-                                               language),
-                        collapse = " ")))
-    content(x) <- if (is.character(s)) s else ""
-    x
+    content_transformer(stemDocument.character)(x)
 }
 
 stripWhitespace <-

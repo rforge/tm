@@ -9,7 +9,7 @@ DocumentTermMatrix_classes <-
 function(x, weighting)
 {
     x <- as.simple_triplet_matrix(x)
-    if(!is.null(dimnames(x)))
+    if (!is.null(dimnames(x)))
         names(dimnames(x)) <- c("Terms", "Docs")
     class(x) <- TermDocumentMatrix_classes
     ## <NOTE>
@@ -30,23 +30,103 @@ function(x, weighting)
     ##   if(inherits(weighting, "WeightFunction"))
     ##      x <- weighting(x)
     ## use
-    if(is.function(weighting))
+    if (is.function(weighting))
         x <- weighting(x)
     ## and hope for the best ...
     ## </NOTE>
-    else if(is.character(weighting) && (length(weighting) == 2L))
+    else if (is.character(weighting) && (length(weighting) == 2L))
         attr(x, "weighting") <- weighting
-    else
-        stop("invalid weighting")
     x
+}
+
+.SimpleTripletMatrix <-
+function(i, j, v, terms, corpus)
+{
+    docs <- as.character(meta(corpus, "id", "local"))
+    if (length(docs) != length(corpus)) {
+        warning("invalid document identifiers")
+        docs <- NULL
+    }
+
+    simple_triplet_matrix(i, j, v,
+                          nrow = length(terms),
+                          ncol = length(corpus),
+                          dimnames = list(Terms = terms, Docs = docs))
+}
+
+filter_global_bounds <-
+function(m, bounds)
+{
+    m <- as.simple_triplet_matrix(m)
+
+    if (length(bounds) == 2L && is.numeric(bounds)) {
+        rs <- row_sums(m > 0)
+        m <- m[(rs >= bounds[1]) & (rs <= bounds[2]), ]
+    }
+    m
 }
 
 TermDocumentMatrix <-
 function(x, control = list())
     UseMethod("TermDocumentMatrix", x)
 
-TermDocumentMatrix.PCorpus <-
 TermDocumentMatrix.SimpleCorpus <-
+function(x, control = list())
+{
+    stopifnot(is.list(control))
+
+    txt <- content(x)
+
+    if (is.null(control$tolower) || isTRUE(control$tolower))
+        txt <- tolower(txt)
+
+    ## Stopword filtering
+    .stopwords <- if (isTRUE(control$stopwords)) stopwords(meta(x, "language"))
+        else if (is.character(control$stopwords)) control$stopwords
+        else character(0)
+
+    .dictionary <- if (is.null(control$dictionary)) character(0)
+        else control$dictionary
+
+    ## Ensure local bounds
+    bl <- control$bounds$local
+    min_term_freq <- if (length(bl) == 2L && is.numeric(bl)) bl[1] else 0L
+    max_term_freq <- if (length(bl) == 2L && is.numeric(bl))
+        min(bl[2], .Machine$integer.max) else .Machine$integer.max
+
+    wl <- control$wordLengths
+    min_word_length <- if (is.numeric(wl[1])) wl[1] else 3L
+    max_word_length <- if (is.numeric(wl[2]))
+        min(wl[2], .Machine$integer.max) else .Machine$integer.max
+
+    m <- tdm(txt,
+             isTRUE(control$removeNumbers),
+             .stopwords, .dictionary,
+             as.integer(min_term_freq), as.integer(max_term_freq),
+             as.integer(min_word_length), as.integer(max_word_length))
+
+    terms <- if (is.null(control$dictionary)) m$terms else control$dictionary
+    m <- .SimpleTripletMatrix(m$i, m$j, m$v, terms, x)
+
+    if (isTRUE(control$stemming)) {
+        stems <- as.factor(SnowballC::wordStem(terms, meta(x, "language")))
+        m <- slam::rollup(m, "Terms", stems)
+
+        # Ensure local bounds and word lengths
+        terms_length <- nchar(rownames(m))
+        keep <- min_word_length <= terms_length &
+                terms_length <= max_word_length
+        # TODO: Local bounds check
+
+        m <- m[keep, ]
+    }
+
+    m <- filter_global_bounds(m, control$bounds$global)
+
+    .TermDocumentMatrix(m, control$weighting)
+}
+
+TermDocumentMatrix.PCorpus <-
 TermDocumentMatrix.VCorpus <-
 function(x, control = list())
 {
@@ -57,34 +137,14 @@ function(x, control = list())
 
     v <- unlist(tflist)
     i <- names(v)
-    allTerms <- sort(unique(as.character(if (is.null(control$dictionary)) i
+    terms <- sort(unique(as.character(if (is.null(control$dictionary)) i
                                          else control$dictionary)))
-    i <- match(i, allTerms)
+    i <- match(i, terms)
     j <- rep(seq_along(x), sapply(tflist, length))
-    docs <- as.character(meta(x, "id", "local"))
-    if (length(docs) != length(x)) {
-        warning("invalid document identifiers")
-        docs <- NULL
-    }
 
-    m <- simple_triplet_matrix(i = i, j = j, v = as.numeric(v),
-                               nrow = length(allTerms),
-                               ncol = length(x),
-                               dimnames =
-                                 list(Terms = allTerms,
-                                      Docs = docs))
-
-    bg <- control$bounds$global
-    if (length(bg) == 2L && is.numeric(bg)) {
-        rs <- row_sums(m > 0)
-        m <- m[(rs >= bg[1]) & (rs <= bg[2]), ]
-    }
-
-    weighting <- control$weighting
-    if (is.null(weighting))
-        weighting <- weightTf
-
-    .TermDocumentMatrix(m, weighting)
+    m <- .SimpleTripletMatrix(i, j, as.numeric(v), terms, x)
+    m <- filter_global_bounds(m, control$bounds$global)
+    .TermDocumentMatrix(m, control$weighting)
 }
 
 DocumentTermMatrix <-

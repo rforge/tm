@@ -326,7 +326,7 @@
             interface.
       \item VCorpus, the default implementation of the abstract corpus
             interface (by subclassing), provides a corpus with volatile (=
-            standard R object) semantics. It loads all documents into
+            standard \R object) semantics. It loads all documents into
             memory, and is designed for small to medium-sized data sets.
       \item PCorpus, an implementation of the abstract corpus interface (by
             subclassing), provides a corpus with permanent storage
