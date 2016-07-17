@@ -77,6 +77,7 @@ function(x, control = list())
 
     txt <- content(x)
 
+    ## Conversion to lower case
     if (is.null(control$tolower) || isTRUE(control$tolower))
         txt <- tolower(txt)
 
@@ -94,6 +95,7 @@ function(x, control = list())
     max_term_freq <- if (length(bl) == 2L && is.numeric(bl))
         min(bl[2], .Machine$integer.max) else .Machine$integer.max
 
+    ## Filter out too short or too long terms
     wl <- control$wordLengths
     min_word_length <- if (is.numeric(wl[1])) wl[1] else 3L
     max_word_length <- if (is.numeric(wl[2]))
@@ -108,17 +110,18 @@ function(x, control = list())
     terms <- if (is.null(control$dictionary)) m$terms else control$dictionary
     m <- .SimpleTripletMatrix(m$i, m$j, m$v, terms, x)
 
+    ## Stemming
     if (isTRUE(control$stemming)) {
         stems <- as.factor(SnowballC::wordStem(terms, meta(x, "language")))
         m <- slam::rollup(m, "Terms", stems)
 
-        # Ensure local bounds and word lengths
-        terms_length <- nchar(rownames(m))
-        keep <- min_word_length <= terms_length &
-                terms_length <= max_word_length
-        # TODO: Local bounds check
+        ## Lower local bound still holds as rollup aggregates frequencies
+        ## NOTE: Upper local bound is ignored
 
-        m <- m[keep, ]
+        ## Recheck word lengths
+        terms_length <- nchar(rownames(m))
+        m <- m[min_word_length <= terms_length &
+               terms_length <= max_word_length, ]
     }
 
     m <- filter_global_bounds(m, control$bounds$global)
@@ -138,7 +141,7 @@ function(x, control = list())
     v <- unlist(tflist)
     i <- names(v)
     terms <- sort(unique(as.character(if (is.null(control$dictionary)) i
-                                         else control$dictionary)))
+                                      else control$dictionary)))
     i <- match(i, terms)
     j <- rep(seq_along(x), sapply(tflist, length))
 
@@ -233,7 +236,7 @@ function(doc, control = list())
     else
         stop("invalid tokenizer")
 
-    ## Conversion to lower characters
+    ## Conversion to lower case
     .tolower <- control$tolower
     if (is.null(.tolower) || isTRUE(.tolower))
         .tolower <- tolower
