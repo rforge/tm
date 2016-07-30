@@ -1,5 +1,19 @@
 # Author: Ingo Feinerer
 
+Corpus <-
+function(x, readerControl = list(reader = reader(x), language = "en"))
+{
+    stopifnot(inherits(x, "Source"))
+
+    readerControl <- prepareReader(readerControl, reader(x))
+
+    if ((inherits(x, "DirSource") || inherits(x, "VectorSource")) &&
+        identical(readerControl$reader, readPlain))
+        SimpleCorpus(x, readerControl)
+    else
+        VCorpus(x, readerControl)
+}
+
 PCorpus <-
 function(x,
          readerControl = list(reader = reader(x), language = "en"),
@@ -41,7 +55,7 @@ function(x, control = list(language = "en"))
 {
     stopifnot(inherits(x, "Source"))
 
-    if (!is.null(control$reader))
+    if (!is.null(control$reader) && !identical(control$reader, readPlain))
         warning("custom reader is ignored")
 
     content <- if (inherits(x, "VectorSource"))
@@ -62,7 +76,6 @@ function(x, control = list(language = "en"))
     s
 }
 
-Corpus <-
 VCorpus <-
 function(x, readerControl = list(reader = reader(x), language = "en"))
 {

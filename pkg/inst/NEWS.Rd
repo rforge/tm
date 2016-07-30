@@ -13,7 +13,7 @@
     \itemize{
       \item \code{SimpleCorpus} provides a corpus which is optimized for the
         most common usage scenario: importing plain texts from files in a
-        directory or directly from a vector in R, preprocessing and transforming
+        directory or directly from a vector in \R, preprocessing and transforming
         the texts, and finally exporting them to a term-document matrix. The aim
         is to boost performance and minimize memory pressure. It loads all
         documents into memory, and is designed for medium-sized to large data
