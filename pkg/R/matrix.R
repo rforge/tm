@@ -287,31 +287,22 @@ function(doc, control = list())
             txt <- g(txt)
     }
 
-    ## Check if the document content is NULL
-    if (is.null(txt))
-        return(setNames(integer(0), character(0)))
-
     ## If dictionary is set tabulate against it
     dictionary <- control$dictionary
-    tab <-  if (is.null(dictionary))
-        table(txt)
-    else
-        table(factor(txt, levels = dictionary))
+    tab <- table(if (is.null(dictionary)) txt else intersect(txt, dictionary))
 
     ## Ensure local bounds
     bl <- control$bounds$local
     if (length(bl) == 2L && is.numeric(bl))
-        tab <- tab[(tab >= bl[1]) & (tab <= bl[2])]
+        tab <- tab[(tab >= bl[1]) & (tab <= bl[2]), drop = FALSE]
 
     ## Filter out too short or too long terms
     nc <- nchar(names(tab), type = "chars")
     wl <- control$wordLengths
     lb <- if (is.numeric(wl[1])) wl[1] else 3
     ub <- if (is.numeric(wl[2])) wl[2] else Inf
-    tab <- tab[(nc >= lb) & (nc <= ub)]
+    tab <- tab[(nc >= lb) & (nc <= ub), drop = FALSE]
 
-    ## Return named integer
-    storage.mode(tab) <- "integer"
     class(tab) <- c("term_frequency", class(tab))
     tab
 }
