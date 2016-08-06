@@ -8,7 +8,7 @@ Authors@R: c(person("Ingo", "Feinerer", role = c("aut", "cre"),
              person("Artifex Software, Inc.", role = c("ctb", "cph"),
                     comment = "pdf_info.ps taken from GPL Ghostscript"))
 Depends: R (>= 3.1.0), NLP (>= 0.1-6.2)
-Imports: Rcpp, parallel, slam (>= 0.1-31), stats, tools, utils, graphics
+Imports: Rcpp, parallel, slam (>= 0.1-37), stats, tools, utils, graphics
 LinkingTo: BH, Rcpp
 Suggests: filehash, methods, Rcampdf, Rgraphviz, Rpoppler, SnowballC, tm.lexicon.GeneralInquirer, XML
 SystemRequirements: Antiword (<http://www.winfield.demon.nl/>) for reading MS Word files,

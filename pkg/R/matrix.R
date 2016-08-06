@@ -111,12 +111,23 @@ function(x, control = list())
     m <- .SimpleTripletMatrix(m$i, m$j, m$v, terms, x)
 
     ## Stemming
+    ## <NOTE>
+    ## Ideally tdm() could perform stemming as well but there is no easy way to
+    ## access the SnowballC::wordStem() function from C++ (via Rcpp) without
+    ## significant overhead (as SnowballC does not export its internal C
+    ## functions).
+    ##
+    ## Stemming afterwards is still quite performant as we already have all
+    ## terms. However, there is some overhead involved as we need to recheck
+    ## local bounds and word lengths.
+    ## </NOTE>
     if (isTRUE(control$stemming)) {
         stems <- as.factor(SnowballC::wordStem(terms, meta(x, "language")))
         m <- slam::rollup(m, "Terms", stems)
 
-        ## Lower local bound still holds as rollup aggregates frequencies
-        ## NOTE: Upper local bound is ignored
+        ## Recheck local bounds
+        ## No need to check lower local bound as rollup aggregates frequencies
+        m[m > max_term_freq] <- 0
 
         ## Recheck word lengths
         terms_length <- nchar(rownames(m))
