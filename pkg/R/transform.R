@@ -21,7 +21,7 @@ function(x, FUN, ..., lazy = FALSE)
 tm_map.SimpleCorpus <-
 function(x, FUN, ...)
 {
-    x$content <- FUN(content(x))
+    x$content <- FUN(content(x), ...)
     x
 }
 tm_map.PCorpus <-
