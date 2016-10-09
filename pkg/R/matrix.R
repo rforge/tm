@@ -27,7 +27,7 @@ function(x, weighting)
     ## in example("DocumentTermMatrix") fails [because weightTfIdf() is
     ## a weight function and not a weight function generator ...]
     ## Hence, for now, instead of
-    ##   if(inherits(weighting, "WeightFunction"))
+    ##   if (inherits(weighting, "WeightFunction"))
     ##      x <- weighting(x)
     ## use
     if (is.function(weighting))
@@ -146,14 +146,14 @@ function(x, control = list())
 {
     stopifnot(is.list(control))
 
-    tflist <- mclapply(unname(content(x)), termFreq, control)
+    tflist <- lapply(unname(content(x)), termFreq, control)
 
     v <- unlist(tflist)
     i <- names(v)
     terms <- sort(unique(as.character(if (is.null(control$dictionary)) i
                                       else control$dictionary)))
     i <- match(i, terms)
-    j <- rep(seq_along(x), sapply(tflist, length))
+    j <- rep.int(seq_along(x), lengths(tflist))
 
     m <- .SimpleTripletMatrix(i, j, as.numeric(v), terms, x)
     m <- filter_global_bounds(m, control$bounds$global)
@@ -178,7 +178,7 @@ as.TermDocumentMatrix.textcnt <-
 function(x, ...)
 {
     m <- simple_triplet_matrix(i = seq_along(x),
-                               j = rep(1, length(x)),
+                               j = rep_len(1L, length(x)),
                                v = as.numeric(x),
                                nrow = length(x),
                                ncol = 1,
@@ -218,7 +218,7 @@ function(x)
 {
     m <- NextMethod("t")
     attr(m, "weighting") <- attr(x, "weighting")
-    class(m) <- if(inherits(x, "DocumentTermMatrix"))
+    class(m) <- if (inherits(x, "DocumentTermMatrix"))
         TermDocumentMatrix_classes
     else
         DocumentTermMatrix_classes
@@ -329,7 +329,7 @@ function(x, ...)
     writeLines(sprintf("Non-/sparse entries: %d/%.0f",
                 length(x$v), prod(dim(x)) - length(x$v)))
     sparsity <- if (!prod(dim(x))) 100
-        else round((1 - length(x$v)/prod(dim(x))) * 100)
+        else round((1 - length(x$v) / prod(dim(x))) * 100)
     writeLines(sprintf("Sparsity           : %s%%", sparsity))
     writeLines(sprintf("Maximal term length: %s",
                        max(nchar(Terms(x), type = "chars"), 0)))
@@ -365,7 +365,7 @@ function(x, value)
 {
     x <- NextMethod("dimnames<-")
     dnx <- x$dimnames
-    if(!is.null(dnx))
+    if (!is.null(dnx))
         names(dnx) <- c("Docs", "Terms")
     x$dimnames <- dnx
     x
@@ -376,7 +376,7 @@ function(x, value)
 {
     x <- NextMethod("dimnames<-")
     dnx <- x$dimnames
-    if(!is.null(dnx))
+    if (!is.null(dnx))
         names(dnx) <- c("Terms", "Docs")
     x$dimnames <- dnx
     x
@@ -413,7 +413,7 @@ Terms.TermDocumentMatrix <-
 function(x)
 {
     s <- x$dimnames[[1L]]
-    if(is.null(s))
+    if (is.null(s))
         s <- rep.int(NA_character_, x$nrow)
     s
 }
@@ -423,7 +423,7 @@ Terms.DocumentTermMatrix <-
 function(x)
 {
     s <- x$dimnames[[2L]]
-    if(is.null(s))
+    if (is.null(s))
         s <- rep.int(NA_character_, x$ncol)
     s
 }
@@ -439,7 +439,7 @@ function(..., recursive = FALSE)
 {
     m <- lapply(list(...), as.TermDocumentMatrix)
 
-    if(length(m) == 1L)
+    if (length(m) == 1L)
         return(m[[1L]])
 
     weighting <- attr(m[[1L]], "weighting")
@@ -453,7 +453,7 @@ function(..., recursive = FALSE)
     j <- lapply(m, "[[", "j")
 
     m <- simple_triplet_matrix(i = match(allTermsNonUnique, allTerms),
-                               j = unlist(j) + rep.int(cs, sapply(j, length)),
+                               j = unlist(j) + rep.int(cs, lengths(j)),
                                v = unlist(lapply(m, "[[", "v")),
                                nrow = length(allTerms),
                                ncol = length(allDocs),
@@ -462,9 +462,9 @@ function(..., recursive = FALSE)
                                     Docs = allDocs))
     ## <NOTE>
     ## - We assume that all arguments have the same weighting
-    ## - Even if all matrices have the same input weighting it might be necessary
-    ##   to take additional steps (e.g., normalization for tf-idf or check for
-    ##   (0,1)-range for binary tf)
+    ## - Even if all matrices have the same input weighting it might be
+    ##   necessary to take additional steps (e.g., normalization for tf-idf or
+    ##   check for (0,1)-range for binary tf)
     ## </NOTE>
     .TermDocumentMatrix(m, weighting)
 }
@@ -528,7 +528,7 @@ function(x, sparse)
     m <- if (inherits(x, "DocumentTermMatrix")) t(x) else x
     t <- table(m$i) > m$ncol * (1 - sparse)
     termIndex <- as.numeric(names(t[t]))
-    if (inherits(x, "DocumentTermMatrix")) x[, termIndex] else x[termIndex,]
+    if (inherits(x, "DocumentTermMatrix")) x[, termIndex] else x[termIndex, ]
 }
 
 sample.TermDocumentMatrix <-
@@ -548,12 +548,12 @@ function(x, size = 10)
 CategorizedDocumentTermMatrix <-
 function(x, c)
 {
-    if(inherits(x, "TermDocumentMatrix"))
+    if (inherits(x, "TermDocumentMatrix"))
         x <- t(x)
-    else if(!inherits(x, "DocumentTermMatrix"))
+    else if (!inherits(x, "DocumentTermMatrix"))
         stop("wrong class")
 
-    if(length(c) != nDocs(x))
+    if (length(c) != nDocs(x))
         stop("invalid category ids")
 
     attr(x, "Category") <- c

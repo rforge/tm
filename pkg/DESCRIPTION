@@ -1,14 +1,14 @@
 Package: tm
 Title: Text Mining Package
 Version: 0.7
-Date: 2016-08-22
+Date: 2016-10-09
 Authors@R: c(person("Ingo", "Feinerer", role = c("aut", "cre"),
                     email = "feinerer@logic.at"),
              person("Kurt", "Hornik", role = "aut"),
              person("Artifex Software, Inc.", role = c("ctb", "cph"),
                     comment = "pdf_info.ps taken from GPL Ghostscript"))
-Depends: R (>= 3.1.0), NLP (>= 0.1-6.2)
-Imports: Rcpp, parallel, slam (>= 0.1-37), stats, tools, utils, graphics
+Depends: R (>= 3.2.0), NLP (>= 0.1-6.2)
+Imports: Rcpp, slam (>= 0.1-37), stats, tools, utils, graphics
 LinkingTo: BH, Rcpp
 Suggests: filehash, methods, Rcampdf, Rgraphviz, Rpoppler, SnowballC, tm.lexicon.GeneralInquirer, XML
 SystemRequirements: Antiword (<http://www.winfield.demon.nl/>) for reading MS Word files,

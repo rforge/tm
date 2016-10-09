@@ -150,7 +150,7 @@
 
 	* R/matrix (termFreq): Allow local option \code{bounds$local} to
 	restrict how often a term may appear in each document (generalizes
-	\code{minDocFreq}). Similarly the local option \code{wordLenghts}
+	\code{minDocFreq}). Similarly the local option \code{wordLengths}
 	for word length bounds (generalizes \code{minWordLength}).
 
 	* R/matrix.R (TermDocumentMatrix.VCorpus): New global option

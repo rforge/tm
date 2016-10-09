@@ -112,11 +112,11 @@ function(zipfile, pattern = NULL, recursive = FALSE, ignore.case = FALSE,
 read_all_bytes <-
 function(con, chunksize = 2 ^ 16)
 {
-    if(is.character(con)) {
+    if (is.character(con)) {
         return(readBin(con, raw(), file.info(con)$size))
     }
 
-    if(!isOpen(con)) {
+    if (!isOpen(con)) {
         open(con, "rb")
         on.exit(close(con))
     }
@@ -125,7 +125,7 @@ function(con, chunksize = 2 ^ 16)
     repeat {
         chunk <- readBin(con, raw(), chunksize)
         bytes <- c(bytes, list(chunk))
-        if(length(chunk) < chunksize) break
+        if (length(chunk) < chunksize) break
     }
 
     unlist(bytes)
@@ -247,7 +247,7 @@ function(x)
 pGetElem.DataframeSource <-
 function(x)
     lapply(seq_len(x$length),
-           function(y) list(content = x$content[y,],
+           function(y) list(content = x$content[y, ],
                             uri = NULL))
 pGetElem.DirSource <-
 function(x)

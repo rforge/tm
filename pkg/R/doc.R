@@ -69,7 +69,8 @@ function(x, value)
 
 format.PlainTextDocument <-
 function(x, ...)
-    c(.format_TextDocument(x), sprintf("Content:  chars: %d", sum(nchar(x$content))))
+    c(.format_TextDocument(x),
+      sprintf("Content:  chars: %d", sum(nchar(x$content))))
 
 meta.PlainTextDocument <-
 function(x, tag = NULL, ...)
@@ -78,7 +79,7 @@ function(x, tag = NULL, ...)
 `meta<-.PlainTextDocument` <-
 function(x, tag = NULL, ..., value)
 {
-    if(is.null(tag))
+    if (is.null(tag))
         x$meta <- value
     else
         x$meta[[tag]] <- value

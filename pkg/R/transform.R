@@ -15,7 +15,7 @@ function(x, FUN, ..., lazy = FALSE)
         else
             x$lazy$maps <- c(x$lazy$maps, list(fun))
     } else
-        x$content <- mclapply(content(x), FUN, ...)
+        x$content <- lapply(content(x), FUN, ...)
     x
 }
 tm_map.SimpleCorpus <-
@@ -42,7 +42,7 @@ function(x, range = seq_along(x))
        i <- (seq_along(x) %in% range) & x$lazy$index
        if (any(i)) {
            x$content[i] <-
-               mclapply(x$content[i], function(d) tm_reduce(d, x$lazy$maps))
+               lapply(x$content[i], function(d) tm_reduce(d, x$lazy$maps))
            x$lazy$index[i] <- FALSE
        }
 

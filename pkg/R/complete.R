@@ -41,7 +41,8 @@ function(x, dictionary,
                }), x)
            },
            shortest = {
-               ordering <- lapply(possibleCompletions, function(x) order(nchar(x)))
+               ordering <- lapply(possibleCompletions,
+                                  function(x) order(nchar(x)))
                possibleCompletions <-
                    mapply(function(x, id) x[id], possibleCompletions,
                           ordering, SIMPLIFY = FALSE)

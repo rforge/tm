@@ -1,6 +1,5 @@
 importFrom("NLP", "content", "content<-", "meta", "meta<-", "words")
 importFrom("Rcpp", "evalCpp")
-importFrom("parallel", "mclapply")
 importFrom("stats", "coef", "cor", "lm", "setNames")
 importFrom("utils", "download.file", "getS3method", "unzip")
 importFrom("graphics", "abline", "plot")

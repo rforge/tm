@@ -88,7 +88,7 @@ function(x, readerControl = list(reader = reader(x), language = "en"))
     # Check for parallel element access
     if (is.function(getS3method("pGetElem", class(x), TRUE)))
         tdl <- mapply(function(elem, id)
-                          readerControl$reader(elem, readerControl$language, id),
+                        readerControl$reader(elem, readerControl$language, id),
                       pGetElem(x),
                       id = as.character(seq_along(x)),
                       SIMPLIFY = FALSE)
