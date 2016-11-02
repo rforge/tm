@@ -7,8 +7,6 @@
       \item \code{inspect.TermDocumentMatrix()} now displays a sample instead
         of the full matrix. The full dense representation is available via
         \code{as.matrix()}.
-      \item Transformations, filters, and term-document matrix construction
-        no longer use \code{\link[parallel]{mclapply}} (package \pkg{parallel}).
     }
   }
   \subsection{NEW FEATURES}{

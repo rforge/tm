@@ -146,7 +146,7 @@ function(x, control = list())
 {
     stopifnot(is.list(control))
 
-    tflist <- lapply(unname(content(x)), termFreq, control)
+    tflist <- mclapply(unname(content(x)), termFreq, control)
 
     v <- unlist(tflist)
     i <- names(v)

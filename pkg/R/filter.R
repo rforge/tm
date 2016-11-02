@@ -17,4 +17,4 @@ tm_index.PCorpus <-
 tm_index.SimpleCorpus <-
 tm_index.VCorpus <-
 function(x, FUN, ...)
-    unlist(lapply(content(x), FUN, ...))
+    unlist(mclapply(content(x), FUN, ...))
