@@ -123,7 +123,7 @@ function(x, control = list())
     ## </NOTE>
     if (isTRUE(control$stemming)) {
         stems <- as.factor(SnowballC::wordStem(terms, meta(x, "language")))
-        m <- slam::rollup(m, "Terms", stems)
+        m <- rollup(m, "Terms", stems)
 
         ## Recheck local bounds
         ## No need to check lower local bound as rollup aggregates frequencies
@@ -239,8 +239,8 @@ function(doc, control = list())
         .tokenize <- MC_tokenizer
     else if (identical(.tokenize, "scan"))
         .tokenize <- scan_tokenizer
-    else if (NLP::is.Span_Tokenizer(.tokenize))
-        .tokenize <- NLP::as.Token_Tokenizer(.tokenize)
+    else if (is.Span_Tokenizer(.tokenize))
+        .tokenize <- as.Token_Tokenizer(.tokenize)
     if (is.function(.tokenize))
         txt <- .tokenize(doc)
     else
@@ -482,7 +482,7 @@ function(x, lowfreq = 0, highfreq = Inf)
               is.numeric(lowfreq), is.numeric(highfreq))
 
     if (inherits(x, "DocumentTermMatrix")) x <- t(x)
-    rs <- slam::row_sums(x)
+    rs <- row_sums(x)
     names(rs[rs >= lowfreq & rs <= highfreq])
 }
 
@@ -500,7 +500,7 @@ function(x, terms, corlimit)
 
     j <- match(unique(terms), Terms(x), nomatch = 0L)
     suppressWarnings(
-        findAssocs(slam::crossapply_simple_triplet_matrix(x[, j], x[, -j], cor),
+        findAssocs(crossapply_simple_triplet_matrix(x[, j], x[, -j], cor),
                    terms, rep_len(corlimit, length(terms))))
 }
 findAssocs.matrix <-
@@ -538,9 +538,9 @@ function(x, size = 10)
               is.numeric(size), size >= 0)
 
     m <- if (inherits(x, "DocumentTermMatrix")) t(x) else x
-    terms <- sort(names(sort(slam::row_sums(m), decreasing = TRUE)
+    terms <- sort(names(sort(row_sums(m), decreasing = TRUE)
                         [0:min(size, nTerms(m))]))
-    docs <- sort(names(sort(slam::col_sums(m), decreasing = TRUE)
+    docs <- sort(names(sort(col_sums(m), decreasing = TRUE)
                        [0:min(size, nDocs(m))]))
     if (inherits(x, "DocumentTermMatrix")) x[docs, terms] else x[terms, docs]
 }
@@ -580,7 +580,7 @@ function(x, n = 6L, INDEX = NULL, ...)
 {
     terms <- Terms(x)
     if(!is.null(INDEX))
-        x <- slam::rollup(x, 1L, INDEX)
+        x <- rollup(x, 1L, INDEX)
     f <- factor(x$i, seq_len(x$nrow))
     js <- split(x$j, f)
     vs <- split(x$v, f)
@@ -600,7 +600,7 @@ function(x, n = 6L, INDEX = NULL, ...)
 {
     terms <- Terms(x)    
     if(!is.null(INDEX))
-        x <- slam::rollup(x, 2L, INDEX)
+        x <- rollup(x, 2L, INDEX)
     f <- factor(x$j, seq_len(x$ncol))
     is <- split(x$i, f)
     vs <- split(x$v, f)

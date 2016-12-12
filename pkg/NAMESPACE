@@ -1,11 +1,15 @@
-importFrom("NLP", "content", "content<-", "meta", "meta<-", "words")
+importFrom("NLP", "content", "content<-", "meta", "meta<-", "words",
+           "as.Token_Tokenizer", "is.Span_Tokenizer", "Token_Tokenizer",
+           "TaggedTextDocument")
 importFrom("Rcpp", "evalCpp")
 importFrom("graphics", "abline", "plot")
 importFrom("parallel", "mclapply")
 importFrom("stats", "coef", "cor", "lm", "setNames")
 importFrom("utils", "download.file", "getS3method", "unzip")
 
-import(slam)
+importFrom("slam", "as.simple_triplet_matrix", "col_sums",
+           "crossapply_simple_triplet_matrix", "read_stm_MC", "rollup",
+           "row_sums", "simple_triplet_matrix")
 
 export("as.DocumentTermMatrix",
        "as.TermDocumentMatrix",
