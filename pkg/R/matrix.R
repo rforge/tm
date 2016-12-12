@@ -575,11 +575,11 @@ function(x, n = 6L, ...)
     y[y > 0]
 }
 
-findMostFreqTerms.DocumentTermMatrix <- 
+findMostFreqTerms.DocumentTermMatrix <-
 function(x, n = 6L, INDEX = NULL, ...)
 {
     terms <- Terms(x)
-    if(!is.null(INDEX))
+    if (!is.null(INDEX))
         x <- rollup(x, 1L, INDEX)
     f <- factor(x$i, seq_len(x$nrow))
     js <- split(x$j, f)
@@ -595,11 +595,11 @@ function(x, n = 6L, INDEX = NULL, ...)
     y
 }
 
-findMostFreqTerms.TermDocumentMatrix <- 
+findMostFreqTerms.TermDocumentMatrix <-
 function(x, n = 6L, INDEX = NULL, ...)
 {
-    terms <- Terms(x)    
-    if(!is.null(INDEX))
+    terms <- Terms(x)
+    if (!is.null(INDEX))
         x <- rollup(x, 2L, INDEX)
     f <- factor(x$j, seq_len(x$ncol))
     is <- split(x$i, f)
@@ -614,4 +614,3 @@ function(x, n = 6L, INDEX = NULL, ...)
     names(y) <- x$dimnames[[2L]]
     y
 }
-
