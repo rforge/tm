@@ -24,6 +24,7 @@ export("as.DocumentTermMatrix",
        "Heaps_plot",
        "findAssocs",
        "findFreqTerms",
+       "findMostFreqTerms",
        "getReaders",
        "getSources",
        "getTokenizers",
@@ -99,6 +100,7 @@ S3method("[", "DocumentTermMatrix")
 S3method("c", "DocumentTermMatrix")
 S3method("dimnames<-", "DocumentTermMatrix")
 S3method("findAssocs", "DocumentTermMatrix")
+S3method("findMostFreqTerms", "DocumentTermMatrix")
 S3method("inspect", "DocumentTermMatrix")
 S3method("plot", "DocumentTermMatrix")
 S3method("print", "DocumentTermMatrix")
@@ -169,6 +171,7 @@ S3method("c", "TermDocumentMatrix")
 S3method("[", "TermDocumentMatrix")
 S3method("dimnames<-", "TermDocumentMatrix")
 S3method("findAssocs", "TermDocumentMatrix")
+S3method("findMostFreqTerms", "TermDocumentMatrix")
 S3method("inspect", "TermDocumentMatrix")
 S3method("plot", "TermDocumentMatrix")
 S3method("print", "TermDocumentMatrix")
@@ -176,6 +179,7 @@ S3method("t", "TermDocumentMatrix")
 S3method("tm_term_score", "TermDocumentMatrix")
 
 S3method("c", "term_frequency")
+S3method("findMostFreqTerms", "term_frequency")
 
 S3method("c", "TextDocument")
 S3method("inspect", "TextDocument")

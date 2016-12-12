@@ -563,3 +563,55 @@ function(x, c)
 
     x
 }
+
+findMostFreqTerms <-
+function(x, n = 6L, ...)
+    UseMethod("findMostFreqTerms")
+
+findMostFreqTerms.term_frequency <-
+function(x, n = 6L, ...)
+{
+    y <- x[order(x, decreasing = TRUE)[seq_len(n)]]
+    y[y > 0]
+}
+
+findMostFreqTerms.DocumentTermMatrix <- 
+function(x, n = 6L, INDEX = NULL, ...)
+{
+    terms <- Terms(x)
+    if(!is.null(INDEX))
+        x <- slam::rollup(x, 1L, INDEX)
+    f <- factor(x$i, seq_len(x$nrow))
+    js <- split(x$j, f)
+    vs <- split(x$v, f)
+    y <- Map(function(j, v, n) {
+                 p <- order(v, decreasing = TRUE)[seq_len(n)]
+                 v <- v[p]
+                 names(v) <- terms[j[p]]
+                 v
+             },
+             js, vs, pmin(lengths(vs), n))
+    names(y) <- x$dimnames[[1L]]
+    y
+}
+
+findMostFreqTerms.TermDocumentMatrix <- 
+function(x, n = 6L, INDEX = NULL, ...)
+{
+    terms <- Terms(x)    
+    if(!is.null(INDEX))
+        x <- slam::rollup(x, 2L, INDEX)
+    f <- factor(x$j, seq_len(x$ncol))
+    is <- split(x$i, f)
+    vs <- split(x$v, f)
+    y <- Map(function(i, v, n) {
+                 p <- order(v, decreasing = TRUE)[seq_len(n)]
+                 v <- v[p]
+                 names(v) <- terms[i[p]]
+                 v
+             },
+             is, vs, pmin(lengths(vs), n))
+    names(y) <- x$dimnames[[2L]]
+    y
+}
+
