@@ -20,6 +20,8 @@
         sets.
       \item \code{inspect()} on text documents as a shorthand for
         \code{writeLines(as.character())}.
+      \item \code{findMostFreqTerms()} finds most frequent terms in a
+        document-term or term-document matrix, or a vector of term frequencies.
     }
   }
 }
