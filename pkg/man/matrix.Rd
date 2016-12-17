@@ -53,7 +53,7 @@ as.DocumentTermMatrix(x, \dots)
   \code{DocumentTermMatrix} (both inheriting from a
   \link[slam:matrix]{simple triplet matrix} in package \pkg{slam})
   containing a sparse term-document matrix or document-term matrix. The
-  attribute \code{Weighting} contains the weighting applied to the
+  attribute \code{weighting} contains the weighting applied to the
   matrix.
 }
 \seealso{
