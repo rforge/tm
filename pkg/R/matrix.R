@@ -12,6 +12,9 @@ function(x, weighting)
     if (!is.null(dimnames(x)))
         names(dimnames(x)) <- c("Terms", "Docs")
     class(x) <- TermDocumentMatrix_classes
+
+    if (is.null(weighting))
+        weighting <- weightTf
     ## <NOTE>
     ## Note that if weighting is a weight function, it already needs to
     ## know whether we have a term-document or document-term matrix.
@@ -327,9 +330,9 @@ function(x, ...)
     writeLines(sprintf("<<%s (%ss: %d, %ss: %d)>>",
                        class(x)[1], format[1L], nrow(x), format[2L], ncol(x)))
     writeLines(sprintf("Non-/sparse entries: %d/%.0f",
-                length(x$v), prod(dim(x)) - length(x$v)))
+                       length(x$v), prod(dim(x)) - length(x$v)))
     sparsity <- if (!prod(dim(x))) 100
-        else round((1 - length(x$v) / prod(dim(x))) * 100)
+        else round( (1 - length(x$v) / prod(dim(x))) * 100)
     writeLines(sprintf("Sparsity           : %s%%", sparsity))
     writeLines(sprintf("Maximal term length: %s",
                        max(nchar(Terms(x), type = "chars"), 0)))
@@ -516,7 +519,8 @@ function(x, terms, corlimit)
         if (!length(t))
             names(t) <- NULL
         t
-        }, i, corlimit)
+        },
+        i, corlimit)
 }
 
 removeSparseTerms <-
